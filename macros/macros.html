@@ -1,0 +1,102 @@
+<!-- Makes a list from a set of kwarg -->
+{% macro dictlist_dl(data) %}
+<dl>
+    {% for k, v in data.iteritems() -%}
+        <dt>{{ k }}</dt>
+        <dd>{{ v }}</dd>
+    {% endfor %}
+</dl>
+{%- endmacro %}
+
+
+<!-- Makes a list from a set of kwarg -->
+{% macro dictlist_ul(data) %}
+<ul>
+    {% for k, v in data.iteritems() %}
+        <li><strong>{{ k }}</strong>: {{ v }}</li>
+    {% endfor %}
+</ul>
+{%- endmacro %}
+
+
+<!-- Makes a list from a set of kwarg -->
+{% macro dictlist_ol(data) %}
+<ul>
+    {% for k, v in data.iteritems() %}
+        <li><strong>{{ k }}</strong>: {{ v }}</li>
+    {% endfor %}
+</ul>
+{%- endmacro %}
+
+
+<!-- Makes a list from a set of kwarg -->
+{% macro bs3_dictlist_group(data) %}
+<div class="list-group">
+    {% for k, v in data.iteritems() %}
+        <h4 class="list-group-item-heading">{{ k }}</h4>
+        <p class="list-group-item-text">{{ v }}</p>
+    {% endfor %}
+</div>
+{%- endmacro %}
+
+
+<!-- UL based List group -->
+{% macro bs3_list_group_ul(data) %}
+<ul class="list-group">
+    {% for val in data %}
+        <li class="list-group-item">{{ val }}</li>
+    {% endfor %}
+</ul>
+{%- endmacro %}
+
+
+{% macro bs3_list_group_ol(data) %}
+<!-- OL based List group -->
+<ol class="list-group">
+    {% for val in data %}
+        <li class="list-group-item">{{ val }}</li>
+    {% endfor %}
+</ol>
+{%- endmacro %}
+
+
+<!-- Create table from a list of objects (class instantiations) -->
+{% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None) -%}
+<table
+    class="{% for css in classes %}{{ css }} {% endfor %}"
+    {% for attr in data_attrs %}data-{{ attr }}{% endfor %}>
+    <thead>
+        {% for obj in objs %}
+            {% if loop.first %}
+                {% for heading, _ in obj.__dict__.iteritems() %}
+                    {% if heading not in filterkeys %}
+                        <th>{{ heading }}</th>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </thead>
+    <tbody>
+        {% for obj in objs %}
+            <tr>
+                {% for k, v in obj.__dict__.iteritems() %}
+                    {% if k not in filterkeys %}
+                        {% if v not in filtervals %}
+                            <td>
+                                {# Handle all primary key links, a common occurence #}
+                                {% if pk_link and k == 'id' %}
+                                    <a href="{{ pk_link }}/{{ v }}">{{ v }}</a>
+                                {% else %}
+                                    {{ v }}
+                                {% endif %}
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{%- endmacro %}
