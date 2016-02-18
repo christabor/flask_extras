@@ -46,3 +46,18 @@ class QuestionizeLabelTest(unittest.TestCase):
     def test_questionize_label_none(self):
         """Tests the function with None argument."""
         self.assertEqual(filters.questionize_label(None), '')
+
+
+class FirstOfTest(unittest.TestCase):
+
+    def test_firstof_all_false(self):
+        """Tests what is returned when all values are falsy"""
+        self.assertEqual(filters.firstof([None, False, 0]), '')
+
+    def test_firstof_last_true(self):
+        """Tests what is returned when last value is true"""
+        self.assertEqual(filters.firstof([None, False, 0, 'yay']), 'yay')
+
+    def test_firstof_first_true(self):
+        """Tests what is returned when first value is true"""
+        self.assertEqual(filters.firstof(['yay', False, 0, 'yay']), 'yay')

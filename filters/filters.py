@@ -22,6 +22,27 @@ def title(word, capitalize=False):
     return ' '.join(words)
 
 
+def firstof(seq):
+    """Return the first item that is truthy in a sequence.
+    Equivalent to Djangos' firstof.
+
+    Args:
+        seq (list): A list of values.
+
+    Returns:
+        value (mixed): The output, depending on the truthiness of the input.
+    """
+    if not any(seq):
+        return ''
+    if all(seq):
+        return seq[0]
+    while len(seq) > 0:
+        item = seq.pop(0)
+        if item:
+            return item
+    return ''
+
+
 def questionize_label(word):
     """If a user follows the convention of using `is_something`, or
     `has_something`, for a boolean value, the *property* text will
