@@ -41,6 +41,22 @@
 {%- endmacro %}
 
 
+{% macro dictlist2nav(data, type='ul') %}
+{# Make a list of links with nav element.
+    Format must be a list of dictionaries.
+    Supports *one* level of nesting. #}
+<nav>
+    <{{ type }}>
+        {% for item in data %}
+            {% for k, v in item.items() %}
+                <li><a href="{{ k }}">{{ v }}</a></li>
+            {% endfor %}
+        {% endfor %}
+    </{{ type }}>
+</nav>
+{%- endmacro %}
+
+
 {% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None) -%}
 {# Create table from a list of objects (class instantiations) #}
 <table
