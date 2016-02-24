@@ -144,3 +144,34 @@ def default_if_none(val, default):
         mixed: The default given value, or the original value.
     """
     return default if val is None else val
+
+
+def get_digit(val, index):
+    """Return the digit of a value specified by an index.
+
+    Args
+        val (int): An integer.
+        index (int): The index to check against.
+
+    Returns:
+        int: The original integer if index is invalid, otherwise the digit
+        at the specified index.
+    """
+    digits = reversed(list(str(val)))
+    for k, digit in enumerate(digits):
+        if k + 1 == int(index):
+            return int(digit)
+    return val
+
+
+def length_is(val, length):
+    """Return True if the length of a given value matches a given length.
+
+    Args:
+        val (mixed): A value to check the length of.
+        length (int): The length to check.
+
+    Returns:
+        bool: The value of checking the length against length.
+    """
+    return len(val) == length

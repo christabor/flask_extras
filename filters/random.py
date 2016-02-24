@@ -7,6 +7,8 @@ from random import choice, randrange
 def rand_choice(options):
     """Pick a random value from a range of numbers, like pythons' stdlib.
 
+    Equivalent to Djangos' random.
+
     Args:
         options (list): A list of values.
 

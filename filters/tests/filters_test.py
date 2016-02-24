@@ -126,3 +126,33 @@ class DefaultIfNoneValTest(unittest.TestCase):
     def test_returns_original(self):
         """Test return value."""
         self.assertEqual(filters.default_if_none(1, 'default'), 1)
+
+
+class GetDigitTest(unittest.TestCase):
+
+    def test_returns_index_empty(self):
+        """Test return value."""
+        self.assertEqual(filters.get_digit(123456789, 0), 123456789)
+
+    def test_returns_index_end(self):
+        """Test return value."""
+        self.assertEqual(filters.get_digit(123456789, 1), 9)
+
+    def test_returns_index_mid(self):
+        """Test return value."""
+        self.assertEqual(filters.get_digit(123456789, 5), 5)
+
+    def test_returns_index_beg(self):
+        """Test return value."""
+        self.assertEqual(filters.get_digit(123456789, 9), 1)
+
+
+class LengthIsTest(unittest.TestCase):
+
+    def test_returns_false(self):
+        """Test return value."""
+        self.assertFalse(filters.length_is('three', 4))
+
+    def test_returns_true(self):
+        """Test return value."""
+        self.assertTrue(filters.length_is('one', 3))
