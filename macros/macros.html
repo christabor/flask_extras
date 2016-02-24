@@ -57,10 +57,9 @@
 {%- endmacro %}
 
 
-{% macro dictlist2dropdown(data, type='ul') %}
+{% macro dictlist2dropdown(data) %}
 {# Make a dropdown element.
-    Format must be a list of dictionaries.
-    Supports *one* level of nesting. #}
+    Format must be a list of dictionaries. #}
 <select>
     {% for item in data %}
         {% for k, v in item.items() %}
@@ -68,6 +67,22 @@
         {% endfor %}
     {% endfor %}
 </select>
+{%- endmacro %}
+
+
+{% macro dictlist2checkboxes(data, fieldset_class='fieldset-group') %}
+{# Make a checkbox group, where keys are input names, and values are labels.
+    Format must be a list of dictionaries. #}
+<fieldset class="{{ fieldset_class }}">
+    {% for item in data %}
+        {% for k, v in item.items() %}
+            <label>
+                {{ v }}
+                <input type="checkbox" name="{{ k }}">
+            </label>
+        {% endfor %}
+    {% endfor %}
+</fieldset>
 {%- endmacro %}
 
 
