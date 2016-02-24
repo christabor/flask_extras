@@ -149,6 +149,8 @@ def default_if_none(val, default):
 def get_digit(val, index):
     """Return the digit of a value specified by an index.
 
+    Equivalent to Djangos' get_digit.
+
     Args
         val (int): An integer.
         index (int): The index to check against.
@@ -166,6 +168,8 @@ def get_digit(val, index):
 
 def length_is(val, length):
     """Return True if the length of a given value matches a given length.
+
+    Equivalent to Djangos' length_is.
 
     Args:
         val (mixed): A value to check the length of.
