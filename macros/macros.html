@@ -57,6 +57,20 @@
 {%- endmacro %}
 
 
+{% macro dictlist2dropdown(data, type='ul') %}
+{# Make a dropdown element.
+    Format must be a list of dictionaries.
+    Supports *one* level of nesting. #}
+<select>
+    {% for item in data %}
+        {% for k, v in item.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+    {% endfor %}
+</select>
+{%- endmacro %}
+
+
 {% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None) -%}
 {# Create table from a list of objects (class instantiations) #}
 <table
