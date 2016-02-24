@@ -70,6 +70,8 @@ def questionize_label(word):
 def add(lst, arg):
     """Add an item to a list.
 
+    Equivalent to Djangos' add.
+
     Args:
         lst (list): A list.
         arg (mixed): Any value to append to the list.
@@ -79,3 +81,17 @@ def add(lst, arg):
     """
     lst.append(arg)
     return lst
+
+
+def addslashes(val):
+    """Add slashes before all single quotes in a given string.
+
+    Equivalent to Djangos' addslashes.
+
+    Args:
+        val (str): A string.
+
+    Returns:
+        str: The updated string.
+    """
+    return val.replace("'", "\\'")
