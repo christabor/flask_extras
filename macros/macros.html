@@ -1,5 +1,6 @@
-<!-- Makes a list from a set of kwarg -->
 {% macro dictlist_dl(data) %}
+{# Makes a definition list from a dictionary - the correspondence should be:
+    dt: key, dd: value #}
 <dl>
     {% for k, v in data.iteritems() -%}
         <dt>{{ k }}</dt>
@@ -9,28 +10,18 @@
 {%- endmacro %}
 
 
-<!-- Makes a list from a set of kwarg -->
-{% macro dictlist_ul(data) %}
-<ul>
+{% macro dict2list(data, type='ul') %}
+{# Makes a list from a set of dictionary #}
+<{{ type }}>
     {% for k, v in data.iteritems() %}
         <li><strong>{{ k }}</strong>: {{ v }}</li>
     {% endfor %}
-</ul>
+</{{ type }}>
 {%- endmacro %}
 
 
-<!-- Makes a list from a set of kwarg -->
-{% macro dictlist_ol(data) %}
-<ul>
-    {% for k, v in data.iteritems() %}
-        <li><strong>{{ k }}</strong>: {{ v }}</li>
-    {% endfor %}
-</ul>
-{%- endmacro %}
-
-
-<!-- Makes a list from a set of kwarg -->
 {% macro bs3_dictlist_group(data) %}
+{# Makes a bootstrap list group from a set of dictionary #}
 <div class="list-group">
     {% for k, v in data.iteritems() %}
         <h4 class="list-group-item-heading">{{ k }}</h4>
@@ -40,28 +31,18 @@
 {%- endmacro %}
 
 
-<!-- UL based List group -->
-{% macro bs3_list_group_ul(data) %}
-<ul class="list-group">
+{% macro bs3_list_group(data, type='ul') %}
+{# OL/UL based bootstrap list group #}
+<{{ type }} class="list-group">
     {% for val in data %}
         <li class="list-group-item">{{ val }}</li>
     {% endfor %}
-</ul>
+</{{ type }}>
 {%- endmacro %}
 
 
-{% macro bs3_list_group_ol(data) %}
-<!-- OL based List group -->
-<ol class="list-group">
-    {% for val in data %}
-        <li class="list-group-item">{{ val }}</li>
-    {% endfor %}
-</ol>
-{%- endmacro %}
-
-
-<!-- Create table from a list of objects (class instantiations) -->
 {% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None) -%}
+{# Create table from a list of objects (class instantiations) #}
 <table
     class="{% for css in classes %}{{ css }} {% endfor %}"
     {% for attr in data_attrs %}data-{{ attr }}{% endfor %}>
