@@ -1,7 +1,7 @@
 """Filters for generating random data."""
 
 from __future__ import absolute_import
-from random import choice
+from random import choice, randrange
 
 
 def rand_choice(options):
@@ -18,6 +18,7 @@ def rand_choice(options):
 
 def rand_name_title(name):
     """Pick a random title for a given name (e.g. ESQ. MD, etc...).
+
     Source: https://www.lehigh.edu/lewis/suffix.htm
 
     Args:
@@ -35,3 +36,17 @@ def rand_name_title(name):
         'USAFR', 'USAR', 'USCG', 'USMC', 'USMCR', 'USN', 'USNR',
     ]
     return '{} {}'.format(name, choice(titles))
+
+
+def rand_color(alpha=100):
+    """Return a random CSS friendly RGB color value.
+
+    Args:
+        alpha (int): The optional alpha value for the RGBA string.
+
+    Returns:
+        str: The RGB triplet for use with inline css.
+            (e.g. rgba(10, 20, 30, 100))
+    """
+    return 'rgba({}, {}, {}, {})'.format(
+        randrange(0, 255), randrange(0, 255), randrange(0, 255), alpha)
