@@ -103,3 +103,26 @@ class AddSlashesTest(unittest.TestCase):
         """Test return value."""
         res = filters.addslashes("I'm u's'i'n'g Flask!")
         self.assertEqual(res, "I\\'m u\\'s\\'i\\'n\\'g Flask!")
+
+
+class DefaultValTest(unittest.TestCase):
+
+    def test_returns_default(self):
+        """Test return value."""
+        self.assertEqual(filters.default(False, 'default'), 'default')
+
+    def test_returns_original(self):
+        """Test return value."""
+        self.assertEqual(filters.default(1, 'default'), 1)
+
+
+class DefaultIfNoneValTest(unittest.TestCase):
+
+    def test_returns_default(self):
+        """Test return value."""
+        self.assertEqual(filters.default_if_none(
+            None, 'default'), 'default')
+
+    def test_returns_original(self):
+        """Test return value."""
+        self.assertEqual(filters.default_if_none(1, 'default'), 1)

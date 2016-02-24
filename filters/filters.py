@@ -114,3 +114,33 @@ def addslashes(val):
         str: The updated string.
     """
     return val.replace("'", "\\'")
+
+
+def default(val, default):
+    """Default to a given value if another given value is falsy.
+
+    Equivalent to Djangos' default.
+
+    Args:
+        val (mixed): A mixed value that is truthy or falsy.
+        default (mixed): A default replacement value.
+
+    Returns:
+        mixed: The default given value, or the original value.
+    """
+    return default if not val else val
+
+
+def default_if_none(val, default):
+    """Default to a given value if another given value is None.
+
+    Equivalent to Djangos' default_if_none.
+
+    Args:
+        val (mixed): A mixed value that may or may not be None.
+        default (mixed): A default replacement value.
+
+    Returns:
+        mixed: The default given value, or the original value.
+    """
+    return default if val is None else val
