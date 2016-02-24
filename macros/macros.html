@@ -86,7 +86,7 @@
 {%- endmacro %}
 
 
-{% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None) -%}
+{% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None, handle_links=True) -%}
 {# Create table from a list of objects (class instantiations) #}
 <table
     class="{% for css in classes %}{{ css }} {% endfor %}"
@@ -112,6 +112,8 @@
                                 {# Handle all primary key links, a common occurence #}
                                 {% if pk_link and k == 'id' %}
                                     <a href="{{ pk_link }}/{{ v }}">{{ v }}</a>
+                                {% elif handle_links and v|is_url %}
+                                    <a href="{{ v }}" target="_blank">{{ v }}</a>
                                 {% else %}
                                     {{ v }}
                                 {% endif %}
