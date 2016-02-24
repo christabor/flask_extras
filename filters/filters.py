@@ -83,6 +83,25 @@ def add(lst, arg):
     return lst
 
 
+def cut(val, removals):
+    """Remove some value from a string.
+
+    Similar to Djangos' cut, but accepts N arguments to remove, in turn.
+
+    Args:
+        val (str): A string.
+        removals (list): Alist of values to remove in turn, from the value.
+
+    Returns:
+        str: The updated string.
+    """
+    def _cut(val, tocut):
+        return val.replace(tocut, '')
+    for r in removals:
+        val = _cut(val, r)
+    return val
+
+
 def addslashes(val):
     """Add slashes before all single quotes in a given string.
 

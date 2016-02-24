@@ -70,6 +70,23 @@ class AddTest(unittest.TestCase):
         self.assertEqual(filters.add([1, 2], 3), [1, 2, 3])
 
 
+class CutTest(unittest.TestCase):
+
+    def test_returns_updated_string(self):
+        """Test return value."""
+        self.assertEqual(filters.cut('Hello world', ['world']), 'Hello ')
+
+    def test_returns_updated_multi(self):
+        """Test return value."""
+        self.assertEqual(filters.cut(
+            'Well hello world', ['hello', 'world']), 'Well  ')
+
+    def test_returns_updated_multispace(self):
+        """Test return value."""
+        self.assertEqual(filters.cut(
+            'String with spaces', [' ']), 'Stringwithspaces')
+
+
 class AddSlashesTest(unittest.TestCase):
 
     def test_returns_updated_basic(self):
