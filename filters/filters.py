@@ -2,7 +2,7 @@
 
 
 def title(word, capitalize=False):
-    """Convert a string to a title format, where the words are capitalized
+    """Convert a string to a title format, where the words are capitalized.
 
     Args:
         word (string): The string to format.
@@ -24,6 +24,7 @@ def title(word, capitalize=False):
 
 def firstof(seq):
     """Return the first item that is truthy in a sequence.
+
     Equivalent to Djangos' firstof.
 
     Args:
@@ -44,7 +45,9 @@ def firstof(seq):
 
 
 def questionize_label(word):
-    """If a user follows the convention of using `is_something`, or
+    """Convert a word to a true/false style question format.
+
+    If a user follows the convention of using `is_something`, or
     `has_something`, for a boolean value, the *property* text will
     automatically be converted into a more human-readable
     format, e.g. 'Something?' for is_ and Has Something? for has_.
@@ -62,3 +65,17 @@ def questionize_label(word):
     elif word.startswith('has_'):
         return '{}?'.format(word[4:])
     return word
+
+
+def add(lst, arg):
+    """Add an item to a list.
+
+    Args:
+        lst (list): A list.
+        arg (mixed): Any value to append to the list.
+
+    Returns:
+        list: The updated list.
+    """
+    lst.append(arg)
+    return lst

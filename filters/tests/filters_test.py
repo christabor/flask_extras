@@ -61,3 +61,10 @@ class FirstOfTest(unittest.TestCase):
     def test_firstof_first_true(self):
         """Tests what is returned when first value is true"""
         self.assertEqual(filters.firstof(['yay', False, 0, 'yay']), 'yay')
+
+
+class AddTest(unittest.TestCase):
+
+    def test_returns_updated_list(self):
+        """Tests return value."""
+        self.assertEqual(filters.add([1, 2], 3), [1, 2, 3])
