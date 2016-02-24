@@ -156,3 +156,15 @@ class LengthIsTest(unittest.TestCase):
     def test_returns_true(self):
         """Test return value."""
         self.assertTrue(filters.length_is('one', 3))
+
+
+class IsUrlTest(unittest.TestCase):
+
+    def test_returns_urls_true(self):
+        """Test return value."""
+        self.assertTrue(filters.is_url('http://foo.bar'))
+        self.assertTrue(filters.is_url('https://foo.bar'))
+
+    def test_returns_urls_false(self):
+        """Test return value."""
+        self.assertFalse(filters.is_url('//foo.bar'))

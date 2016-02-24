@@ -179,3 +179,18 @@ def length_is(val, length):
         bool: The value of checking the length against length.
     """
     return len(val) == length
+
+
+def is_url(val):
+    """Return true if a value is a url string, otherwise false.
+
+    Args:
+        val (mixed): The value to check.
+
+    Returns:
+        bool: True if the value is an http string, False if not.
+    """
+    if isinstance(val, str) or isinstance(val, unicode):
+        print(val)
+        return val.startswith('http://') or val.startswith('https://')
+    return False
