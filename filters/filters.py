@@ -228,14 +228,14 @@ def rjust(string, amt):
     return string.rjust(amt)
 
 
-def make_list(val, coerce_ints=True):
+def make_list(val, coerce_numbers=True):
     """Make a list from a given value.
 
     Roughly equivalent to Djangos' make_list, with some enhancements.
 
     Args:
         val (mixed): The value to convert.
-        coerce_ints (bool, optional): Whether or not integers
+        coerce_numbers (bool, optional): Whether or not string number
             should be coerced back to their original values.
 
     Returns:
@@ -248,7 +248,7 @@ def make_list(val, coerce_ints=True):
     if isinstance(val, list):
         return val
     vals = list(str(val))
-    if coerce_ints and isinstance(val, str):
+    if coerce_numbers and isinstance(val, str):
         lst = []
         for v in vals:
             try:

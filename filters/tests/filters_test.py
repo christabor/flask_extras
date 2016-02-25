@@ -194,7 +194,7 @@ class MakeListTest(unittest.TestCase):
     def test_ints_not_coerced(self):
         """Test return value."""
         self.assertEqual(filters.make_list(
-            '12', coerce_ints=False), ['1', '2'])
+            '12', coerce_numbers=False), ['1', '2'])
 
     def test_ints_coerced(self):
         """Test return value."""
