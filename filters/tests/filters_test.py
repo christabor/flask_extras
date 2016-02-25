@@ -5,6 +5,7 @@ from .. import filters
 
 
 class TitleTest(unittest.TestCase):
+
     def test_title_returns_str(self):
         """Test the return value for a valid type."""
         self.assertIsInstance(filters.title('foo bar'), str)
@@ -168,3 +169,71 @@ class IsUrlTest(unittest.TestCase):
     def test_returns_urls_false(self):
         """Test return value."""
         self.assertFalse(filters.is_url('//foo.bar'))
+
+
+class LJustTest(unittest.TestCase):
+
+    def test_returns_lpadding(self):
+        """Test return value."""
+        self.assertEqual(filters.ljust('Flask', 10), 'Flask     ')
+
+
+class RJustTest(unittest.TestCase):
+
+    def test_returns_rpadding(self):
+        """Test return value."""
+        self.assertEqual(filters.rjust('Flask', 10), '     Flask')
+
+
+class MakeListTest(unittest.TestCase):
+
+    def test_list2list(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list([1, 2]), [1, 2])
+
+    def test_ints_not_coerced(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list(
+            '12', coerce_ints=False), ['1', '2'])
+
+    def test_ints_coerced(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list('12'), [1, 2])
+
+    def test_dict(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list({'foo': 'bar'}), [('foo', 'bar')])
+
+    def test_list(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list([1, 2]), [1, 2])
+
+    def test_str(self):
+        """Test return value."""
+        self.assertEqual(filters.make_list('abc'), ['a', 'b', 'c'])
+
+
+class Phone2NumericTest(unittest.TestCase):
+
+    def test_basic(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.phone2numeric('1800-COLLeCT'), '1800-2655328')
+
+    def test_1_thru_9(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.phone2numeric('1800-ADGJMPTX'), '1800-23456789')
+
+
+class SlugifyTest(unittest.TestCase):
+
+    def test_slugify_plain(self):
+        """Test return value."""
+        self.assertEqual(filters.slugify('My news title!'), 'my-news-title')
+
+    def test_slugify_complex(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.slugify('I am an OBFUsc@@Ted URL!!! Foo bar'),
+            'i-am-an-obfusc--ted-url----foo-bar')

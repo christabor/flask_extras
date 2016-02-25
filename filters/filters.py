@@ -1,4 +1,6 @@
-"""Standard bonus filters."""
+"""Standard filters."""
+
+from string import ascii_lowercase
 
 
 def title(word, capitalize=False):
@@ -194,3 +196,127 @@ def is_url(val):
         print(val)
         return val.startswith('http://') or val.startswith('https://')
     return False
+
+
+def ljust(string, amt):
+    """Left-align the value by the amount specified.
+
+    Equivalent to Djangos' ljust.
+
+    Args:
+        string (str): The string to adjust.
+        amt (int): The amount of space to adjust by.
+
+    Returns:
+        str: The padded string.
+    """
+    return string.ljust(amt)
+
+
+def rjust(string, amt):
+    """Right-align the value by the amount specified.
+
+    Equivalent to Djangos' rjust.
+
+    Args:
+        string (str): The string to adjust.
+        amt (int): The amount of space to adjust by.
+
+    Returns:
+        str: The padded string.
+    """
+    return string.rjust(amt)
+
+
+def make_list(val, coerce_ints=True):
+    """Make a list from a given value.
+
+    Roughly equivalent to Djangos' make_list, with some enhancements.
+
+    Args:
+        val (mixed): The value to convert.
+        coerce_ints (bool, optional): Whether or not integers
+            should be coerced back to their original values.
+
+    Returns:
+        mixed: If dict is given, return d.items(). If list is given, return it.
+            If integers given, return a list of digits.
+            Otherwise, return a list of characters.
+    """
+    if isinstance(val, dict):
+        return val.items()
+    if isinstance(val, list):
+        return val
+    vals = list(str(val))
+    if coerce_ints and isinstance(val, str):
+        lst = []
+        for v in vals:
+            try:
+                lst.append(int(v))
+            except ValueError:
+                lst.append(v)
+        return lst
+    return vals
+
+
+def phone2numeric(phoneword):
+    """Convert a phoneword string into the translated number equivalent.
+
+    Roughly equivalent to Djangos' phone2numeric.
+
+    Args:
+        phoneword (str): The phoneword string.
+
+    Returns:
+        str: The converted string digits.
+    """
+    two, three = ['a', 'b', 'c'], ['d', 'e', 'f']
+    four, five = ['g', 'h', 'i'], ['j', 'k', 'l']
+    six, seven = ['m', 'n', 'o'], ['p', 'q', 'r', 's']
+    eight, nine = ['t', 'u', 'v'], ['w', 'x', 'y', 'z']
+    newdigits = ''
+    for digit in list(phoneword.lower()):
+        if digit in two:
+            newdigits += '2'
+        elif digit in three:
+            newdigits += '3'
+        elif digit in four:
+            newdigits += '4'
+        elif digit in five:
+            newdigits += '5'
+        elif digit in six:
+            newdigits += '6'
+        elif digit in seven:
+            newdigits += '7'
+        elif digit in eight:
+            newdigits += '8'
+        elif digit in nine:
+            newdigits += '9'
+        else:
+            newdigits += digit
+    return newdigits
+
+
+def slugify(string):
+    """Convert a string of characters to URL slug format.
+
+    All characters replacing all characters with hyphens if invalid.
+    Roughly equivalent to Djangos' slugify.
+
+    Args:
+        string (str): The string to slugify.
+
+    Returns:
+        str: The slugified string.
+    """
+    slug = ''
+    accepted = ['-', '_'] + list(ascii_lowercase) + list('01234567890')
+    end = len(string) - 1
+    for k, char in enumerate(string.lower().strip()):
+        if char not in accepted:
+            # Forget about the last char if it would get replaced.
+            if k < end:
+                slug += '-'
+        else:
+            slug += char
+    return slug
