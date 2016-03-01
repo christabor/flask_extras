@@ -1,5 +1,5 @@
-# jinja2-filters
-Filters for jinja2 templating language.
+# Flask Extras
+Assorted useful flask views, blueprints, Jinja2 template filters, and templates/macros.
 
 ## Overall setup
 
