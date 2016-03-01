@@ -320,3 +320,16 @@ def slugify(string):
         else:
             slug += char
     return slug
+
+
+def greet(name, greeting='Hello'):
+    """Add a greeting to a given name.
+
+    Args:
+        name (str): The name to greet.
+        greeting (str, optional): An optional greeting override.
+
+    Returns:
+        str: The updated greeting string.
+    """
+    return '{}, {}!'.format(greeting, name)

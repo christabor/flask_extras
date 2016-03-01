@@ -237,3 +237,15 @@ class SlugifyTest(unittest.TestCase):
         self.assertEqual(
             filters.slugify('I am an OBFUsc@@Ted URL!!! Foo bar'),
             'i-am-an-obfusc--ted-url----foo-bar')
+
+
+class GreetTest(unittest.TestCase):
+
+    def test_greet(self):
+        """Test return value."""
+        self.assertEqual(filters.greet('Chris'), 'Hello, Chris!')
+
+    def test_greet_override(self):
+        """Test return value."""
+        self.assertEqual(filters.greet(
+            'Chris', greeting='Bonjour'), 'Bonjour, Chris!')
