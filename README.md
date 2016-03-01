@@ -55,4 +55,8 @@ from jinja2_template_pack.views import (
 
 #### Statuses
 
-Provides views for common status codes.
+Provides views for common status codes. Usage:
+```python
+app = statuses.inject_error_views(app)
+```
+
