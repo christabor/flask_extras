@@ -38,3 +38,21 @@ Now, just import them like any other macro:
 ```html
 {% from 'macros.html' import list_group, objects2table %}
 ```
+
+## Using views
+
+Import them like usual:
+
+```python
+from jinja2_template_pack.views import (
+    statuses,
+)
+```
+
+*Note:* each view must have a valid template in your apps templates dir. See each view for the required names and locations.
+
+*Note:* each view has configuration helpers to inject or configure your app. See source for details.
+
+#### Statuses
+
+Provides views for common status codes.
