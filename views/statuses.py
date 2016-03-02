@@ -43,6 +43,13 @@ def page_500(error):
         code=500, desc='internal server error', error=error)
 
 
+def page_503(error):
+    """503 page."""
+    return render_template(
+        'status_codes/500.html',
+        code=503, desc='service unavailable', error=error)
+
+
 def _isview(name, func):
     """Check if arguments represent a valid Flask view.
 
