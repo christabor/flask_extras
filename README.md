@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/christabor/flask_extras/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/christabor/flask_extras/?branch=master)
+
 # Flask Extras
 Assorted useful flask views, blueprints, Jinja2 template filters, and templates/macros.
 
