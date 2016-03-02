@@ -1,8 +1,32 @@
+"""Static pages for various HTTP codes.
 
-"""Static pages for various HTTP codes."""
+Format must be `page_XXX` where XXX is the code in question. This allows
+proper dynamic injection into the Flask app error handling mechanism.
+"""
 
 from flask import render_template
 from inspect import isfunction
+
+
+def page_400(error):
+    """400 page."""
+    return render_template(
+        'status_codes/400.html',
+        code=400, desc='bad request', error=error)
+
+
+def page_401(error):
+    """401 page."""
+    return render_template(
+        'status_codes/401.html',
+        code=401, desc='unauthorized access', error=error)
+
+
+def page_403(error):
+    """403 page."""
+    return render_template(
+        'status_codes/403.html',
+        code=403, desc='forbidden', error=error)
 
 
 def page_404(error):
@@ -16,7 +40,7 @@ def page_500(error):
     """500 page."""
     return render_template(
         'status_codes/500.html',
-        code=500, desc='server error', error=error)
+        code=500, desc='internal server error', error=error)
 
 
 def _isview(name, func):
