@@ -6,12 +6,16 @@ from .. import random
 
 
 class RandomChoiceTest(unittest.TestCase):
+    """All tests for random choice function."""
+
     def test_choice_returns_str(self):
         """Test the return value for a valid type."""
         self.assertIsInstance(random.rand_choice([0, 1, 2, 3]), int)
 
 
 class RandomNameTitleTest(unittest.TestCase):
+    """All tests for random title function."""
+
     def test_name_returns_str(self):
         """Test the return value for a valid type."""
         self.assertIsInstance(random.rand_name_title('Chris'), str)
@@ -22,6 +26,8 @@ class RandomNameTitleTest(unittest.TestCase):
 
 
 class RandomColorTest(unittest.TestCase):
+    """All tests for random color function."""
+
     def test_returns_str(self):
         """Test the return value for a valid type."""
         self.assertIsInstance(random.rand_color(), str)

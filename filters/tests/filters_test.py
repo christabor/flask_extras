@@ -5,6 +5,7 @@ from .. import filters
 
 
 class TitleTest(unittest.TestCase):
+    """All tests for title function."""
 
     def test_title_returns_str(self):
         """Test the return value for a valid type."""
@@ -31,6 +32,7 @@ class TitleTest(unittest.TestCase):
 
 
 class QuestionizeLabelTest(unittest.TestCase):
+    """All tests for questionize label function."""
 
     def test_questionize_label_returns_str(self):
         """Test the return value for a valid type."""
@@ -50,6 +52,7 @@ class QuestionizeLabelTest(unittest.TestCase):
 
 
 class FirstOfTest(unittest.TestCase):
+    """All tests for first of function."""
 
     def test_firstof_all_false(self):
         """Test what is returned when all values are falsy."""
@@ -65,6 +68,7 @@ class FirstOfTest(unittest.TestCase):
 
 
 class AddTest(unittest.TestCase):
+    """All tests for add function."""
 
     def test_returns_updated_list(self):
         """Test return value."""
@@ -72,6 +76,7 @@ class AddTest(unittest.TestCase):
 
 
 class CutTest(unittest.TestCase):
+    """All tests for cut function."""
 
     def test_returns_updated_string(self):
         """Test return value."""
@@ -89,6 +94,7 @@ class CutTest(unittest.TestCase):
 
 
 class AddSlashesTest(unittest.TestCase):
+    """All tests for add slashes function."""
 
     def test_returns_updated_basic(self):
         """Test return value."""
@@ -107,6 +113,7 @@ class AddSlashesTest(unittest.TestCase):
 
 
 class DefaultValTest(unittest.TestCase):
+    """All tests for default val function."""
 
     def test_returns_default(self):
         """Test return value."""
@@ -118,6 +125,7 @@ class DefaultValTest(unittest.TestCase):
 
 
 class DefaultIfNoneValTest(unittest.TestCase):
+    """All tests for default if none function."""
 
     def test_returns_default(self):
         """Test return value."""
@@ -130,6 +138,7 @@ class DefaultIfNoneValTest(unittest.TestCase):
 
 
 class GetDigitTest(unittest.TestCase):
+    """All tests for get digit function."""
 
     def test_returns_index_empty(self):
         """Test return value."""
@@ -149,6 +158,7 @@ class GetDigitTest(unittest.TestCase):
 
 
 class LengthIsTest(unittest.TestCase):
+    """All tests for length is function."""
 
     def test_returns_false(self):
         """Test return value."""
@@ -160,6 +170,7 @@ class LengthIsTest(unittest.TestCase):
 
 
 class IsUrlTest(unittest.TestCase):
+    """All tests for is url function."""
 
     def test_returns_urls_true(self):
         """Test return value."""
@@ -172,6 +183,7 @@ class IsUrlTest(unittest.TestCase):
 
 
 class LJustTest(unittest.TestCase):
+    """All tests for ljust function."""
 
     def test_returns_lpadding(self):
         """Test return value."""
@@ -179,6 +191,7 @@ class LJustTest(unittest.TestCase):
 
 
 class RJustTest(unittest.TestCase):
+    """All tests for rjust function."""
 
     def test_returns_rpadding(self):
         """Test return value."""
@@ -186,6 +199,7 @@ class RJustTest(unittest.TestCase):
 
 
 class MakeListTest(unittest.TestCase):
+    """All tests for make list function."""
 
     def test_list2list(self):
         """Test return value."""
@@ -214,6 +228,7 @@ class MakeListTest(unittest.TestCase):
 
 
 class Phone2NumericTest(unittest.TestCase):
+    """All tests for phone2numeric function."""
 
     def test_basic(self):
         """Test return value."""
@@ -227,6 +242,7 @@ class Phone2NumericTest(unittest.TestCase):
 
 
 class SlugifyTest(unittest.TestCase):
+    """All tests for slugify function."""
 
     def test_slugify_plain(self):
         """Test return value."""
@@ -240,6 +256,7 @@ class SlugifyTest(unittest.TestCase):
 
 
 class GreetTest(unittest.TestCase):
+    """All tests for greet function."""
 
     def test_greet(self):
         """Test return value."""

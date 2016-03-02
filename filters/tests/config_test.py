@@ -9,6 +9,7 @@ app = Flask('__config_test')
 
 
 class GetFuncsTest(unittest.TestCase):
+    """All tests for get funcs function."""
 
     def test_get_module_funcs(self):
         """Test the return value."""
@@ -16,6 +17,7 @@ class GetFuncsTest(unittest.TestCase):
 
 
 class InjectFiltersTest(unittest.TestCase):
+    """All tests for inject filters function."""
 
     def test_inject_filters_inst(self):
         """Test the return value."""
@@ -31,6 +33,7 @@ class InjectFiltersTest(unittest.TestCase):
 
 
 class ConfigFlaskFiltersTest(unittest.TestCase):
+    """All tests for config flask filters function."""
 
     def test_config_filters_inst(self):
         """Test the return value."""
