@@ -37,7 +37,7 @@ def rand_name_title(name):
         'S.H.C.J.', 'S.J.', 'S.N.J.M.', 'Sr.', 'S.S.M.O.', 'USA', 'USAF',
         'USAFR', 'USAR', 'USCG', 'USMC', 'USMCR', 'USN', 'USNR',
     ]
-    return '{} {}'.format(name, choice(titles))
+    return '{0} {1}'.format(name, choice(titles))
 
 
 def rand_color(alpha=100):
@@ -50,5 +50,5 @@ def rand_color(alpha=100):
         str: The RGB triplet for use with inline css.
             (e.g. rgba(10, 20, 30, 100))
     """
-    return 'rgba({}, {}, {}, {})'.format(
+    return 'rgba({0}, {1}, {2}, {3})'.format(
         randrange(0, 255), randrange(0, 255), randrange(0, 255), alpha)

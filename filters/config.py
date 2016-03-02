@@ -48,3 +48,25 @@ def config_flask_filters(app):
     app = _inject_filters(app, _get_funcs(filters))
     app = _inject_filters(app, _get_funcs(random))
     return app
+
+
+def _inject_template_globals(app, funcs):
+    """Inject a set of functions into a Flask app as template_globals.
+
+    Args:
+        app (object): The Flask application.
+        funcs (dict): A dictionary of name and functions.
+
+    Returns:
+        app (object): The Flask application.
+    """
+    for name, func in funcs.iteritems():
+        app.add_template_global(name, func)
+    return app
+
+
+def config_flask_globals(app):
+    """Configure a Flask app to use all functions as template_globals."""
+    app = _inject_template_globals(app, _get_funcs(filters))
+    app = _inject_template_globals(app, _get_funcs(filters))
+    return app

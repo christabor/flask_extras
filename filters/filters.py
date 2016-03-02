@@ -13,7 +13,7 @@ def title(word, capitalize=False):
         word (string): The formatted word.
     """
     def _capitalize(w):
-        return '{}{}'.format(w[0].upper(), w[1:])
+        return '{0}{1}'.format(w[0].upper(), w[1:])
 
     if word is None:
         return ''
@@ -63,9 +63,9 @@ def questionize_label(word):
     if word is None:
         return ''
     if word.startswith('is_'):
-        return '{}?'.format(word[3:])
+        return '{0}?'.format(word[3:])
     elif word.startswith('has_'):
-        return '{}?'.format(word[4:])
+        return '{0}?'.format(word[4:])
     return word
 
 
@@ -332,4 +332,4 @@ def greet(name, greeting='Hello'):
     Returns:
         str: The updated greeting string.
     """
-    return '{}, {}!'.format(greeting, name)
+    return '{0}, {1}!'.format(greeting, name)
