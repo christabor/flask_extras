@@ -39,7 +39,7 @@ def firstof(seq):
         return ''
     if all(seq):
         return seq[0]
-    while len(seq) > 0:
+    while seq:
         item = seq.pop(0)
         if item:
             return item
