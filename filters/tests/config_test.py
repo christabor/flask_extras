@@ -1,3 +1,5 @@
+"""Test configuration utilities."""
+
 from __future__ import absolute_import
 
 import unittest
@@ -13,7 +15,11 @@ class GetFuncsTest(unittest.TestCase):
 
     def test_get_module_funcs(self):
         """Test the return value."""
-        self.assertIsInstance(config._get_funcs('__main__'), dict)
+        self.assertIsInstance(config._get_funcs(config), dict)
+
+    def test_get_module_funcs_notempty(self):
+        """Test the return value functions length."""
+        self.assertGreater(len(config._get_funcs(config).items()), 0)
 
 
 class InjectFiltersTest(unittest.TestCase):
