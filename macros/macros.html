@@ -1,3 +1,15 @@
+{% macro apply_classes(classes) -%}
+{# Util to apply css classes inside an element. #}
+{% for css in classes %}{{ css }} {% endfor %}
+{%- endmacro %}
+
+
+{% macro apply_dattrs(data_attrs) -%}
+{# Util to apply data-attributes inside an element. #}
+{% for attr in data_attrs %}data-{{ attr }}{% endfor %}
+{%- endmacro %}
+
+
 {% macro dictlist_dl(data) %}
 {# Makes a definition list from a dictionary - the correspondence should be:
     dt: key, dd: value #}
@@ -89,8 +101,8 @@
 {% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None, handle_links=True) -%}
 {# Create table from a list of objects (class instantiations) #}
 <table
-    class="{% for css in classes %}{{ css }} {% endfor %}"
-    {% for attr in data_attrs %}data-{{ attr }}{% endfor %}>
+    class="{{ apply_classes(classes) }}"
+    {{ apply_dattrs(data_attrs) }}>
     <thead>
         {% for obj in objs %}
             {% if loop.first %}
@@ -127,4 +139,24 @@
         {% endfor %}
     </tbody>
 </table>
+{%- endmacro %}
+
+{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[]) -%}
+    <form action="{{ action }}" method="{{ method }}"
+    class="{{ apply_classes(classes) }}"
+    {{ apply_dattrs(data_attrs) }} role="form">
+        {{ formobj.csrf_token }}
+        {% if formobj.errors %}
+            {% for error in formobj.errors %}
+                <div class="alert alert-danger">
+                    <p><strong>Error: </strong>{{ error }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% for field in formobj %}
+            {{ field.label }} <br>
+            {{ field }} <br>
+        {% endfor %}
+        <button type="submit" class="{{ apply_classes(btn_classes) }}">Create</button>
+    </form>
 {%- endmacro %}
