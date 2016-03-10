@@ -12,7 +12,7 @@ Since the nature of macros and filters makes it harder to import as a standard p
 It's easy. All filters are registered at once, using the following command:
 
 ```python
-from jinja2_template_pack.filters import config as filter_conf
+from flask_extras.filters import config as filter_conf
 
 filter_conf.config_flask_filters(app)
 ```
@@ -29,7 +29,7 @@ import jinja2
 
 extra_folders = jinja2.ChoiceLoader([
     app.jinja_loader,
-    jinja2.FileSystemLoader('{}/jinja2_template_pack/macros/'.format(os.getcwd())),
+    jinja2.FileSystemLoader('{}/flask_extras/macros/'.format(os.getcwd())),
 ])
 app.jinja_loader = extra_folders
 ```
@@ -47,7 +47,7 @@ Now, just import them like any other macro:
 Import them like usual:
 
 ```python
-from jinja2_template_pack.views import (
+from flask_extras.views import (
     statuses,
 )
 ```
