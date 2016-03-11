@@ -193,7 +193,6 @@ def is_url(val):
         bool: True if the value is an http string, False if not.
     """
     if isinstance(val, (str, unicode)):
-        print(val)
         return val.startswith('http://') or val.startswith('https://')
     return False
 
