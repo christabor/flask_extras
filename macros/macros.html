@@ -145,7 +145,6 @@
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
     {{ apply_dattrs(data_attrs) }} role="form">
-        {{ formobj.csrf_token }}
         {% if formobj.errors %}
             {% for field, errors in formobj.errors.items() %}
                 <div class="alert alert-danger">
@@ -163,7 +162,9 @@
         {% for field in formobj %}
             {% if not field.id == 'csrf_token' %}
                 {{ field.label }}
-                <small>{{ field.description }}</small>
+                {% if field.description %}
+                    <small>{{ field.description }}</small>
+                {% endif %}
             {% endif %}
             {{ field }} <br>
         {% endfor %}
