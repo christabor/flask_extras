@@ -266,3 +266,18 @@ class GreetTest(unittest.TestCase):
         """Test return value."""
         self.assertEqual(filters.greet(
             'Chris', greeting='Bonjour'), 'Bonjour, Chris!')
+
+
+class IsListTest(unittest.TestCase):
+    """All tests for islist function."""
+
+    def test_islist(self):
+        """Test return value."""
+        self.assertTrue(filters.islist([1, 2, 3]))
+
+    def test_notislist(self):
+        """Test return value."""
+        self.assertFalse(filters.islist('Foo'))
+        self.assertFalse(filters.islist({'foo': 'bar'}))
+        self.assertFalse(filters.islist(1))
+        self.assertFalse(filters.islist(1.0))

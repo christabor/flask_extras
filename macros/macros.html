@@ -23,7 +23,7 @@
 
 
 {% macro dict2list(data, type='ul') %}
-{# Makes a list from a set of dictionary #}
+{# Makes a list from a set of dictionaries #}
 <{{ type }}>
     {% for k, v in data.iteritems() %}
         <li><strong>{{ k }}</strong>: {{ v }}</li>
@@ -33,7 +33,7 @@
 
 
 {% macro bs3_dictlist_group(data) %}
-{# Makes a bootstrap list group from a set of dictionary #}
+{# Makes a bootstrap list group from a set of dictionaries #}
 <div class="list-group">
     {% for k, v in data.iteritems() %}
         <h4 class="list-group-item-heading">{{ k }}</h4>
@@ -170,4 +170,44 @@
         {% endfor %}
         <button type="submit" class="{{ apply_classes(btn_classes) }}">Create</button>
     </form>
+{%- endmacro %}
+
+
+{%- macro recurse_dictlist(val, type='ul', classes=[]) %}
+    {#
+        Uses the jinja2 recursive looping to recurse over a dictionary and display
+        as a list (ordered or unordered), or display a default value otherwise.
+    #}
+    {% if val is mapping %}
+        <{{ type }} class="{{ apply_classes(classes) }}">
+            {% for k, v in val.items() recursive %}
+                {% if v is mapping %}
+                    <li>
+                        <strong>{{ k }}:</strong>
+                        <{{ type }} class="{{ apply_classes(classes) }}">
+                            {{ loop(v.items()) }}
+                        </{{ type }}>
+                    </li>
+                {% else %}
+                    <li>
+                        {% if v|islist %}
+                            <{{ type }} class="{{ apply_classes(classes) }}">
+                                {% for item in v %}
+                                    <li>
+                                        {% for itemv in v recursive %}
+                                            {{ recurse_dictlist(itemv, type=type) }}
+                                        {% endfor %}
+                                    {% endfor %}
+                                </li>
+                            </{{ type }}>
+                        {% else %}
+                            <strong>{{ k }}</strong>: {{ v }}
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </{{ type }}>
+    {% else %}
+        {{ val }}
+    {% endif %}
 {%- endmacro %}

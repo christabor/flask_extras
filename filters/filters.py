@@ -332,3 +332,8 @@ def greet(name, greeting='Hello'):
         str: The updated greeting string.
     """
     return '{0}, {1}!'.format(greeting, name)
+
+
+def islist(item):
+    """Check if an is item is a list - not just a sequence."""
+    return isinstance(item, list)
