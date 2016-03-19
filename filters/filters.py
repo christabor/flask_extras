@@ -296,6 +296,23 @@ def phone2numeric(phoneword):
     return newdigits
 
 
+def pagetitle(string, remove_first=False, divider=' > '):
+    """Convert a string of characters to page-title format.
+
+    Args:
+        string (str): The string to conert.
+        remove_first (bool, optional): Remove the first instance of the
+            delimiter of the newly formed title.
+
+    Returns:
+        str: The converted string.
+    """
+    _title = divider.join(string.split('/'))
+    if remove_first:
+        _title = _title.replace(divider, '', 1)
+    return _title
+
+
 def slugify(string):
     """Convert a string of characters to URL slug format.
 

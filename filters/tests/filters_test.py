@@ -1,3 +1,6 @@
+"""Test jinja filters."""
+
+
 from __future__ import absolute_import
 
 import unittest
@@ -253,6 +256,27 @@ class SlugifyTest(unittest.TestCase):
         self.assertEqual(
             filters.slugify('I am an OBFUsc@@Ted URL!!! Foo bar'),
             'i-am-an-obfusc--ted-url----foo-bar')
+
+
+class PagetitleTest(unittest.TestCase):
+    """All tests for pagetitle function."""
+
+    def test_title_plain(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.pagetitle('/foo/bar/bam'), ' > foo > bar > bam')
+
+    def test_title_removefirst(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.pagetitle('/foo/bar/bam', divider=' | '),
+            ' | foo | bar | bam')
+
+    def test_title_divider(self):
+        """Test return value."""
+        self.assertEqual(
+            filters.pagetitle('/foo/bar/bam', remove_first=True),
+            'foo > bar > bam')
 
 
 class GreetTest(unittest.TestCase):
