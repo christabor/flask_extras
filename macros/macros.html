@@ -10,34 +10,40 @@
 {%- endmacro %}
 
 
-{% macro dictlist_dl(data) %}
+{% macro dictlist_dl(data, filterkeys=[], filtervals=[]) %}
 {# Makes a definition list from a dictionary - the correspondence should be:
     dt: key, dd: value #}
 <dl>
     {% for k, v in data.iteritems() -%}
-        <dt>{{ k }}</dt>
-        <dd>{{ v }}</dd>
+        {% if k not in filterkeys and v not in filtervals %}
+            <dt>{{ k }}</dt>
+            <dd>{{ v }}</dd>
+        {% endif %}
     {% endfor %}
 </dl>
 {%- endmacro %}
 
 
-{% macro dict2list(data, type='ul') %}
+{% macro dict2list(data, type='ul', filterkeys=[], filtervals=[]) %}
 {# Makes a list from a set of dictionaries #}
 <{{ type }}>
     {% for k, v in data.iteritems() %}
-        <li><strong>{{ k }}</strong>: {{ v }}</li>
+        {% if k not in filterkeys and v not in filtervals %}
+            <li><strong>{{ k }}</strong>: {{ v }}</li>
+        {% endif %}
     {% endfor %}
 </{{ type }}>
 {%- endmacro %}
 
 
-{% macro bs3_dictlist_group(data) %}
+{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[]) %}
 {# Makes a bootstrap list group from a set of dictionaries #}
 <div class="list-group">
     {% for k, v in data.iteritems() %}
-        <h4 class="list-group-item-heading">{{ k }}</h4>
-        <p class="list-group-item-text">{{ v }}</p>
+        {% if k not in filterkeys and v not in filtervals %}
+            <h4 class="list-group-item-heading">{{ k }}</h4>
+            <p class="list-group-item-text">{{ v }}</p>
+        {% endif %}
     {% endfor %}
 </div>
 {%- endmacro %}
@@ -53,7 +59,7 @@
 {%- endmacro %}
 
 
-{% macro dictlist2nav(data, type='ul') %}
+{% macro dictlist2nav(data, type='ul', filterkeys=[], filtervals=[]) %}
 {# Make a list of links with nav element.
     Format must be a list of dictionaries.
     Supports *one* level of nesting. #}
@@ -61,7 +67,9 @@
     <{{ type }}>
         {% for item in data %}
             {% for k, v in item.items() %}
-                <li><a href="{{ k }}">{{ v }}</a></li>
+                {% if k not in filterkeys and v not in filtervals %}
+                    <li><a href="{{ k }}">{{ v }}</a></li>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     </{{ type }}>
@@ -69,37 +77,43 @@
 {%- endmacro %}
 
 
-{% macro dictlist2dropdown(data) %}
+{% macro dictlist2dropdown(data, filterkeys=[], filtervals=[]) %}
 {# Make a dropdown element.
     Format must be a list of dictionaries. #}
 <select>
     {% for item in data %}
         {% for k, v in item.items() %}
-            <option value="{{ k }}">{{ v }}</option>
+            {% if k not in filterkeys and v not in filtervals %}
+                <option value="{{ k }}">{{ v }}</option>
+            {% endif %}
         {% endfor %}
     {% endfor %}
 </select>
 {%- endmacro %}
 
 
-{% macro dictlist2checkboxes(data, fieldset_class='fieldset-group') %}
+{% macro dictlist2checkboxes(data, fieldset_class='fieldset-group',
+                             filterkeys=[], filtervals=[]) %}
 {# Make a checkbox group, where keys are input names, and values are labels.
     Format must be a list of dictionaries. #}
 <fieldset class="{{ fieldset_class }}">
     {% for item in data %}
         {% for k, v in item.items() %}
-            <label>
-                {{ v }}
-                <input type="checkbox" name="{{ k }}">
-            </label>
+            {% if k not in filterkeys and v not in filtervals %}
+                <label>
+                    {{ v }}
+                    <input type="checkbox" name="{{ k }}">
+                </label>
+            {% endif %}
         {% endfor %}
     {% endfor %}
 </fieldset>
 {%- endmacro %}
 
 
-{% macro objects2table(objs, classes=[], data_attrs=[], filterkeys=[], filtervals=[], pk_link=None, handle_links=True) -%}
-{# Create table from a list of objects (class instantiations) #}
+{% macro objects2table(objs, classes=[], data_attrs=[],
+                       filterkeys=[], filtervals=[], pk_link=None, handle_links=True) -%}
+{# Create table from a list of objects (class instantiations). Also add links for priamry keys if specified. #}
 <table
     class="{{ apply_classes(classes) }}"
     {{ apply_dattrs(data_attrs) }}>
