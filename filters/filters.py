@@ -352,5 +352,28 @@ def greet(name, greeting='Hello'):
 
 
 def islist(item):
-    """Check if an is item is a list - not just a sequence."""
+    """Check if an is item is a list - not just a sequence.
+
+    Args:
+        item (mixed): The item to check as a list.
+
+    Returns:
+        result (bool): True if the item is a list, False if not.
+
+    """
     return isinstance(item, list)
+
+
+def sql2dict(queryset):
+    """Return a SQL alchemy style query result into a list of dicts.
+
+    Args:
+        queryset (object): The SQL alchemy result.
+
+    Returns:
+        result (list): The converted query set.
+
+    """
+    if queryset is None:
+        return []
+    return [record.__dict__ for record in queryset]

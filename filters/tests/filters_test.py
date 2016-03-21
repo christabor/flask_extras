@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 
 import unittest
+from mock import MagicMock
 from .. import filters
 
 
@@ -305,3 +306,20 @@ class IsListTest(unittest.TestCase):
         self.assertFalse(filters.islist({'foo': 'bar'}))
         self.assertFalse(filters.islist(1))
         self.assertFalse(filters.islist(1.0))
+
+
+class Sql2dictTest(unittest.TestCase):
+    """All tests for sql2dict function."""
+
+    def setUp(self):
+        """Setup fake sql class."""
+        self.mm = MagicMock()
+        self.mm.__dict__ = {'foo': 'bar'}
+
+    def test_none(self):
+        """Test return value."""
+        self.assertEqual(filters.sql2dict(None), [])
+
+    def test_set(self):
+        """Test return value."""
+        self.assertEqual(filters.sql2dict([self.mm]), [{'foo': 'bar'}])
