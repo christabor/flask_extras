@@ -155,9 +155,12 @@
 </table>
 {%- endmacro %}
 
-{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[]) -%}
+{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None) -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
+    {% if enctype %}
+        enctype="{{ enctype }}"
+    {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form">
         {% if formobj.errors %}
             {% for field, errors in formobj.errors.items() %}
