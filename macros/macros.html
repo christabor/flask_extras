@@ -155,13 +155,13 @@
 </table>
 {%- endmacro %}
 
-{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit') -%}
+{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None) -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
     {% if enctype %}
         enctype="{{ enctype }}"
     {% endif %}
-    {{ apply_dattrs(data_attrs) }} role="form">
+    {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
         {% if formobj.errors %}
             {% for field, errors in formobj.errors.items() %}
                 <div class="alert alert-danger">
