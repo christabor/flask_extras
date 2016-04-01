@@ -155,7 +155,7 @@
 </table>
 {%- endmacro %}
 
-{% macro wtform_table(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None) -%}
+{% macro wtform_form(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None) -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
     {% if enctype %}
