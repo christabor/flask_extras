@@ -155,6 +155,23 @@
 </table>
 {%- endmacro %}
 
+{% macro wtform_errors(formobj) -%}
+{% if formobj.errors %}
+    {% for field, errors in formobj.errors.items() %}
+        <div class="alert alert-danger">
+            <p>
+                <strong>Error(s) for '{{ field }}': </strong>
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
+    {% endfor %}
+{% endif %}
+{%- endmacro %}
+
 {% macro wtform_form(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None) -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
@@ -162,20 +179,7 @@
         enctype="{{ enctype }}"
     {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
-        {% if formobj.errors %}
-            {% for field, errors in formobj.errors.items() %}
-                <div class="alert alert-danger">
-                    <p>
-                        <strong>Error(s) for '{{ field }}': </strong>
-                        <ul>
-                            {% for error in errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </p>
-                </div>
-            {% endfor %}
-        {% endif %}
+        {{ wtform_errors(formobj) }}
         {% for field in formobj %}
             {% if not field.id == 'csrf_token' %}
                 {{ field.label }}
