@@ -8,6 +8,10 @@ Assorted useful flask views, blueprints, Jinja2 template filters, and templates/
 
 Since the nature of macros and filters makes it harder to import as a standard package, the best way to use this project is as a git submodule. This can be done easily, just use `git submodule add https://github.com/christabor/flask_extras.git` inside your current git project. This allows easy updates.
 
+## Testing
+
+Run `nosetests .`
+
 ## Registering filters
 It's easy. All filters are registered at once, using the following command:
 
@@ -62,4 +66,3 @@ Provides views for common status codes. Usage:
 ```python
 app = statuses.inject_error_views(app)
 ```
-

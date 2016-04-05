@@ -5,9 +5,11 @@ from __future__ import absolute_import
 
 import unittest
 
-from mock import MagicMock
-
 from .. import filters
+
+
+class MockClass:
+    """Empty class for testing."""
 
 
 class TitleTest(unittest.TestCase):
@@ -315,7 +317,7 @@ class Sql2dictTest(unittest.TestCase):
 
     def setUp(self):
         """Setup fake sql class."""
-        self.mm = MagicMock()
+        self.mm = MockClass()
         self.mm.__dict__ = {'foo': 'bar'}
 
     def test_none(self):
