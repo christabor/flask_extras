@@ -4,8 +4,9 @@ Format must be `page_XXX` where XXX is the code in question. This allows
 proper dynamic injection into the Flask app error handling mechanism.
 """
 
-from flask import render_template
 from inspect import isfunction
+
+from flask import render_template
 
 
 def page_400(error):

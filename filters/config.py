@@ -1,7 +1,9 @@
 """Provides configuration utilities for using the filters."""
 
 from __future__ import absolute_import
+
 from inspect import getmembers, isfunction
+
 from . import filters, random
 
 

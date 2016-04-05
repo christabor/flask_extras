@@ -1,7 +1,10 @@
+"""Tests for 'random' filters."""
+
 from __future__ import absolute_import
 
-import unittest
 import re
+import unittest
+
 from .. import random
 
 
