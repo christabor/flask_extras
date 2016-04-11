@@ -172,7 +172,7 @@
 {% endif %}
 {%- endmacro %}
 
-{% macro wtform_form(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None) -%}
+{% macro wtform_form(formobj, action='.', method='GET', classes=[], data_attrs=[], btn_classes=[], uploads=True, enctype=None, btn_text='Submit', formid=None, reset_btn=True, reset_btn_classes=[]) -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
     {% if enctype %}
@@ -190,6 +190,9 @@
             {{ field }} <br>
         {% endfor %}
         <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
+        {% if reset_btn %}
+            <button type="reset" class="{{ apply_classes(reset_btn_classes) }}">Reset</button>
+        {% endif %}
     </form>
 {%- endmacro %}
 
