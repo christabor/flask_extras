@@ -6,7 +6,7 @@
 
 {% macro apply_dattrs(data_attrs) -%}
 {# Util to apply data-attributes inside an element. #}
-{% for attr in data_attrs %}data-{{ attr }}{% endfor %}
+{% for attr in data_attrs %}data-{{ attr }} {% endfor %}
 {%- endmacro %}
 
 
