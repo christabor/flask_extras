@@ -181,7 +181,7 @@
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
         {{ wtform_errors(formobj) }}
         {% for field in formobj %}
-            {% if not field.id == 'csrf_token' %}
+            {% if field.type not in ['CSRFTokenField', 'HiddenField'] %}
                 {{ field.label }}
                 {% if field.description %}
                     <small>{{ field.description }}</small>
