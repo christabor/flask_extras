@@ -189,6 +189,7 @@
                      data_attrs=[], btn_classes=[], uploads=True,
                      enctype=None, btn_text='Submit',
                      formid=None, reset_btn=True,
+                     legend=None,
                      reset_btn_classes=[])
 -%}
     <form action="{{ action }}" method="{{ method }}"
@@ -197,17 +198,23 @@
         enctype="{{ enctype }}"
     {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
+        {% set invalid_fields = ['CSRFTokenField', 'HiddenField'] %}
         {{ wtform_errors(formobj) }}
-        {% for field in formobj %}
-            {# Only show labels and descriptions if they are normal fields. #}
-            {% if field.type not in ['CSRFTokenField', 'HiddenField'] %}
-                {{ field.label }}
-                {% if field.description %}
-                    <small>{{ field.description }}</small>
-                {% endif %}
+        <fieldset>
+            {% if legend %}
+                <legend>{{ legend }}</legend>
             {% endif %}
-            {{ field }} <br>
-        {% endfor %}
+            {% for field in formobj %}
+                {# Only show labels and descriptions if they are normal fields. #}
+                {% if field.type not in invalid_fields %}
+                    {{ field.label }}
+                    {% if field.description %}
+                        <small>{{ field.description }}</small>
+                    {% endif %}
+                {% endif %}
+                {{ field }} {% if field.type not in invalid_fields %}<br>{% endif %}
+            {% endfor %}
+        </fieldset>
         {# Add typical form submit button. #}
         <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
         {# Add a reset field values button if specified. #}
