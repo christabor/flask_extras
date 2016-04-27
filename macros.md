@@ -60,10 +60,9 @@ becomes:
 
 ## objects2table
 
-```jinja2
-
 Create a table with headers and rows for a list of objects. Major customization is possible, even on a per column basis, by using the `field_macros` kwarg.
 
+```jinja2
 {% 
     objects2table([obj1, obj2, obj3]
                   classes=['table', 'table-striped'],
