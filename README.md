@@ -46,6 +46,8 @@ Now, just import them like any other macro:
 {% from 'macros.html' import list_group, objects2table %}
 ```
 
+See [macros](macros.md) page for details.
+
 ## Using views
 
 Import them like usual:
