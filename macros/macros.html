@@ -10,10 +10,10 @@
 {%- endmacro %}
 
 
-{% macro dictlist_dl(data, filterkeys=[], filtervals=[]) %}
+{% macro dictlist_dl(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
 {# Makes a definition list from a dictionary - the correspondence should be:
     dt: key, dd: value #}
-<dl>
+<dl class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.iteritems() -%}
         {% if k not in filterkeys and v not in filtervals %}
             <dt>{{ k }}</dt>
@@ -36,9 +36,9 @@
 {%- endmacro %}
 
 
-{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[]) %}
+{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[]) %}
 {# Makes a bootstrap list group from a set of dictionaries #}
-<div class="list-group">
+<div class="list-group" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.iteritems() %}
         {% if k not in filterkeys and v not in filtervals %}
             <h4 class="list-group-item-heading">{{ k }}</h4>
@@ -59,11 +59,11 @@
 {%- endmacro %}
 
 
-{% macro dictlist2nav(data, type='ul', filterkeys=[], filtervals=[]) %}
+{% macro dictlist2nav(data, type='ul', filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
 {# Make a list of links with nav element.
     Format must be a list of dictionaries.
     Supports *one* level of nesting. #}
-<nav>
+<nav class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <{{ type }}>
         {% for item in data %}
             {% for k, v in item.items() %}
@@ -77,10 +77,10 @@
 {%- endmacro %}
 
 
-{% macro dictlist2dropdown(data, filterkeys=[], filtervals=[]) %}
+{% macro dictlist2dropdown(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
 {# Make a dropdown element.
     Format must be a list of dictionaries. #}
-<select>
+<select class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% for k, v in item.items() %}
             {% if k not in filterkeys and v not in filtervals %}
@@ -92,10 +92,10 @@
 {%- endmacro %}
 
 
-{% macro list2dropdown(data, filtervals=[]) %}
+{% macro list2dropdown(data, filtervals=[], classes=[], data_attrs=[]) %}
 {# Make a dropdown element.
     Format must be a list. Value and text are the same. #}
-<select>
+<select class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% if item not in filtervals %}
             <option value="{{ item }}">{{ item }}</option>
@@ -106,10 +106,10 @@
 
 
 {% macro dictlist2checkboxes(data, fieldset_class='fieldset-group',
-                             filterkeys=[], filtervals=[]) %}
+                             filterkeys=[], filtervals=[], data_attrs=[]) %}
 {# Make a checkbox group, where keys are input names, and values are labels.
     Format must be a list of dictionaries. #}
-<fieldset class="{{ fieldset_class }}">
+<fieldset class="{{ fieldset_class }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% for k, v in item.items() %}
             {% if k not in filterkeys and v not in filtervals %}
@@ -238,25 +238,25 @@
 {%- endmacro %}
 
 
-{%- macro recurse_dictlist(val, type='ul', classes=[]) %}
+{%- macro recurse_dictlist(val, type='ul', classes=[], data_attrs=[]) %}
     {#
         Uses the jinja2 recursive looping to recurse over a dictionary and display
         as a list (ordered or unordered), or display a default value otherwise.
     #}
     {% if val is mapping %}
-        <{{ type }} class="{{ apply_classes(classes) }}">
+        <{{ type }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
             {% for k, v in val.items() recursive %}
                 {% if v is mapping %}
                     <li>
                         <strong>{{ k }}:</strong>
-                        <{{ type }} class="{{ apply_classes(classes) }}">
+                        <{{ type }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
                             {{ loop(v.items()) }}
                         </{{ type }}>
                     </li>
                 {% else %}
                     <li>
                         {% if v|islist %}
-                            <{{ type }} class="{{ apply_classes(classes) }}">
+                            <{{ type }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
                                 {% for item in v %}
                                     <li>
                                         {% for itemv in v recursive %}
