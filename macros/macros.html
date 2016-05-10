@@ -92,6 +92,19 @@
 {%- endmacro %}
 
 
+{% macro list2dropdown(data, filtervals=[]) %}
+{# Make a dropdown element.
+    Format must be a list. Value and text are the same. #}
+<select>
+    {% for item in data %}
+        {% if item not in filtervals %}
+            <option value="{{ item }}">{{ item }}</option>
+        {% endif %}
+    {% endfor %}
+</select>
+{%- endmacro %}
+
+
 {% macro dictlist2checkboxes(data, fieldset_class='fieldset-group',
                              filterkeys=[], filtervals=[]) %}
 {# Make a checkbox group, where keys are input names, and values are labels.
