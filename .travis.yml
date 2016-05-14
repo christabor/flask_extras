@@ -5,6 +5,8 @@ python:
   - "2.7"
 language: python
 install:
+    - pip install unittest
+    - pip install flask
     - pip install codecov
     - pip install coveralls
 script: nosetests --with-coverage --cover-package=flask_extras
