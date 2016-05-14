@@ -1,14 +1,12 @@
 test:
-    make
+    script
 sudo: false
 python:
   - "2.7"
 language: python
 install:
-    - make install
     - pip install codecov
     - pip install coveralls
-    - python setup.py install
 script: nosetests --with-coverage --cover-package=flask_extras
 after_success:
     - coveralls
