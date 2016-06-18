@@ -1,0 +1,10 @@
+{%- macro inline_code(code) %}
+    <code>{{ code }}</code>
+{% endmacro -%}
+
+
+{%- macro code(code, lang='json') %}
+    <pre class="{{ lang }}">
+        <code>{{ code }}</code>
+    </pre>
+{% endmacro -%}
