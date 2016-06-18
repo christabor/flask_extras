@@ -2,7 +2,9 @@
 
 An assortment of macros have been created for various reusable templating scenarios.
 
-## apply_classes
+## `macros.html`
+
+### apply_classes
 
 Apply a list of classes inline.
 
@@ -16,7 +18,7 @@ becomes:
 <table class="table table-striped"></table>
 ```
 
-## apply_dattrs
+### apply_dattrs
 
 Apply a list of HTML5 data-attributes inline.
 
@@ -30,40 +32,40 @@ becomes:
 <table data-datatable data-sortable></table>
 ```
 
-## dictlist_dl
+### dictlist_dl
 
 ...
 
-## dict2list
+### dict2list
 
 ...
 
-## bs3_dictlist_group
+### bs3_dictlist_group
 
 ...
 
-## bs3_list_group
+### bs3_list_group
 
 ...
 
-## dictlist2nav
+### dictlist2nav
 
 ...
 
-## dictlist2dropdown
+### dictlist2dropdown
 
 ...
 
-## dictlist2checkboxes
+### dictlist2checkboxes
 
 ...
 
-## objects2table
+### objects2table
 
 Create a table with headers and rows for a list of objects. Major customization is possible, even on a per column basis, by using the `field_macros` kwarg.
 
 ```jinja2
-{% 
+{%
     objects2table([obj1, obj2, obj3]
                   classes=['table', 'table-striped'],
                   data_attrs=['datatable'],
@@ -78,14 +80,18 @@ Create a table with headers and rows for a list of objects. Major customization 
 %}
 ```
 
-## wtform_errors
+### wtform_errors
 
 Show a list of form errors based on a given wtform instance.
 
-## wtform_form
+### wtform_form
 
 ...
 
-## recurse_dictlist
+### recurse_dictlist
 
 Uses the jinja2 recursive looping to recurse over a dictionary and display as a list (ordered or unordered), or display a default value otherwise.
+
+## `code.html`
+
+...
