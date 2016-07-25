@@ -43,7 +43,7 @@ extra_folders = jinja2.ChoiceLoader([
 app.jinja_loader = extra_folders
 ```
 
-## As a package:
+### As a package:
 
 ```python
 import os
