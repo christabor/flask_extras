@@ -222,7 +222,7 @@
             {% endif %}
             {% for field in formobj %}
                 {% set valid_field = field.type not in invalid_fields %}
-                <div class="row">
+                {% if horizontal %}<div class="row">{% endif %}
                 {# Only show labels and descriptions if they are normal fields. #}
                 {% if valid_field %}
                     {% if horizontal %}<div class="col-md-4">{% endif %}
@@ -241,7 +241,7 @@
                     <div class="text-{{ 'right' if align == 'left' else 'left' }}">{{ field }}</div>
                     {% if valid_field %}<br>{% endif %}
                     {% if horizontal and valid_field %}</div>{% endif %}
-                </div>
+                {% if horizontal %}</div>{% endif %}
                 {% if horizontal %}<hr>{% endif %}
             {% endfor %}
         </fieldset>
