@@ -203,6 +203,9 @@
                      enctype=None, btn_text='Submit',
                      formid=None, reset_btn=True,
                      legend=None,
+                     horizontal=False,
+                     align='right',
+                     questionize=True,
                      reset_btn_classes=[])
 -%}
     <form action="{{ action }}" method="{{ method }}"
@@ -213,24 +216,36 @@
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
         {% set invalid_fields = ['CSRFTokenField', 'HiddenField'] %}
         {{ wtform_errors(formobj) }}
-        <fieldset>
+        <fieldset class="text-{{ align }}">
             {% if legend %}
                 <legend>{{ legend }}</legend>
             {% endif %}
             {% for field in formobj %}
+                {% set valid_field = field.type not in invalid_fields %}
+                <div class="row">
                 {# Only show labels and descriptions if they are normal fields. #}
-                {% if field.type not in invalid_fields %}
-                    {{ field.label }}
+                {% if valid_field %}
+                    {% if horizontal %}<div class="col-md-4">{% endif %}
+                    {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
                     {% if field.description %}
+                        {% if horizontal %}<br>{% endif %}
                         <small>{{ field.description }}</small>
                     {% endif %}
                     {% if field.flags.required %}
+                    {% if horizontal %}<br>{% endif %}
                     <small class="text-danger">* Required</small><br>
                     {% endif %}
+                    {% if horizontal %}</div>{% endif %}
                 {% endif %}
-                {{ field }} {% if field.type not in invalid_fields %}<br>{% endif %}
+                    {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
+                    <div class="text-{{ 'right' if align == 'left' else 'left' }}">{{ field }}</div>
+                    {% if valid_field %}<br>{% endif %}
+                    {% if horizontal and valid_field %}</div>{% endif %}
+                </div>
+                {% if horizontal %}<hr>{% endif %}
             {% endfor %}
         </fieldset>
+
         {# Add typical form submit button. #}
         <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
         {# Add a reset field values button if specified. #}
