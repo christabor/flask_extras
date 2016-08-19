@@ -179,20 +179,23 @@
 {%- endmacro %}
 
 
+{% macro wtform_errors_field(field, errors, bg=True) -%}
+    {% if bg %}<div class="alert alert-danger">{% endif %}
+        <p class="{{ 'text-danger' if not bg else '' }}"><strong>Error(s) for '{{ field }}': </strong></p>
+        <ul class="{{ 'text-danger' if not bg else '' }}">
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% if bg %}</div>{% endif %}
+{%- endmacro %}
+
+
 {% macro wtform_errors(formobj) -%}
 {# Show a list of form errors based on a given wtform instance. #}
 {% if formobj.errors %}
     {% for field, errors in formobj.errors.items() %}
-        <div class="alert alert-danger">
-            <p>
-                <strong>Error(s) for '{{ field }}': </strong>
-                <ul>
-                    {% for error in errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </p>
-        </div>
+        {{ wtform_errors_field(field, errors) }}
     {% endfor %}
 {% endif %}
 {%- endmacro %}
@@ -204,7 +207,7 @@
                      formid=None, reset_btn=True,
                      legend=None,
                      horizontal=False,
-                     align='right',
+                     align='left',
                      questionize=True,
                      reset_btn_classes=[])
 -%}
@@ -215,7 +218,6 @@
     {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
         {% set invalid_fields = ['CSRFTokenField', 'HiddenField'] %}
-        {{ wtform_errors(formobj) }}
         <fieldset class="text-{{ align }}">
             {% if legend %}
                 <legend>{{ legend }}</legend>
@@ -231,6 +233,7 @@
                         {% if horizontal %}<br>{% endif %}
                         <small>{{ field.description }}</small>
                     {% endif %}
+
                     {% if field.flags.required %}
                     {% if horizontal %}<br>{% endif %}
                     <small class="text-danger">* Required</small><br>
@@ -238,7 +241,13 @@
                     {% if horizontal %}</div>{% endif %}
                 {% endif %}
                     {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
-                    <div class="text-{{ 'right' if align == 'left' else 'left' }}">{{ field }}</div>
+                    <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+                        {{ field }}
+                        <br>
+                        {% if field.errors %}
+                            {{ wtform_errors_field(field.label, field.errors, bg=False) }}
+                        {% endif %}
+                    </div>
                     {% if valid_field %}<br>{% endif %}
                     {% if horizontal and valid_field %}</div>{% endif %}
                 {% if horizontal %}</div>{% endif %}
