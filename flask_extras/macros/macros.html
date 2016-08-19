@@ -224,6 +224,9 @@
                     {% if field.description %}
                         <small>{{ field.description }}</small>
                     {% endif %}
+                    {% if field.flags.required %}
+                    <small class="text-danger">* Required</small><br>
+                    {% endif %}
                 {% endif %}
                 {{ field }} {% if field.type not in invalid_fields %}<br>{% endif %}
             {% endfor %}
