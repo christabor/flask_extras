@@ -54,11 +54,45 @@ becomes:
 
 ### dictlist2dropdown
 
-...
+Convert a dict into a dropdown of options.
+
+```jinja2
+{{
+  dictlist2dropdown({'foo': 'bar', 'bar': 'foo'}, 'options', classes=['form-dropdown'])
+}}
+```
+
+becomes
+
+```html
+<select name="options" class="form-dropdown">
+  <option value="foo">bar</option>
+  <option value="bar">foo</option>
+</select>
+```
 
 ### dictlist2checkboxes
 
-...
+Convert a dictionary into a fieldset of checkboxes.
+
+```jinja2
+{{
+  dictlist2checkboxes({'foo': 'bar', 'bar': 'foo'}, fieldset_class='someclass')
+}}
+```
+
+becomes
+
+```html
+<fieldset>
+  <label>
+    foo <input type="checkbox" name="bar">
+  </label>
+  <label>
+    bar <input type="checkbox" name="foo">
+  </label>
+</fieldset>
+```
 
 ### objects2table
 

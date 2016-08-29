@@ -77,10 +77,10 @@
 {%- endmacro %}
 
 
-{% macro dictlist2dropdown(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
+{% macro dictlist2dropdown(data, name=None, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
 {# Make a dropdown element.
     Format must be a list of dictionaries. #}
-<select class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+<select {% if name %}name="{{ name }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% for k, v in item.items() %}
             {% if k not in filterkeys and v not in filtervals %}
