@@ -65,7 +65,7 @@ becomes:
 Create a table with headers and rows for a list of objects. Major customization is possible, even on a per column basis, by using the `field_macros` kwarg.
 
 ```jinja2
-{%
+{{
     objects2table([obj1, obj2, obj3]
                   classes=['table', 'table-striped'],
                   data_attrs=['datatable'],
@@ -77,7 +77,7 @@ Create a table with headers and rows for a list of objects. Major customization 
                         'field2': mymacro2,
                     },
                   )
-%}
+}}
 ```
 
 ### wtform_errors
@@ -86,7 +86,38 @@ Show a list of form errors based on a given wtform instance.
 
 ### wtform_form
 
-...
+Automatically render a wtform object, with various options including horizontal/vertical layouts, alignment, field overrides and more.
+
+```jinja2
+{{
+  wtform_form(form,
+    action=url_for('app.index'),
+    method='POST',
+    classes=['form', 'form-horizontal'],
+    btn_classes=['btn', 'btn-primary', 'btn-md'],
+    align='right',
+    horizontal=True,
+  )
+}}
+```
+
+And using field specific overrides:
+
+```jinja2
+{%- macro somefieldmacro(field) %}
+Look at my great field! {{ field.label }} {{ field }}
+{% endmacro -%}
+
+{{
+  wtform_form(form,
+    field_macros={
+      'somefield': somefieldmacro
+    }
+  )
+}}
+```
+
+The field object passed to your macro is a standard wtform field object.
 
 ### recurse_dictlist
 
