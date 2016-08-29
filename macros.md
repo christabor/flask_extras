@@ -125,8 +125,38 @@ Uses the jinja2 recursive looping to recurse over a dictionary and display as a 
 
 ## `code.html`
 
-...
+### code
+
+```jinja2
+{{ code('a, b, c = 1, 2, 3', lang='python') }}
+```
+
+becomes
+
+```html
+<pre class="python">
+  <code>a, b, c = 1, 2, 3</code>
+</pre>
+```
+
+### inline_code
+
+```jinja2
+{{ inline_code('a, b, c = 1, 2, 3') }}
+```
+
+becomes
+
+```html
+<code>a, b, c = 1, 2, 3</code>
+```
 
 ## `messages.html`
 
-...
+### flash_messages
+
+Render a flask messages object inline, including background coloring (using bootstrap) for each status type (e.g. info, warning, error)
+
+```jinja2
+{{  flash_messages() }}
+```
