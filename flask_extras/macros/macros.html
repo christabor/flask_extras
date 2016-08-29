@@ -209,7 +209,9 @@
                      horizontal=False,
                      align='left',
                      questionize=True,
-                     reset_btn_classes=[])
+                     reset_btn_classes=[],
+                     field_macros={}
+                     )
 -%}
     <form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
@@ -223,35 +225,37 @@
                 <legend>{{ legend }}</legend>
             {% endif %}
             {% for field in formobj %}
-                {% set valid_field = field.type not in invalid_fields %}
-                {% if horizontal %}<div class="row">{% endif %}
-                {# Only show labels and descriptions if they are normal fields. #}
-                {% if valid_field %}
-                    {% if horizontal %}<div class="col-md-4">{% endif %}
-                    {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
-                    {% if field.description %}
-                        {% if horizontal %}<br>{% endif %}
-                        <small>{{ field.description }}</small>
-                    {% endif %}
-
-                    {% if field.flags.required %}
-                    {% if horizontal %}<br>{% endif %}
-                    <small class="text-danger">* Required</small><br>
-                    {% endif %}
-                    {% if horizontal %}</div>{% endif %}
-                {% endif %}
-                    {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
-                    <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
-                        {{ field }}
-                        <br>
-                        {% if field.errors %}
-                            {{ wtform_errors_field(field.label, field.errors, bg=False) }}
+                {% if field.name in field_macros.keys() %}
+                    {{ field_macros[field.name](field) }}
+                {% else %}
+                    {% set valid_field = field.type not in invalid_fields %}
+                    {% if horizontal %}<div class="row">{% endif %}
+                    {# Only show labels and descriptions if they are normal fields. #}
+                    {% if valid_field %}
+                        {% if horizontal %}<div class="col-md-4">{% endif %}
+                        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
+                        {% if field.description %}
+                            {% if horizontal %}<br>{% endif %}
+                            <small>{{ field.description }}</small>
                         {% endif %}
-                    </div>
-                    {% if valid_field %}<br>{% endif %}
-                    {% if horizontal and valid_field %}</div>{% endif %}
-                {% if horizontal %}</div>{% endif %}
-                {% if horizontal %}<hr>{% endif %}
+                        {% if field.flags.required %}
+                            {% if horizontal %}<br>{% endif %}
+                            <small class="text-danger">* Required</small><br>
+                        {% endif %}
+                        {% if horizontal %}</div>{% endif %}
+                    {% endif %}
+                        {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
+                        <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+                            {{ field }}
+                            <br>
+                            {% if field.errors %}
+                                {{ wtform_errors_field(field.label, field.errors, bg=False) }}
+                            {% endif %}
+                        </div>
+                        {% if valid_field %}<br>{% endif %}
+                        {% if horizontal and valid_field %}</div>{% endif %}
+                    {% if horizontal %}</div><hr>{% endif %}
+                {% endif %}
             {% endfor %}
         </fieldset>
 
