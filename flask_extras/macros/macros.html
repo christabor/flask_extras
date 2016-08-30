@@ -128,7 +128,8 @@
                        filterkeys=[], filtervals=[],
                        pk_link=None,
                        handle_links=True,
-                       field_macros={}
+                       field_macros={},
+                       header_macros={}
                        )
 -%}
 {# Create table from a list of objects (class instantiations). Also add links for primary keys if specified. #}
@@ -138,10 +139,15 @@
     <thead>
         {% for obj in objs %}
             {% if loop.first %}
+                {% set header_keys = header_macros.keys() %}
                 {% for heading, _ in obj.iteritems() %}
                     {# Allow filtering of headings. #}
                     {% if heading not in filterkeys %}
-                        <th>{{ heading }}</th>
+                        {% if heading in header_keys %}
+                            <th>{{ header_macros[heading](heading) }}</th>
+                        {% else %}
+                            <th>{{ heading }}</th>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
