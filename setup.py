@@ -28,7 +28,7 @@ def get_requires():
 
 setup(
     name='flask_extras',
-    version='3.2.0',
+    version='3.3.0',
     description=('Assorted useful flask views, blueprints, '
                  'Jinja2 template filters, and templates/macros'),
     long_description=readme(),
