@@ -1,11 +1,9 @@
 """Tests for 'random' filters."""
 
-from __future__ import absolute_import
-
 import re
 import unittest
 
-from .. import random
+from flask_extras.filters import random
 
 
 class RandomChoiceTest(unittest.TestCase):

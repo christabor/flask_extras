@@ -1,11 +1,8 @@
 """Test jinja filters."""
 
-
-from __future__ import absolute_import
-
 import unittest
 
-from .. import filters
+from flask_extras.filters import filters
 
 
 class MockClass:

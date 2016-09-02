@@ -1,12 +1,10 @@
 """Test configuration utilities."""
 
-from __future__ import absolute_import
-
 import unittest
 
 from flask import Flask
 
-from .. import config
+from flask_extras.filters import config
 
 app = Flask('__config_test')
 
