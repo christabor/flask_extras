@@ -1,7 +1,8 @@
 """Setup for Flask Extras."""
 
-from setuptools import setup, find_packages
 import os
+
+from setuptools import find_packages, setup
 
 SRCDIR = '.'
 
@@ -28,7 +29,7 @@ def get_requires():
 
 setup(
     name='flask_extras',
-    version='3.4.0',
+    version='3.5.0',
     description=('Assorted useful flask views, blueprints, '
                  'Jinja2 template filters, and templates/macros'),
     long_description=readme(),
