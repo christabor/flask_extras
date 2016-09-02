@@ -17,9 +17,9 @@ FlaskExtras(app)
 
 For the old way, check out [this page](wiki/old_setup.md)
 
-### Available features
+## Available features
 
-## Views
+### Views
 
 Import them like usual:
 
