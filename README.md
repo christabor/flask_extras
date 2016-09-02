@@ -17,13 +17,9 @@ FlaskExtras(app)
 
 For the old way, check out [this page](wiki/old_setup.md)
 
-```html
-{% from 'macros.html' import list_group, objects2table %}
-```
+### Available features
 
-See [macros](macros.md) page for details.
-
-## Using views
+## Views
 
 Import them like usual:
 
@@ -37,9 +33,29 @@ from flask_extras.views import (
 
 *Note:* each view has configuration helpers to inject or configure your app. See source for details.
 
-#### Statuses
+### Macros
+
+Many more macros are available. You can use them like so:
+
+```html
+{% from 'macros.html' import list_group, objects2table %}
+```
+
+See [macros](macros.md) page for more details.
+
+### Statuses
 
 Provides views for common status codes. Usage:
 ```python
 app = statuses.inject_error_views(app)
+```
+### Decorators
+
+```python
+from flask_extras.decorators import require_headers
+
+app.route('/')
+@require_headers(['X-Foo'])
+def foo():
+    pass
 ```
