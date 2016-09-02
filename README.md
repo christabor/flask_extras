@@ -46,10 +46,16 @@ See [macros](macros.md) page for more details.
 ### Statuses
 
 Provides views for common status codes. Usage:
+
 ```python
 app = statuses.inject_error_views(app)
 ```
+
+See source for more.
+
 ### Decorators
+
+See the source for more. Usage example:
 
 ```python
 from flask_extras.decorators import require_headers
