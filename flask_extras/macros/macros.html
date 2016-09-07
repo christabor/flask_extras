@@ -1,18 +1,37 @@
 {% macro apply_classes(classes) -%}
-{# Util to apply css classes inside an element. #}
+{#
+    Apply css classes inside an element.
+    Usage:
+    <table {{ apply_classes(['table', 'table-striped']) }}></table>
+    <table class="table table-striped"></table>
+#}
 {% for css in classes %}{{ css }} {% endfor %}
 {%- endmacro %}
 
 
 {% macro apply_dattrs(data_attrs) -%}
-{# Util to apply data-attributes inside an element. #}
+{#
+    Apply data-attributes inside an element.
+    Usage:
+    <div {{ apply_dattrs(['data-foo', 'data-bar']) }}></div>
+    <div data-foo data-bar></div>
+
+    TODO: support dictionary with values
+#}
 {% for attr in data_attrs %}data-{{ attr }} {% endfor %}
 {%- endmacro %}
 
 
 {% macro dictlist_dl(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[], asdict=False) %}
-{# Makes a definition list from a dictionary - the correspondence should be:
-    dt: key, dd: value #}
+{#
+    Make a definition list from a dictionary - the correspondence should be dt: key, dd: value
+    Usage:
+    {{ dictlist_dl({'foo': 'bar'}) }}
+    <dl>
+        <dt>foo</dt>
+        <dd>bar</dd>
+    </dl>
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <dl class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.items() -%}
@@ -26,7 +45,17 @@
 
 
 {% macro dict2list(data, type='ul', filterkeys=[], filtervals=[], asdict=False) %}
-{# Makes a list from a set of dictionaries #}
+{#
+    Makes a list from a dictionary.
+    Usage:
+    {{ dict2list({'foo': 'bar'}) }}
+    <ul>
+        <li><strong>foo</strong>: bar</li>
+    </ul>
+
+    namedtuple support:
+    {{ dict2list(mytuple, asdict=True) }}
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <{{ type }}>
     {% for k, v in data.items() %}
@@ -39,7 +68,15 @@
 
 
 {% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
-{# Makes a bootstrap list group from a set of dictionaries #}
+{#
+    Makes a bootstrap list group from a set of dictionaries
+    Usage:
+    {{ bs3_dictlist_group({'foo': 'bar'}) }}
+    <div class="list-group">
+        <h4 class="list-group-item-heading">foo</h4>
+        <p class="list-group-item-text">bar</p>
+    </div>
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <div class="list-group" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.items() %}
@@ -53,7 +90,15 @@
 
 
 {% macro bs3_list_group(data, type='ul') %}
-{# OL/UL based bootstrap list group #}
+{#
+    OL/UL based bootstrap list group
+    Usage:
+    {{ bs3_list_group(['foo', 'bar']) }}
+    <ul>
+        <li class="list-group-item">foo</li>
+        <li class="list-group-item">bar</li>
+    </ul>
+#}
 <{{ type }} class="list-group">
     {% for val in data %}
         <li class="list-group-item">{{ val }}</li>
