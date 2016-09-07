@@ -171,6 +171,14 @@ The field object passed to your macro is a standard wtform field object.
 
 Uses the jinja2 recursive looping to recurse over a dictionary and display as a list (ordered or unordered), or display a default value otherwise.
 
+### dict2labels
+
+...
+
+### list2list
+
+...
+
 ## `code.html`
 
 ### code
@@ -208,3 +216,7 @@ Render a flask messages object inline, including background coloring (using boot
 ```jinja2
 {{  flash_messages() }}
 ```
+
+## `content_blocks.html`
+
+### dict_heading_blocks

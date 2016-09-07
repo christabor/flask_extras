@@ -1,0 +1,21 @@
+{% from "macros.html" import apply_classes %}
+
+{%- macro dict_heading_blocks(data, hsize='h2',
+                              heading_classes=[],
+                              para_classes=[]) %}
+{#
+    Create paragraphs with headings for each, from a dict.
+    Usage:
+    {{ dict_heading_blocks({'My heading': 'Lorem ipsum...'}, heading_classes=['lead']) }}
+    <h2 class="lead">My heading</h2>
+    <p>Lorem ipsum...</p>
+#}
+{% for heading, para in data.items() %}
+    <{{ hsize }} class="{{ apply_classes(heading_classes) }}">
+        {{ heading }}
+    </{{ hsize }}>
+    <p class="{{ apply_classes(para_classes) }}">
+        {{ para }}
+    </p>
+{% endfor %}
+{% endmacro -%}

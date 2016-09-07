@@ -62,12 +62,62 @@
 {%- endmacro %}
 
 
-{% macro list2list(data, type='ul', filtervals=[]) %}
-{# Makes a UL/OL from a list #}
-<{{ type }}>
+{% macro dict2labels(data, filterkeys=[], filtervals=[], aslist=False) %}
+{#
+    Makes a dict of `name`:`label` into bootstrap labels
+    Usage:
+    {{ dict2labels({'foo': 'danger'}) }}
+    <ul class="list-unstyled">
+        <li><span class="label label-danger">foo</span></li>
+    </ul>
+
+    {{ dict2labels({'foo': 'danger'}, aslist=False) }}
+    <span class="label label-danger">foo</span>
+#}
+{% if aslist %}<ul class="list-unstyled">{% endif %}
+    {% for k, label in data.items() %}
+        {% if k not in filterkeys and label not in filtervals %}
+            {% if aslist %}<li>{% endif %}
+                <span class="label label-{{ label }}">{{ label }}</span>
+            {% if aslist %}</li>{% endif %}
+        {% endif %}
+    {% endfor %}
+{% if aslist %}</ul>{% endif %}
+{%- endmacro %}
+
+
+{% macro list2list(data, type='ul',
+                   filtervals=[], icons={},
+                   classes=[],
+                   icondir='left') %}
+{#
+    Makes a OL/UL from a list, with optional icons
+    Usage:
+    {{ list2list(['Toyota', 'V2', '747', 'John Deere'], icons={'Toyota': ['fa', 'fa-car'], 'V2': ['fa', 'fa-rocket']}, icondir='right') }}
+    Returns:
+    <ul>
+        <li>Toyota <span class="fa fa-car"></span></li>
+        <li>V2 <span class="fa fa-rocket"></span></li>
+        <li>747</li>
+        <li>John Deere</li>
+    </ul>
+#}
+<{{ type }} class="{{ apply_classes(classes) }}">
     {% for item in data %}
         {% if item and item not in filtervals %}
-            <li>{{ item }}</li>
+            <li>
+                {% if item in icons.keys() %}
+                    {% if icondir == 'left' %}
+                        <span class="{{ apply_classes(icons[item]) }}"></span>
+                        {{ item }}
+                    {% else %}
+                        {{ item }}
+                        <span class="{{ apply_classes(icons[item]) }}"></span>
+                    {% endif %}
+                {% else %}
+                    {{ item }}
+                {% endif %}
+            </li>
         {% endif %}
     {% endfor %}
 </{{ type }}>
