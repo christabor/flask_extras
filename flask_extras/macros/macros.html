@@ -10,11 +10,12 @@
 {%- endmacro %}
 
 
-{% macro dictlist_dl(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
+{% macro dictlist_dl(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[], asdict=False) %}
 {# Makes a definition list from a dictionary - the correspondence should be:
     dt: key, dd: value #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <dl class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
-    {% for k, v in data.iteritems() -%}
+    {% for k, v in data.items() -%}
         {% if k not in filterkeys and v not in filtervals %}
             <dt>{{ k }}</dt>
             <dd>{{ v }}</dd>
@@ -24,10 +25,11 @@
 {%- endmacro %}
 
 
-{% macro dict2list(data, type='ul', filterkeys=[], filtervals=[]) %}
+{% macro dict2list(data, type='ul', filterkeys=[], filtervals=[], asdict=False) %}
 {# Makes a list from a set of dictionaries #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <{{ type }}>
-    {% for k, v in data.iteritems() %}
+    {% for k, v in data.items() %}
         {% if k not in filterkeys and v not in filtervals %}
             <li><strong>{{ k }}</strong>: {{ v }}</li>
         {% endif %}
@@ -36,10 +38,11 @@
 {%- endmacro %}
 
 
-{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[]) %}
+{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
 {# Makes a bootstrap list group from a set of dictionaries #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <div class="list-group" {{ apply_dattrs(data_attrs) }}>
-    {% for k, v in data.iteritems() %}
+    {% for k, v in data.items() %}
         {% if k not in filterkeys and v not in filtervals %}
             <h4 class="list-group-item-heading">{{ k }}</h4>
             <p class="list-group-item-text">{{ v }}</p>
@@ -59,10 +62,23 @@
 {%- endmacro %}
 
 
+{% macro list2list(data, type='ul', filtervals=[]) %}
+{# Makes a UL/OL from a list #}
+<{{ type }}>
+    {% for item in data %}
+        {% if item and item not in filtervals %}
+            <li>{{ item }}</li>
+        {% endif %}
+    {% endfor %}
+</{{ type }}>
+{%- endmacro %}
+
+
 {% macro dictlist2nav(data, type='ul', filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
 {# Make a list of links with nav element.
     Format must be a list of dictionaries.
     Supports *one* level of nesting. #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <nav class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <{{ type }}>
         {% for item in data %}
@@ -77,9 +93,10 @@
 {%- endmacro %}
 
 
-{% macro dictlist2dropdown(data, name=None, filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
+{% macro dictlist2dropdown(data, name=None, filterkeys=[], filtervals=[], classes=[], data_attrs=[], asdict=False) %}
 {# Make a dropdown element.
     Format must be a list of dictionaries. #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <select {% if name %}name="{{ name }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% for k, v in item.items() %}
@@ -106,9 +123,11 @@
 
 
 {% macro dictlist2checkboxes(data, fieldset_class='fieldset-group',
-                             filterkeys=[], filtervals=[], data_attrs=[]) %}
+                             filterkeys=[], filtervals=[], data_attrs=[],
+                             asdict=False) %}
 {# Make a checkbox group, where keys are input names, and values are labels.
     Format must be a list of dictionaries. #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <fieldset class="{{ fieldset_class }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% for k, v in item.items() %}
@@ -129,10 +148,12 @@
                        pk_link=None,
                        handle_links=True,
                        field_macros={},
-                       header_macros={}
+                       header_macros={},
+                       asdict=False
                        )
 -%}
 {# Create table from a list of objects (class instantiations). Also add links for primary keys if specified. #}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
 <table
     class="{{ apply_classes(classes) }}"
     {{ apply_dattrs(data_attrs) }}>
@@ -140,7 +161,7 @@
         {% for obj in objs %}
             {% if loop.first %}
                 {% set header_keys = header_macros.keys() %}
-                {% for heading, _ in obj.iteritems() %}
+                {% for heading, _ in obj.items() %}
                     {# Allow filtering of headings. #}
                     {% if heading not in filterkeys %}
                         {% if heading in header_keys %}
@@ -156,7 +177,7 @@
     <tbody>
         {% for obj in objs %}
             <tr>
-                {% for k, v in obj.iteritems() %}
+                {% for k, v in obj.items() %}
                     {# Allowing filtering of keys and values. #}
                     {% if k not in filterkeys %}
                         {% if v not in filtervals %}

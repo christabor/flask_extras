@@ -2,6 +2,20 @@
 
 An assortment of macros have been created for various reusable templating scenarios.
 
+*New in 3.6.1* - namedtuple support on all dictionary based macros.
+
+E.g.
+
+```python
+from collections import namedtuple
+Person = namedtuple('Person', 'age dob sex loc name')
+person=Person(30, '01051986', 'M', 'seattle', 'chris')
+```
+
+Can now be used with any macro that supports `asdict` kwarg:
+
+`{{ dict2list(person, asdict=True) }}`
+
 ## `macros.html`
 
 ### apply_classes
