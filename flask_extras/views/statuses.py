@@ -87,5 +87,5 @@ def inject_error_views(app):
     # See flask.pocoo.org/docs/0.10/api/#flask.Flask.errorhandler
     for name, func in _get_viewfuncs().iteritems():
         code = name.replace('page_', '')
-        app.error_handler_spec[None][int(code)] = func
+        app.register_error_handler(int(code), func)
     return app
