@@ -1,10 +1,11 @@
 """Setup for Flask Extras."""
 
-import os
-
 from setuptools import find_packages, setup
 
 SRCDIR = '.'
+requirements = [
+    'Flask==0.10.1',
+]
 
 
 def readme():
@@ -17,15 +18,8 @@ def readme():
             with open('README.rst', 'r') as fobj:
                 return fobj.read()
         except IOError:
-            return 'No README specified.'
+            return __doc__
 
-
-def get_requires():
-    """Extract the requirements from a standard requirements.txt file."""
-    path = '{}/requirements.txt'.format(
-        os.path.abspath(os.path.dirname(__file__)))
-    with open(path) as reqs:
-        return [req for req in reqs.readlines() if req]
 
 setup(
     name='flask_extras',
@@ -41,6 +35,7 @@ setup(
         'Topic :: Software Development',
         'Programming Language :: Python :: 2.7',
     ],
+    install_requires=requirements,
     package_dir={'': SRCDIR},
     packages=find_packages(SRCDIR, exclude=['ez_setup', 'examples', 'tests']),
     package_data={
