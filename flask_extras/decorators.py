@@ -8,7 +8,7 @@ from flask import request
 def require_headers(headers=[]):
     """Check for required headers in a view.
 
-    @require_headers(['X-Foo'])
+    @require_headers(headers=['X-Foo'])
     @def view():
         pass
     """
@@ -30,7 +30,7 @@ def require_headers(headers=[]):
 def require_cookies(cookies=[]):
     """Check for required cookies in a view.
 
-    @require_cookies(['csrftoken', 'session'])
+    @require_cookies(cookies=['csrftoken', 'session'])
     @def view():
         pass
     """
@@ -44,30 +44,47 @@ def require_cookies(cookies=[]):
                 diff = s1.difference(s2)
                 if len(s1) != len(matches):
                     raise ValueError(
-                        'Missing required cookie(s): {}'.format(diff))
+                        'Missing required cookie(s): {}'.format(list(diff)))
             return func(*args, **kwargs)
         return inner
     return outer
 
 
-def require_args(args={}, use_values=True):
+def require_args(params=[]):
     """Check for required args (and values) in a view.
 
-    @require_args({'paginate': True})
+    @require_args(params=['paginate'])
+    @def view():
+        pass
+
+    or, if you want to check both key and value:
+
+    @require_args(params={'paginate': True})
     @def view():
         pass
     """
     def outer(func, *args, **kwargs):
         @wraps(func)
         def inner(*args, **kwargs):
-            if args:
-                s1 = set(args.values())
-                s2 = set([k for k, v in request.args.items()])
-                matches = s1.intersection(s2)
-                diff = s1.difference(s2)
-                if len(s1) != len(matches):
-                    raise ValueError(
-                        'Missing required arg(s): {}'.format(diff))
+            if params:
+                if isinstance(params, list):
+                    s1 = set(params)
+                    s2 = set([k for k, v in request.args.items()])
+                    matches = s1.intersection(s2)
+                    diff = s1.difference(s2)
+                    if len(s1) != len(matches):
+                        raise ValueError(
+                            'Missing required arg(s): {}'.format(list(diff)))
+                else:
+                    for param, val in params.items():
+                        arg = request.args.get(param, None)
+                        if arg is None:
+                            raise ValueError(
+                                'Missing param `{}`'.format(param))
+                        if arg != val:
+                            raise ValueError(
+                                'Invalid value `{}` '
+                                'for param {}.'.format(arg, param))
             return func(*args, **kwargs)
         return inner
     return outer
