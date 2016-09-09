@@ -88,3 +88,28 @@ def require_args(params=[]):
             return func(*args, **kwargs)
         return inner
     return outer
+
+
+def require_form(values=[]):
+    """Check for required form values.
+
+    @require_form(values=['name', 'address'])
+    @def view():
+        pass
+    """
+    def outer(func, *args, **kwargs):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            if request.method == 'POST':
+                if values:
+                    s1 = set(values)
+                    s2 = set([k for k, v in request.form.items()])
+                    matches = s1.intersection(s2)
+                    diff = s1.difference(s2)
+                    if len(s1) != len(matches):
+                        raise ValueError(
+                            'Missing required form '
+                            'field(s): {}'.format(list(diff)))
+            return func(*args, **kwargs)
+        return inner
+    return outer
