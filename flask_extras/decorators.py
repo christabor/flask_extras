@@ -9,7 +9,7 @@ def require_headers(headers=[]):
     """Check for required headers in a view.
 
     @require_headers(headers=['X-Foo'])
-    @def view():
+    def view():
         pass
     """
     def outer(func, *args, **kwargs):
@@ -31,7 +31,7 @@ def require_cookies(cookies=[]):
     """Check for required cookies in a view.
 
     @require_cookies(cookies=['csrftoken', 'session'])
-    @def view():
+    def view():
         pass
     """
     def outer(func, *args, **kwargs):
@@ -54,13 +54,13 @@ def require_args(params=[]):
     """Check for required args (and values) in a view.
 
     @require_args(params=['paginate'])
-    @def view():
+    def view():
         pass
 
     or, if you want to check both key and value:
 
     @require_args(params={'paginate': True})
-    @def view():
+    def view():
         pass
     """
     def outer(func, *args, **kwargs):
@@ -94,7 +94,7 @@ def require_form(values=[]):
     """Check for required form values.
 
     @require_form(values=['name', 'address'])
-    @def view():
+    def view():
         pass
     """
     def outer(func, *args, **kwargs):
