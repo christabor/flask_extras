@@ -381,12 +381,14 @@
             {% endfor %}
         </fieldset>
 
-        {# Add typical form submit button. #}
-        <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
-        {# Add a reset field values button if specified. #}
-        {% if reset_btn %}
-            <button type="reset" class="{{ apply_classes(reset_btn_classes) }}">Reset</button>
-        {% endif %}
+        <div class="wtform-form button-wrapper">
+            {# Add typical form submit button. #}
+            <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
+            {# Add a reset field values button if specified. #}
+            {% if reset_btn %}
+                <button type="reset" class="{{ apply_classes(reset_btn_classes) }}">Reset</button>
+            {% endif %}
+        </div>
     </form>
 {%- endmacro %}
 
