@@ -431,3 +431,16 @@
         {{ val }}
     {% endif %}
 {%- endmacro %}
+
+
+{% macro bs3_label(value, label_map) -%}
+{#
+    Convert a dict of values with corresponding label types given a value, to
+    the appropriate label.
+
+    Usage:
+    {{ bs3_label('PROD', {'dev': 'info', 'stage': 'warning', 'prod': 'danger'}) }}
+    <span class="label label-danger">PROD</span>
+ #}
+<span class="label label-{{ label_map[value] }}">{{ value }}</span>
+{%- endmacro %}
