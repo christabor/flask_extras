@@ -324,13 +324,17 @@
 
 
 {% macro wtform_form(formobj, action='.', method='GET', classes=[],
-                     data_attrs=[], btn_classes=[], uploads=True,
-                     enctype=None, btn_text='Submit',
-                     formid=None, reset_btn=True,
+                     data_attrs=[], btn_classes=[],
+                     uploads=True,
+                     enctype=None,
+                     btn_text='Submit',
+                     formid=None,
+                     reset_btn=True,
                      legend=None,
                      horizontal=False,
                      align='left',
                      questionize=True,
+                     linebreaks=True,
                      reset_btn_classes=[],
                      field_macros={}
                      )
@@ -357,24 +361,25 @@
                         {% if horizontal %}<div class="col-md-4">{% endif %}
                         {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
                         {% if field.description %}
-                            {% if horizontal %}<br>{% endif %}
+                            {% if horizontal and linebreaks %}<br>{% endif %}
                             <small>{{ field.description }}</small>
                         {% endif %}
                         {% if field.flags.required %}
-                            {% if horizontal %}<br>{% endif %}
-                            <small class="text-danger">* Required</small><br>
+                            {% if horizontal and linebreaks %}<br>{% endif %}
+                            <small class="text-danger">* Required</small>
+                            {% if linebreaks %}<br>{% endif %}
                         {% endif %}
                         {% if horizontal %}</div>{% endif %}
                     {% endif %}
                         {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
                         <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
                             {{ field }}
-                            <br>
+                            {% if valid_field and linebreaks %}<br>{% endif %}
                             {% if field.errors %}
                                 {{ wtform_errors_field(field.label, field.errors, bg=False) }}
                             {% endif %}
                         </div>
-                        {% if valid_field %}<br>{% endif %}
+                        {% if valid_field and linebreaks %}<br>{% endif %}
                         {% if horizontal and valid_field %}</div>{% endif %}
                     {% if horizontal %}</div><hr>{% endif %}
                 {% endif %}
