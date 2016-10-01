@@ -335,6 +335,7 @@
                      align='left',
                      questionize=True,
                      linebreaks=True,
+                     button_wrapper=True,
                      reset_btn_classes=[],
                      field_macros={}
                      )
@@ -372,13 +373,15 @@
                         {% if horizontal %}</div>{% endif %}
                     {% endif %}
                         {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
-                        <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+                        {% if horizontal %}
+                            <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+                        {% endif %}
                             {{ field }}
                             {% if valid_field and linebreaks %}<br>{% endif %}
                             {% if field.errors %}
                                 {{ wtform_errors_field(field.label, field.errors, bg=False) }}
                             {% endif %}
-                        </div>
+                        {% if horizontal %}</div>{% endif %}
                         {% if valid_field and linebreaks %}<br>{% endif %}
                         {% if horizontal and valid_field %}</div>{% endif %}
                     {% if horizontal %}</div><hr>{% endif %}
@@ -386,14 +389,14 @@
             {% endfor %}
         </fieldset>
 
-        <div class="wtform-form button-wrapper">
+        {% if button_wrapper %}<div class="wtform-form button-wrapper">{% endif %}
             {# Add typical form submit button. #}
             <button type="submit" class="{{ apply_classes(btn_classes) }}">{{ btn_text }}</button>
             {# Add a reset field values button if specified. #}
             {% if reset_btn %}
                 <button type="reset" class="{{ apply_classes(reset_btn_classes) }}">Reset</button>
             {% endif %}
-        </div>
+        {% if button_wrapper %}</div>{% endif %}
     </form>
 {%- endmacro %}
 
