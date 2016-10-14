@@ -1,8 +1,7 @@
 """Setup for Flask Extras."""
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
-SRCDIR = '.'
 requirements = [
     'Flask==0.10.1',
 ]
@@ -23,7 +22,7 @@ def readme():
 
 setup(
     name='flask_extras',
-    version='3.6.1',
+    version='3.6.2',
     description=('Assorted useful flask views, blueprints, '
                  'Jinja2 template filters, and templates/macros'),
     long_description=readme(),
@@ -36,8 +35,8 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     install_requires=requirements,
-    package_dir={'': SRCDIR},
-    packages=find_packages(SRCDIR, exclude=['ez_setup', 'examples', 'tests']),
+    package_dir={'flask_extras': 'flask_extras'},
+    packages=['flask_extras'],
     package_data={
         'flask_extras': [
             'macros/*.html',
