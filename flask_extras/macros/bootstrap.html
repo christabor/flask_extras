@@ -3,6 +3,8 @@
     Makes a bootstrap list group from a set of dictionaries
     Usage:
     {{ bs3_dictlist_group({'foo': 'bar'}) }}
+
+    Output:
     <div class="list-group">
         <h4 class="list-group-item-heading">foo</h4>
         <p class="list-group-item-text">bar</p>
@@ -23,8 +25,11 @@
 {% macro bs3_list_group(data, type='ul') %}
 {#
     OL/UL based bootstrap list group
+
     Usage:
     {{ bs3_list_group(['foo', 'bar']) }}
+
+    Output:
     <ul>
         <li class="list-group-item">foo</li>
         <li class="list-group-item">bar</li>
@@ -45,7 +50,48 @@
 
     Usage:
     {{ bs3_label('PROD', {'dev': 'info', 'stage': 'warning', 'prod': 'danger'}) }}
+
+    Output:
     <span class="label label-danger">PROD</span>
  #}
 <span class="label label-{{ label_map[value] }}">{{ value }}</span>
+{%- endmacro %}
+
+
+{% macro bs3_panel(items, paneltype='default') -%}
+{#
+    Generate bs3 panels for a dict of titles/body content.
+    Usage:
+    {{ bs3_panel({'Heading 1': 'Some body text... etc...', 'Heading 2': 'Some body text...'}, paneltype='info') }}
+
+    Output:
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Heading 1</h3>
+        </div>
+        <div class="panel-body">
+            Some body text... etc...
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Heading 2</h3>
+        </div>
+        <div class="panel-body">
+            Some body text...
+        </div>
+    </div>
+ #}
+    {% for title, body in items.items() %}
+        <div class="panel panel-{{ paneltype }}">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ body }}
+            </div>
+        </div>
+    {% endfor %}
 {%- endmacro %}
