@@ -54,14 +54,6 @@ becomes:
 
 ...
 
-### bs3_dictlist_group
-
-...
-
-### bs3_list_group
-
-...
-
 ### dictlist2nav
 
 ...

@@ -1,0 +1,51 @@
+{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
+{#
+    Makes a bootstrap list group from a set of dictionaries
+    Usage:
+    {{ bs3_dictlist_group({'foo': 'bar'}) }}
+    <div class="list-group">
+        <h4 class="list-group-item-heading">foo</h4>
+        <p class="list-group-item-text">bar</p>
+    </div>
+#}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
+<div class="list-group" {{ apply_dattrs(data_attrs) }}>
+    {% for k, v in data.items() %}
+        {% if k not in filterkeys and v not in filtervals %}
+            <h4 class="list-group-item-heading">{{ k }}</h4>
+            <p class="list-group-item-text">{{ v }}</p>
+        {% endif %}
+    {% endfor %}
+</div>
+{%- endmacro %}
+
+
+{% macro bs3_list_group(data, type='ul') %}
+{#
+    OL/UL based bootstrap list group
+    Usage:
+    {{ bs3_list_group(['foo', 'bar']) }}
+    <ul>
+        <li class="list-group-item">foo</li>
+        <li class="list-group-item">bar</li>
+    </ul>
+#}
+<{{ type }} class="list-group">
+    {% for val in data %}
+        <li class="list-group-item">{{ val }}</li>
+    {% endfor %}
+</{{ type }}>
+{%- endmacro %}
+
+
+{% macro bs3_label(value, label_map) -%}
+{#
+    Convert a dict of values with corresponding label types given a value, to
+    the appropriate label.
+
+    Usage:
+    {{ bs3_label('PROD', {'dev': 'info', 'stage': 'warning', 'prod': 'danger'}) }}
+    <span class="label label-danger">PROD</span>
+ #}
+<span class="label label-{{ label_map[value] }}">{{ value }}</span>
+{%- endmacro %}
