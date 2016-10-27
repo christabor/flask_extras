@@ -285,6 +285,7 @@
 
 {% macro wtform_form(formobj, action='.', method='GET', classes=[],
                      data_attrs=[], btn_classes=[],
+                     input_classes=[],
                      uploads=True,
                      enctype=None,
                      btn_text='Submit',
@@ -336,7 +337,7 @@
                         {% if horizontal %}
                             <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
                         {% endif %}
-                            {{ field }}
+                            {{ field(class_=input_classes|join(' ')) }}
                             {% if valid_field and linebreaks %}<br>{% endif %}
                             {% if field.errors %}
                                 {{ wtform_errors_field(field.label, field.errors, bg=False) }}
