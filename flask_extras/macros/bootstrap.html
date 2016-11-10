@@ -95,3 +95,26 @@
         </div>
     {% endfor %}
 {%- endmacro %}
+
+
+{% macro bs3_breadcrumb(bcrumbs) %}
+{#
+    Generate bs3 style breadcrumbs using a dynamic breadcrumbs object.
+    (Most likely from something like flask-breadcrumbs.)
+    Usage:
+    {{ bs3_breadcrumb(breadcrumbs) }}
+#}
+    {% if bcrumbs %}
+    <ol class="breadcrumb">
+        {%- for bcrumb in bcrumbs -%}
+            {% if not loop.last %}
+            <li>
+                <a href="{{ bcrumb.url }}">{{ bcrumb.text }}</a>
+            </li>
+            {% else %}
+                <li class="active">{{ bcrumb.text }}</li>
+            {% endif %}
+        {%- endfor -%}
+    </ol>
+    {% endif %}
+{% endmacro %}
