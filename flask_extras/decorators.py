@@ -2,7 +2,10 @@
 
 from functools import wraps
 
-from flask import request
+from flask import (
+    abort,
+    request,
+)
 
 
 def require_headers(headers=[]):
@@ -110,6 +113,24 @@ def require_form(values=[]):
                         raise ValueError(
                             'Missing required form '
                             'field(s): {}'.format(list(diff)))
+            return func(*args, **kwargs)
+        return inner
+    return outer
+
+
+def xhr_only(status_code=415):
+    """Asssure request is XHR only.
+
+    @xhr_only()
+    def view():
+        pass
+    """
+    def outer(func, *args, **kwargs):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            if not request.is_xhr:
+                # Default to status "unsupported media type".
+                abort(status_code)
             return func(*args, **kwargs)
         return inner
     return outer
