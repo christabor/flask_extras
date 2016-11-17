@@ -46,62 +46,62 @@ client = app.test_client()
 
 
 class DecoratorTest(unittest.TestCase):
-    """All tests for title function."""
+    """Test class for function."""
 
 
-class XhsTest(DecoratorTest):
-    """All tests for title function."""
+class XhrTest(DecoratorTest):
+    """Test class for function."""
 
     def test_invalid_xhr_decorator(self):
-        """Test the function with None argument."""
+        """Test expected failure of function."""
         with app.app_context():
             res = client.get('/xhr')
             self.assertEqual(res.status_code, 415)
 
     def test_invalid_xhr_custom_decorator(self):
-        """Test the function with None argument."""
+        """Test expected success of function."""
         with app.app_context():
             res = client.get('/xhr-custom')
             self.assertEqual(res.status_code, 400)
 
 
 class RequireArgsTest(DecoratorTest):
-    """All tests for title function."""
+    """Test class for function."""
 
     def test_invalid_require_args_decorator(self):
-        """Test the function with None argument."""
+        """Test expected failure of function."""
         with self.assertRaises(ValueError):
             with app.app_context():
                 client.get('/args')
 
     def test_valid_require_args_decorator(self):
-        """Test the function with None argument."""
+        """Test expected success of function."""
         with app.app_context():
             res = client.get('/args?foo=1&bar=1')
             self.assertEqual(res.status_code, 200)
 
 
 class RequireCookiesTest(DecoratorTest):
-    """All tests for title function."""
+    """Test class for function."""
 
     def test_invalid_require_cookies_decorator(self):
-        """Test the function with None argument."""
+        """Test expected failure of function."""
         with self.assertRaises(ValueError):
             with app.app_context():
                 client.get('/cookies')
 
 
 class RequireHeadersTest(DecoratorTest):
-    """All tests for title function."""
+    """Test class for function."""
 
     def test_invalid_require_headers_decorator(self):
-        """Test the function with None argument."""
+        """Test expected failure of function."""
         with self.assertRaises(ValueError):
             with app.app_context():
                 client.get('/headers')
 
     def test_valid_require_headers_decorator(self):
-        """Test the function with None argument."""
+        """Test expected success of function."""
         with app.app_context():
             res = client.get('/headers', headers={'X-Foo': 'Foo'})
             self.assertEqual(res.status_code, 200)
