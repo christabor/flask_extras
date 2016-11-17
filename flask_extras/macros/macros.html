@@ -31,6 +31,9 @@
         <dt>foo</dt>
         <dd>bar</dd>
     </dl>
+
+    Or use a namedtuple by specifying `asdict`:
+    {{ dict_list_dl(namedtuple, asdict=True) }}
 #}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <dl class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
@@ -53,8 +56,8 @@
         <li><strong>foo</strong>: bar</li>
     </ul>
 
-    namedtuple support:
-    {{ dict2list(mytuple, asdict=True) }}
+    Or use a namedtuple by specifying `asdict`:
+    {{ dict_list_dl(namedtuple, asdict=True) }}
 #}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <{{ type }}>
@@ -78,6 +81,9 @@
 
     {{ dict2labels({'foo': 'danger'}, aslist=False) }}
     <span class="label label-danger">foo</span>
+
+    Or wrap it in an html list by specifying `aslist`:
+    {{ dict_list_dl(dict2labels, aslist=True) }}
 #}
 {% if aslist %}<ul class="list-unstyled">{% endif %}
     {% for k, label in data.items() %}
@@ -106,6 +112,9 @@
         <li>747</li>
         <li>John Deere</li>
     </ul>
+
+    Change alignment to left or right by specifying `icondir`:
+    {{ list2list(['Toyota'], icons={'Toyota': ['car']}, icondir='left') }}
 #}
 <{{ type }} class="{{ apply_classes(classes) }}">
     {% for item in data %}
@@ -130,9 +139,11 @@
 
 
 {% macro dictlist2nav(data, type='ul', filterkeys=[], filtervals=[], classes=[], data_attrs=[]) %}
-{# Make a list of links with nav element.
+{#
+    Make a list of links with nav element.
     Format must be a list of dictionaries.
-    Supports *one* level of nesting. #}
+    Supports *one* level of nesting.
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <nav class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <{{ type }}>
@@ -149,8 +160,10 @@
 
 
 {% macro dictlist2dropdown(data, name=None, filterkeys=[], filtervals=[], classes=[], data_attrs=[], asdict=False) %}
-{# Make a dropdown element.
-    Format must be a list of dictionaries. #}
+{#
+    Make a dropdown element.
+    Format must be a list of dictionaries.
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <select {% if name %}name="{{ name }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
@@ -165,8 +178,10 @@
 
 
 {% macro list2dropdown(data, filtervals=[], classes=[], data_attrs=[]) %}
-{# Make a dropdown element.
-    Format must be a list. Value and text are the same. #}
+{#
+    Make a dropdown element.
+    Format must be a list. Value and text are the same.
+#}
 <select class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
         {% if item not in filtervals %}
@@ -180,8 +195,10 @@
 {% macro dictlist2checkboxes(data, fieldset_class='fieldset-group',
                              filterkeys=[], filtervals=[], data_attrs=[],
                              asdict=False) %}
-{# Make a checkbox group, where keys are input names, and values are labels.
-    Format must be a list of dictionaries. #}
+{#
+    Make a checkbox group, where keys are input names, and values are labels.
+    Format must be a list of dictionaries.
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <fieldset class="{{ fieldset_class }}" {{ apply_dattrs(data_attrs) }}>
     {% for item in data %}
@@ -207,7 +224,9 @@
                        asdict=False
                        )
 -%}
-{# Create table from a list of objects (class instantiations). Also add links for primary keys if specified. #}
+{#
+    Create table from a list of objects (class instantiations). Also add links for primary keys if specified.
+#}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
 <table
     class="{{ apply_classes(classes) }}"
@@ -262,6 +281,13 @@
 
 
 {% macro wtform_errors_field(field, errors, bg=True) -%}
+{#
+    Specify an error field list for a given field and its errors.
+    Usage:
+    {{ wtform_errors_field(<Field>, <FieldErrors>) }}
+    Disable or enable coloring with `bg`:
+    {{ wtform_errors_field(<Field>, <FieldErrors>, bg=False) }}
+#}
     {% if bg %}<div class="alert alert-danger">{% endif %}
         <p class="{{ 'text-danger' if not bg else '' }}"><strong>Error(s) for '{{ field }}': </strong></p>
         <ul class="{{ 'text-danger' if not bg else '' }}">
@@ -274,7 +300,11 @@
 
 
 {% macro wtform_errors(formobj) -%}
-{# Show a list of form errors based on a given wtform instance. #}
+{#
+    Show a list of form errors based on a given wtform instance.
+    Usage:
+    {{ wtform_errors(<FormObj>) }}
+#}
 {% if formobj.errors %}
     {% for field, errors in formobj.errors.items() %}
         {{ wtform_errors_field(field, errors) }}
@@ -301,7 +331,30 @@
                      field_macros={}
                      )
 -%}
-    <form action="{{ action }}" method="{{ method }}"
+{#
+    Generate an entire wtform object with layout options and many customization options.
+    Usage:
+    {{
+        wtform_form(
+            <FormObj>,
+            action=url_for('myapp.index'),
+            method='POST',
+            classes=['form', 'form-inline'],
+            input_classes=['input-lg', 'form-control'],
+            btn_text='Go',
+            formid='myform',
+            horizontal=True,
+            align='right',
+            field_macros={
+                'field1': myfield1macro,
+                'field2': myfield2macro,
+            }
+        )
+    }}
+
+    Field macros can be used to customized individual fields however you like, given a macro.
+#}
+<form action="{{ action }}" method="{{ method }}"
     class="{{ apply_classes(classes) }}"
     {% if enctype %}
         enctype="{{ enctype }}"
@@ -363,10 +416,9 @@
 
 
 {%- macro recurse_dictlist(val, type='ul', classes=[], data_attrs=[]) %}
-    {#
-        Uses the jinja2 recursive looping to recurse over a dictionary and display
-        as a list (ordered or unordered), or display a default value otherwise.
-    #}
+{#
+    Uses the jinja2 recursive looping to recurse over a dictionary and display as a list (ordered or unordered), or display a default value otherwise.
+#}
     {% if val is mapping %}
         <{{ type }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
             {% for k, v in val.items() recursive %}
