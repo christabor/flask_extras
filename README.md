@@ -41,7 +41,7 @@ Many more macros are available. You can use them like so:
 {% from 'macros.html' import list_group, objects2table %}
 ```
 
-See [macros](macros.md) page for more details.
+For the most comprehensive docs, check out each [macro](flask_extras/macros/). Comment "docstrings" are inline using jinja2 comments (these are not rendered in your html).
 
 ### Statuses
 
