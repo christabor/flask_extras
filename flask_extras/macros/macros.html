@@ -332,7 +332,18 @@
                      )
 -%}
 {#
-    Generate an entire wtform object with layout options and many customization options.
+    Generate an entire wtform object with layout options and many customization options. Options include:
+    - Error handling/styling
+    - Horizontal or vertical layout
+    - Per-field macro customization
+    - Per-field styling
+    - Data-attributes, classes, ids
+    - Automatically add "?" to BooleanFields if `questionize` is set.
+    - Add a button wrapper for styling
+    - Add reset button
+    - Wrap in fieldset/legend option
+    - Upload support (enctype)
+    - Other standard form options
     Usage:
     {{
         wtform_form(
