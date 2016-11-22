@@ -62,7 +62,7 @@ class MultiStepWizard(Form):
             curr_step = int(kwargs.pop('curr_step'))
         if curr_step > len(self.__forms__):
             curr_step = 1
-        self.set_step(curr_step)
+        self.step = curr_step
         # Store forms in a dunder because we want to avoid conflicts
         # with any WTForm objects or third-party libs.
         self.__forms = []
@@ -140,19 +140,21 @@ class MultiStepWizard(Form):
         """Return the nice name of this form class."""
         return self.active_form.__class__.__name__
 
-    def set_next_step(self):
+    def next_step(self):
         """Set the step number in the session to the next value."""
-        curr_step = session[self.name]['curr_step'] + 1
-        self.curr_step = curr_step
+        next_step = session[self.name]['curr_step'] + 1
+        self.curr_step = next_step
         if self.name in session:
             session[self.name]['curr_step'] += 1
 
-    def get_step(self):
+    @property
+    def step(self):
         """Get the current step."""
         if self.name in session:
             return session[self.name]['curr_step']
 
-    def set_step(self, step_val):
+    @step.setter
+    def step(self, step_val):
         """Set the step number in the session."""
         self.curr_step = step_val
         if self.name in session:
@@ -164,17 +166,17 @@ class MultiStepWizard(Form):
         step, form = self.get_active()
         self._update_session_formdata(form)
         if not form.validate_on_submit():
-            self.set_step(step - 1)
+            self.step = step - 1
             return False
         # Update to next form if applicable.
         if step - 1 < len(self.__forms):
             self.curr_step += 1
             self.active_form = self.__forms[self.curr_step - 1]
-            self.set_next_step()
+            self.next_step()
         # Mark the current step as -1 to indicate it has been
         # fully completed, if the current step is the final step.
         elif step - 1 == len(self.__forms):
-            self.set_step(-1)
+            self.step = -1
         return True
 
     @property
@@ -206,7 +208,7 @@ class MultiStepWizard(Form):
         if self.name not in session:
             return False
         # Make the current step index something unique for being "complete"
-        completed = self.get_step() == -1
+        completed = self.step == -1
         if completed:
             # Reset.
             self.curr_step = 1
