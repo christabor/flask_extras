@@ -146,8 +146,7 @@ class MultiStepWizard(Form):
         step, form = self.get_active()
         self._update_session_formdata(form)
         if not form.validate_on_submit():
-            print('INVALID FORM', form)
-            session[self.name]['curr_step'] = step
+            session[self.name]['curr_step'] = step - 1
             return False
         # Update to next form if applicable.
         if step - 1 < len(self.__forms):
