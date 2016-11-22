@@ -1,8 +1,7 @@
 """Test jinja filters."""
 
-import unittest
-
 from flask import Flask
+import pytest
 
 from flask_extras import FlaskExtras
 from flask_extras import decorators
@@ -45,32 +44,28 @@ def foo_headers():
 client = app.test_client()
 
 
-class DecoratorTest(unittest.TestCase):
-    """Test class for function."""
-
-
-class XhrTest(DecoratorTest):
+class TestXhr:
     """Test class for function."""
 
     def test_invalid_xhr_decorator(self):
         """Test expected failure of function."""
         with app.app_context():
             res = client.get('/xhr')
-            self.assertEqual(res.status_code, 415)
+            assert res.status_code == 415
 
     def test_invalid_xhr_custom_decorator(self):
         """Test expected success of function."""
         with app.app_context():
             res = client.get('/xhr-custom')
-            self.assertEqual(res.status_code, 400)
+            assert res.status_code == 400
 
 
-class RequireArgsTest(DecoratorTest):
+class TestRequireArgs:
     """Test class for function."""
 
     def test_invalid_require_args_decorator(self):
         """Test expected failure of function."""
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             with app.app_context():
                 client.get('/args')
 
@@ -78,25 +73,25 @@ class RequireArgsTest(DecoratorTest):
         """Test expected success of function."""
         with app.app_context():
             res = client.get('/args?foo=1&bar=1')
-            self.assertEqual(res.status_code, 200)
+            assert res.status_code == 200
 
 
-class RequireCookiesTest(DecoratorTest):
+class TestRequireCookies:
     """Test class for function."""
 
     def test_invalid_require_cookies_decorator(self):
         """Test expected failure of function."""
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             with app.app_context():
                 client.get('/cookies')
 
 
-class RequireHeadersTest(DecoratorTest):
+class TestRequireHeaders:
     """Test class for function."""
 
     def test_invalid_require_headers_decorator(self):
         """Test expected failure of function."""
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             with app.app_context():
                 client.get('/headers')
 
@@ -104,4 +99,4 @@ class RequireHeadersTest(DecoratorTest):
         """Test expected success of function."""
         with app.app_context():
             res = client.get('/headers', headers={'X-Foo': 'Foo'})
-            self.assertEqual(res.status_code, 200)
+            assert res.status_code == 200
