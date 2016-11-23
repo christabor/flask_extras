@@ -65,3 +65,94 @@ app.route('/')
 def foo():
     pass
 ```
+
+
+### Forms
+
+#### WTForm Multi-step wizard
+
+A WTForm extension for handling an arbitrary number of separate forms as a single, multi-step, multi-POST wizard. All state and data are handled by apps' session backend. Building forms is just like you're used to -- simple and intuitive. Just inherit the `MultiStepWizard` class and put a `__forms__` key on it, which is just a list of all the forms you want to use. *Note*: list order matters for your form steps.
+
+Usage example:
+
+```python
+from flask.ext.wtf import FlaskForm
+
+from flask_extras.forms.wizard import MultiStepWizard
+
+
+class MultiStepTest1(FlaskForm):
+    field1 = StringField(validators=[validators.DataRequired()],)
+    field2 = IntegerField(validators=[validators.DataRequired()],)
+
+
+class MultiStepTest2(FlaskForm):
+    field3 = StringField(validators=[validators.DataRequired()],)
+    field4 = IntegerField(validators=[validators.DataRequired()],)
+
+
+class MyCoolForm(MultiStepWizard):
+    __forms__ = [
+        MultiStepTest1,
+        MultiStepTest2,
+    ]
+```
+
+and an example route:
+
+```python
+from forms import MyCoolForm
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    curr_step = request.args.get('curr_step')
+    form_kwargs = dict(session_key='mycustomkey')
+    if curr_step is not None:
+        form_kwargs.update(curr_step=curr_step)
+    form = forms.MyCoolForm(**form_kwargs)
+    kwargs = dict(form=form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if form.is_complete():
+                data = form.alldata(combine_fields=True, flush_after=True)
+                flash('Form validated and complete! data = {}'.format(data),
+                      'success')
+                return jsonify(data)
+            else:
+                flash('Great job, but not done yet ({} steps remain!).'.format(form.remaining))
+        else:
+            flash('Invalid form data.', 'error')
+    return render_template('index.html', **kwargs)
+```
+
+and an example html page (using the [wtform_form](flask_extras/macros/macros.html) macro also available):
+
+```html
+{% if form.is_complete() %}
+    <span class="well">Complete!</span>
+{% else %}
+    <ul class="list-inline">
+        {% for step in form.steps %}
+            <li>
+                {% if step == form.curr_step %}
+                    <strong class="lead label label-info">current {{ step }}</strong>
+                {% else %}
+                    <a href="{{ url_for('app.index') }}?curr_step={{ step }}">{{ step }}</a>
+                {% endif %}
+                {% if not loop.last %}
+                    &nbsp;&nbsp;/
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {{ wtform_form(form,
+        classes=['form', 'form-horizontal'],
+        btn_classes=['btn btn-primary', 'btn-lg'],
+        align='right',
+        action=url_for('app.index'),
+        method='POST',
+        reset_btn=False,
+        horizontal=True,
+    ) }}
+{% endif %}
+```
