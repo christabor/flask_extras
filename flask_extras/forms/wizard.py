@@ -95,7 +95,8 @@ class MultiStepWizard(FlaskForm):
             if combine_fields:
                 combined = dict()
                 for formname, data in _alldata.items():
-                    combined.update(data)
+                    if data is not None:
+                        combined.update(data)
                 _alldata = combined
         if flush_after:
             self.flush()
@@ -106,6 +107,11 @@ class MultiStepWizard(FlaskForm):
         """Get the specific forms data."""
         _, form = self.get_active()
         return form.data
+
+    @property
+    def forms(self):
+        """Get all forms."""
+        return self.__forms
 
     def _setup_session(self):
         """Setup session placeholders for later use."""
@@ -121,6 +127,9 @@ class MultiStepWizard(FlaskForm):
 
         This will only be done if the session data exists for a form.
         """
+        # We've already populated these forms, don't do it again.
+        if len(self.__forms) > 0:
+            return
         for form in self.__forms__:
             data = session[self.name]['data'].get(form.__name__)
             init_form = form(**data) if data is not None else form()
