@@ -5,14 +5,14 @@ Creating multi-step forms of arbitrary length is simple and intuitive.
 Example usage:
 
 ```
-from flask.ext.wtf import Form
+from flask.ext.wtf import FlaskForm
 
-class MultiStepTest1(Form):
+class MultiStepTest1(FlaskForm):
     field1 = StringField(validators=[validators.DataRequired()],)
     field2 = StringField(validators=[validators.DataRequired()],)
 
 
-class MultiStepTest2(Form):
+class MultiStepTest2(FlaskForm):
     field3 = StringField(validators=[validators.DataRequired()],)
     field4 = StringField(validators=[validators.DataRequired()],)
 
@@ -26,10 +26,10 @@ class MyCoolForm(MultiStepWizard):
 """
 
 from flask import session
-from flask.ext.wtf import Form
+from flask.ext.wtf import FlaskForm
 
 
-class MultiStepWizard(Form):
+class MultiStepWizard(FlaskForm):
     """Generates a multi-step wizard.
 
     The wizard uses the app specified session backend to store both
@@ -187,12 +187,12 @@ class MultiStepWizard(Form):
     @property
     def total_steps(self):
         """Get the number of steps for this form in a (non-zero index)."""
-        return len(self.__forms) + 1
+        return len(self.__forms)
 
     @property
     def steps(self):
         """Get a list of the steps for iterating in views, html, etc."""
-        return range(1, self.total_steps)
+        return range(1, self.total_steps + 1)
 
     def get_active(self):
         """Get active step."""
