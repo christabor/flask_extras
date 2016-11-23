@@ -5,6 +5,9 @@ python:
   - "2.7"
 language: python
 install:
-    - pip install -U pytest
-    - python setup.py install
+  - pip install -U pytest
+  - python setup.py install
 script: pytest tests
+after_install:
+  - pip install pytest-cov
+  - pytest tests --cov=flask_jsondash tests
