@@ -207,3 +207,8 @@ def test_form_flush(client):
 def test_form_validate_on_submit(client):
     form = MyCoolForm()
     assert not form.validate_on_submit()
+
+
+def test_form_len_override(client):
+    form = MyCoolForm()
+    assert len(form) == 2
