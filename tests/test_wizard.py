@@ -212,3 +212,29 @@ def test_form_validate_on_submit(client):
 def test_form_len_override(client):
     form = MyCoolForm()
     assert len(form) == 2
+
+
+def test_form_iter_override(client):
+    form = MyCoolForm()
+    assert iter(form)
+
+
+def test_form_getitem_override(client):
+    form = MyCoolForm()
+    assert isinstance(form['field1'], StringField)
+    assert form['field1'].name == 'field1'
+    form.validate_on_submit()
+    assert form['field1'].data is None
+
+
+def test_form_wtform_contains(client):
+    form = MyCoolForm()
+    assert 'field1' in form
+    assert 'field2' in form
+    assert 'field3' not in form
+    assert 'field4' not in form
+
+
+def test_errors(client):
+    form = MyCoolForm()
+    assert form.errors == dict()

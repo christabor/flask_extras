@@ -51,6 +51,14 @@ class MultiStepWizard(FlaskForm):
         """Override the len method to emulate standard wtforms."""
         return len(self.__forms)
 
+    def __getitem__(self, key):
+        """Override getitem to emulate standard wtforms."""
+        return self.active_form.__getitem__(key)
+
+    def __contains__(self, item):
+        """Override contains to emulate standard wtforms."""
+        return self.active_form.__contains__(item)
+
     def __init__(self, *args, **kwargs):
         """Do all the required setup for managing the forms."""
         super(MultiStepWizard, self).__init__(*args, **kwargs)
