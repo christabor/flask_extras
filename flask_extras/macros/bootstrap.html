@@ -178,7 +178,7 @@
         })
     }}
 
-    Note: unless active is specified, order will be determined by sorting the keys.
+    Note: unless active is specified, order will be determined by sorting the keys. If you need ordering to be specific to the dictionary key order, use `dictlist2tabs` instead.
 #}
 <div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <!-- Nav tabs -->
@@ -198,6 +198,64 @@
             <div role="tabpanel"
                 class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label }}" {{ apply_dattrs(content_data_attrs) }}>
                 {{ data[label] }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro -%}
+
+
+{%- macro dictlist2tabs(data, filterkeys=[], filtervals=[],
+                    asdict=False,
+                    id='',
+                    data_attrs=[],
+                    active='',
+                    tab_classes=[],
+                    content_classes=[],
+                    tab_data_attrs=[],
+                    content_data_attrs=[],
+                    classes=[]) %}
+{#
+    Make a list of dicts into a bs3 tab group with tab content. Keys are tab labels,
+    and values are tab content.
+    Usage:
+    {{ dictlist2tabs([{"foo": "Some content rendered from html or macro"}]) }}
+
+    You can also customize styles, data-attrs, etc... see function signature for more info.
+
+    You can even pass in content generated from other macros, such as the wtform_form macro:
+
+    {{
+        dictlist2tabs([
+            {"tab1": wtform_form(form1, action=url_for('app.page1'))},
+            {"tab2": wtform_form(form2, action=url_for('app.page2'))},
+        ],
+        id="MyCoolTabContainer",
+        })
+    }}
+
+    Note: unless active is specified, order will be determined by sorting the keys.
+#}
+<div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        {% for item in data %}
+            {% set label = item.keys()[0] %}
+            <li role="presentation"
+                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
+                {{ apply_dattrs(tab_data_attrs) }}>
+                <a href="#{{ label }}" aria-controls="{{ label }}" role="tab" data-toggle="tab">{{ label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        {% for item in data %}
+            {% set label = item.keys()[0] %}
+            <div role="tabpanel"
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label }}" {{ apply_dattrs(content_data_attrs) }}>
+                {{ item[label] }}
             </div>
         {% endfor %}
     </div>
