@@ -1,4 +1,6 @@
-{% macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
+{% from 'macros.html' import apply_dattrs, apply_classes %}
+
+{%- macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
 {#
     Makes a bootstrap list group from a set of dictionaries
     Usage:
@@ -19,10 +21,10 @@
         {% endif %}
     {% endfor %}
 </div>
-{%- endmacro %}
+{% endmacro -%}
 
 
-{% macro bs3_list_group(data, type='ul') %}
+{%- macro bs3_list_group(data, type='ul') %}
 {#
     OL/UL based bootstrap list group
 
@@ -40,10 +42,10 @@
         <li class="list-group-item">{{ val }}</li>
     {% endfor %}
 </{{ type }}>
-{%- endmacro %}
+{% endmacro -%}
 
 
-{% macro bs3_label(value, label_map) -%}
+{%- macro bs3_label(value, label_map) -%}
 {#
     Convert a dict of values with corresponding label types given a value, to
     the appropriate label.
@@ -55,10 +57,10 @@
     <span class="label label-danger">PROD</span>
  #}
 <span class="label label-{{ label_map[value] }}">{{ value }}</span>
-{%- endmacro %}
+{% endmacro -%}
 
 
-{% macro bs3_panel(items, paneltype='default') -%}
+{%- macro bs3_panel(items, paneltype='default') -%}
 {#
     Generate bs3 panels for a dict of titles/body content.
     Usage:
@@ -94,10 +96,10 @@
             </div>
         </div>
     {% endfor %}
-{%- endmacro %}
+{% endmacro -%}
 
 
-{% macro bs3_breadcrumb(bcrumbs) %}
+{%- macro bs3_breadcrumb(bcrumbs) %}
 {#
     Generate bs3 style breadcrumbs using a dynamic breadcrumbs object.
     (Most likely from something like flask-breadcrumbs.)
@@ -117,4 +119,87 @@
         {%- endfor -%}
     </ol>
     {% endif %}
-{% endmacro %}
+{% endmacro -%}
+
+
+{%- macro dict2labels(data, filterkeys=[], filtervals=[], aslist=False) %}
+{#
+    Makes a dict of `name`:`label` into bootstrap labels
+    Usage:
+    {{ dict2labels({'foo': 'danger'}) }}
+    <ul class="list-unstyled">
+        <li><span class="label label-danger">foo</span></li>
+    </ul>
+
+    {{ dict2labels({'foo': 'danger'}, aslist=False) }}
+    <span class="label label-danger">foo</span>
+
+    Or wrap it in an html list by specifying `aslist`:
+    {{ dict_list_dl(dict2labels, aslist=True) }}
+#}
+{% if aslist %}<ul class="list-unstyled">{% endif %}
+    {% for k, label in data.items() %}
+        {% if k not in filterkeys and label not in filtervals %}
+            {% if aslist %}<li>{% endif %}
+                <span class="label label-{{ label }}">{{ label }}</span>
+            {% if aslist %}</li>{% endif %}
+        {% endif %}
+    {% endfor %}
+{% if aslist %}</ul>{% endif %}
+{% endmacro -%}
+
+
+{%- macro dict2tabs(data, filterkeys=[], filtervals=[],
+                    asdict=False,
+                    id='',
+                    data_attrs=[],
+                    active='',
+                    tab_classes=[],
+                    content_classes=[],
+                    tab_data_attrs=[],
+                    content_data_attrs=[],
+                    classes=[]) %}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
+{#
+    Make a dict into a bs3 tab group with tab content. Keys are tab labels,
+    and values are tab content.
+    Usage:
+    {{ dict2tabs({"foo": "Some content rendered from html or macro"}) }}
+
+    You can also customize styles, data-attrs, etc... see function signature for more info.
+
+    You can even pass in content generated from other macros, such as the wtform_form macro:
+
+    {{
+        dict2tabs({
+            "tab1": wtform_form(form, action=url_for('app.page1')),
+            "tab2": wtform_form(form, action=url_for('app.page2')),
+            id="MyCoolTabContainer",
+        })
+    }}
+
+    Note: unless active is specified, order will be determined by sorting the keys.
+#}
+<div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        {% for label in data.keys()|sort %}
+            <li role="presentation"
+                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
+                {{ apply_dattrs(tab_data_attrs) }}>
+                <a href="#{{ label }}" aria-controls="{{ label }}" role="tab" data-toggle="tab">{{ label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        {% for label in data.keys()|sort %}
+            <div role="tabpanel"
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label }}" {{ apply_dattrs(content_data_attrs) }}>
+                {{ data[label] }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro -%}

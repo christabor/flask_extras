@@ -70,33 +70,6 @@
 {%- endmacro %}
 
 
-{% macro dict2labels(data, filterkeys=[], filtervals=[], aslist=False) %}
-{#
-    Makes a dict of `name`:`label` into bootstrap labels
-    Usage:
-    {{ dict2labels({'foo': 'danger'}) }}
-    <ul class="list-unstyled">
-        <li><span class="label label-danger">foo</span></li>
-    </ul>
-
-    {{ dict2labels({'foo': 'danger'}, aslist=False) }}
-    <span class="label label-danger">foo</span>
-
-    Or wrap it in an html list by specifying `aslist`:
-    {{ dict_list_dl(dict2labels, aslist=True) }}
-#}
-{% if aslist %}<ul class="list-unstyled">{% endif %}
-    {% for k, label in data.items() %}
-        {% if k not in filterkeys and label not in filtervals %}
-            {% if aslist %}<li>{% endif %}
-                <span class="label label-{{ label }}">{{ label }}</span>
-            {% if aslist %}</li>{% endif %}
-        {% endif %}
-    {% endfor %}
-{% if aslist %}</ul>{% endif %}
-{%- endmacro %}
-
-
 {% macro list2list(data, type='ul',
                    filtervals=[], icons={},
                    classes=[],
