@@ -157,6 +157,8 @@
                     tab_classes=[],
                     content_classes=[],
                     tab_data_attrs=[],
+                    nav_tab_classes=[],
+                    tab_content_classes=[],
                     content_data_attrs=[],
                     classes=[]) %}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
@@ -182,21 +184,21 @@
 #}
 <div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs {{ apply_classes(nav_tab_classes) }}" role="tablist">
         {% for label in data.keys()|sort %}
             <li role="presentation"
                 class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
                 {{ apply_dattrs(tab_data_attrs) }}>
-                <a href="#{{ label }}" aria-controls="{{ label }}" role="tab" data-toggle="tab">{{ label }}</a>
+                <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content {{ apply_classes(tab_content_classes) }}">
         {% for label in data.keys()|sort %}
             <div role="tabpanel"
-                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label }}" {{ apply_dattrs(content_data_attrs) }}>
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {{ data[label] }}
             </div>
         {% endfor %}
@@ -213,6 +215,8 @@
                     tab_classes=[],
                     content_classes=[],
                     tab_data_attrs=[],
+                    nav_tab_classes=[],
+                    tab_content_classes=[],
                     content_data_attrs=[],
                     classes=[]) %}
 {#
@@ -238,23 +242,23 @@
 #}
 <div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs {{ apply_classes(nav_tab_classes) }}" role="tablist">
         {% for item in data %}
             {% set label = item.keys()[0] %}
             <li role="presentation"
                 class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
                 {{ apply_dattrs(tab_data_attrs) }}>
-                <a href="#{{ label }}" aria-controls="{{ label }}" role="tab" data-toggle="tab">{{ label }}</a>
+                <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content {{ apply_classes(tab_content_classes) }}">
         {% for item in data %}
             {% set label = item.keys()[0] %}
             <div role="tabpanel"
-                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label }}" {{ apply_dattrs(content_data_attrs) }}>
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {{ item[label] }}
             </div>
         {% endfor %}

@@ -7,6 +7,27 @@ class MockClass:
     """Empty class for testing."""
 
 
+class TestCssSelector:
+    """All tests for css_selector function."""
+
+    def test_title_returns_invalid(self):
+        """Test the return value for a valid type."""
+        assert filters.css_selector(123) == 123
+
+    def test_title_returns_str(self):
+        """Test the return value for a valid type."""
+        assert isinstance(filters.css_selector('foo bar'), str)
+
+    def test_basic(self):
+        """Test the argument."""
+        assert filters.css_selector('Hello World') == 'hello_world'
+
+    def test_no_lowercase(self):
+        """Test the argument."""
+        expected = 'Hello_World'
+        assert filters.css_selector('Hello World', lowercase=False) == expected
+
+
 class TestTitle:
     """All tests for title function."""
 

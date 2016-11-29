@@ -3,6 +3,23 @@
 from string import ascii_lowercase
 
 
+def css_selector(string, lowercase=True):
+    """Convert a string to a css selector friendly format.
+
+    Args:
+        word (string): The string to format.
+
+    Returns:
+        word (string): The formatted word.
+    """
+    if not isinstance(string, str):
+        return string
+    string = string.replace(' ', '_')
+    if not lowercase:
+        return string
+    return string.lower()
+
+
 def title(word, capitalize=False):
     """Convert a string to a title format, where the words are capitalized.
 
