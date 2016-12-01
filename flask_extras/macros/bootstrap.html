@@ -152,6 +152,8 @@
 {%- macro dict2tabs(data, filterkeys=[], filtervals=[],
                     asdict=False,
                     id='',
+                    headings=False,
+                    heading_tag='h4',
                     data_attrs=[],
                     active='',
                     tab_classes=[],
@@ -199,6 +201,7 @@
         {% for label in data.keys()|sort %}
             <div role="tabpanel"
                 class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
+                {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
                 {{ data[label] }}
             </div>
         {% endfor %}
@@ -210,6 +213,8 @@
 {%- macro dictlist2tabs(data, filterkeys=[], filtervals=[],
                     asdict=False,
                     id='',
+                    headings=False,
+                    heading_tag='h4',
                     data_attrs=[],
                     active='',
                     tab_classes=[],
@@ -259,6 +264,7 @@
             {% set label = item.keys()[0] %}
             <div role="tabpanel"
                 class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
+                {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
                 {{ item[label] }}
             </div>
         {% endfor %}
