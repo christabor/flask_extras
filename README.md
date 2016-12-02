@@ -2,6 +2,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/christabor/flask_extras/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/christabor/flask_extras/?branch=master)
 [![Code Climate](https://codeclimate.com/github/christabor/flask_extras/badges/gpa.svg)](https://codeclimate.com/github/christabor/flask_extras)
 [![Coverage Status](https://coveralls.io/repos/github/christabor/flask_extras/badge.svg?branch=master)](https://coveralls.io/github/christabor/flask_extras?branch=master)
+[![Code Health](https://landscape.io/github/christabor/flask_extras/master/landscape.svg?style=flat)](https://landscape.io/github/christabor/flask_extras/master)
 
 # Flask Extras
 Assorted useful flask views, blueprints, Jinja2 template filters, and templates/macros.
