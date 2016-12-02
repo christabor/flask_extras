@@ -189,7 +189,9 @@
 
 
 {% macro objects2table(objs, classes=[], data_attrs=[],
-                       filterkeys=[], filtervals=[],
+                       filterkeys=[],
+                       filtervals=[],
+                       filter_headings=[],
                        pk_link=None,
                        handle_links=True,
                        field_macros={},
@@ -210,7 +212,7 @@
                 {% set header_keys = header_macros.keys() %}
                 {% for heading, _ in obj.items() %}
                     {# Allow filtering of headings. #}
-                    {% if heading not in filterkeys %}
+                    {% if heading not in filterkeys and heading not in filter_headings %}
                         {% if heading in header_keys %}
                             <th>{{ header_macros[heading](heading) }}</th>
                         {% else %}
