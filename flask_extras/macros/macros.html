@@ -302,6 +302,7 @@
                      questionize=True,
                      linebreaks=True,
                      button_wrapper=True,
+                     use_fieldset=True,
                      reset_btn_classes=[],
                      field_macros={}
                      )
@@ -348,7 +349,7 @@
     {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
         {% set invalid_fields = ['CSRFTokenField', 'HiddenField'] %}
-        <fieldset class="text-{{ align }}">
+        {% if use_fieldset %}<fieldset class="text-{{ align }}">{% endif %}
             {% if legend %}
                 <legend>{{ legend }}</legend>
             {% endif %}
@@ -388,7 +389,7 @@
                     {% if horizontal %}</div><hr>{% endif %}
                 {% endif %}
             {% endfor %}
-        </fieldset>
+        {% if use_fieldset %}</fieldset>{% endif %}
 
         {% if button_wrapper %}<div class="wtform-form button-wrapper">{% endif %}
             {# Add typical form submit button. #}
