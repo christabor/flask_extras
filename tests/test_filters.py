@@ -1,10 +1,33 @@
 """Test jinja filters."""
 
+import json
 from flask_extras.filters import filters
 
 
 class MockClass:
     """Empty class for testing."""
+
+
+class TestToJson:
+    """All tests for css_selector function."""
+
+    def test_empty_str(self):
+        """Test."""
+        assert filters.to_json('', ) == json.dumps('')
+
+    def test_empty_str_with_indent(self):
+        """Test."""
+        assert filters.to_json('', indent=4) == json.dumps('', indent=4)
+
+    def test_dict(self):
+        """Test."""
+        data = dict(name='bar', id=123)
+        assert filters.to_json(data) == json.dumps(data)
+
+    def test_dict_with_indent(self):
+        """Test."""
+        data = dict(name='bar', id=123)
+        assert filters.to_json(data, indent=4) == json.dumps(data, indent=4)
 
 
 class TestCssSelector:

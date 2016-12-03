@@ -1,16 +1,29 @@
 """Standard filters."""
 
+import json
 from string import ascii_lowercase
+
+
+def to_json(string, **kwargs):
+    """Render json using native python module.
+
+    Args:
+        string (str): The string to format.
+
+    Returns:
+        string (str): The formatted string.
+    """
+    return json.dumps(string, **kwargs)
 
 
 def css_selector(string, lowercase=True):
     """Convert a string to a css selector friendly format.
 
     Args:
-        word (string): The string to format.
+        word (str): The string to format.
 
     Returns:
-        word (string): The formatted word.
+        word (str): The formatted word.
     """
     if not isinstance(string, str):
         return string
@@ -24,10 +37,10 @@ def title(word, capitalize=False):
     """Convert a string to a title format, where the words are capitalized.
 
     Args:
-        word (string): The string to format.
+        word (str): The string to format.
 
     Returns:
-        word (string): The formatted word.
+        word (str): The formatted word.
     """
     def _capitalize(w):
         return '{0}{1}'.format(w[0].upper(), w[1:])
@@ -72,10 +85,10 @@ def questionize_label(word):
     format, e.g. 'Something?' for is_ and Has Something? for has_.
 
     Args:
-        word (string): The string to format.
+        word (str): The string to format.
 
     Returns:
-        word (string): The formatted word.
+        word (str): The formatted word.
     """
     if word is None:
         return ''
