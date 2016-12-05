@@ -80,7 +80,7 @@ def require_args(params=[]):
                             'Missing required arg(s): {}'.format(list(diff)))
                 else:
                     for param, val in params.items():
-                        arg = request.args.get(param, None)
+                        arg = request.args.get(param)
                         if arg is None:
                             raise ValueError(
                                 'Missing param `{}`'.format(param))
