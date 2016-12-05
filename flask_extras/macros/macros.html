@@ -18,7 +18,11 @@
 
     TODO: support dictionary with values
 #}
-{% for attr in data_attrs %}data-{{ attr }} {% endfor %}
+{% if data_attrs is mapping %}
+    {% for attr, val in data_attrs.items() %}data-{{ attr }}='{{ val }}' {% endfor %}
+{% else %}
+    {% for attr in data_attrs %}data-{{ attr }} {% endfor %}
+{% endif %}
 {%- endmacro %}
 
 

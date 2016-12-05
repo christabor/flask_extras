@@ -1,0 +1,5 @@
+# Ignore folder content
+tests/*
+
+# Ignore file in all folders
+tests/**/test_*.py
