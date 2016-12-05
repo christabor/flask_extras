@@ -154,6 +154,7 @@
                     heading_tag='h4',
                     data_attrs=[],
                     active='',
+                    disabled=[],
                     tab_classes=[],
                     content_classes=[],
                     tab_data_attrs=[],
@@ -187,7 +188,7 @@
     <ul class="nav nav-tabs {{ apply_classes(nav_tab_classes) }}" role="tablist">
         {% for label in data.keys()|sort %}
             <li role="presentation"
-                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
+                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}"
                 {{ apply_dattrs(tab_data_attrs) }}>
                 <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
@@ -198,7 +199,7 @@
     <div class="tab-content {{ apply_classes(tab_content_classes) }}">
         {% for label in data.keys()|sort %}
             <div role="tabpanel"
-                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
                 {{ data[label] }}
             </div>
@@ -215,6 +216,7 @@
                     heading_tag='h4',
                     data_attrs=[],
                     active='',
+                    disabled=[],
                     tab_classes=[],
                     content_classes=[],
                     tab_data_attrs=[],
@@ -249,7 +251,7 @@
         {% for item in data %}
             {% set label = item.keys()[0] %}
             <li role="presentation"
-                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %}"
+                class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}"
                 {{ apply_dattrs(tab_data_attrs) }}>
                 <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
@@ -261,7 +263,7 @@
         {% for item in data %}
             {% set label = item.keys()[0] %}
             <div role="tabpanel"
-                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
+                class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
                 {{ item[label] }}
             </div>
