@@ -1,8 +1,10 @@
 {%- macro alert_type(val) %}
+{% set types = ['error', 'warning', 'info', 'success'] %}
 {%- if val == 'error' -%}alert-danger{% endif %}
 {%- if val == 'warning' -%}alert-warning{% endif %}
 {%- if val == 'info' -%}alert-info{% endif %}
 {%- if val == 'success' -%}alert-success{% endif %}
+{%- if val not in types -%}alert-info{% endif %}
 {% endmacro -%}
 
 {%- macro flash_messages() %}
