@@ -153,6 +153,7 @@
                     headings=False,
                     heading_tag='h4',
                     data_attrs=[],
+                    tab_links={},
                     active='',
                     disabled=[],
                     tab_classes=[],
@@ -190,7 +191,8 @@
             <li role="presentation"
                 class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}"
                 {{ apply_dattrs(tab_data_attrs) }}>
-                <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
+                {% set link = '#' + label|css_selector if label not in tab_links else tab_links[label] %}
+                <a href="{{ link }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>
@@ -215,6 +217,7 @@
                     headings=False,
                     heading_tag='h4',
                     data_attrs=[],
+                    tab_links={},
                     active='',
                     disabled=[],
                     tab_classes=[],
@@ -253,7 +256,8 @@
             <li role="presentation"
                 class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}"
                 {{ apply_dattrs(tab_data_attrs) }}>
-                <a href="#{{ label|css_selector }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
+                {% set link = '#' + label|css_selector if label not in tab_links else tab_links[label] %}
+                <a href="{{ link }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>
