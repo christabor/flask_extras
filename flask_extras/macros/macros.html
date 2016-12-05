@@ -13,13 +13,15 @@
 {#
     Apply data-attributes inside an element.
     Usage:
-    <div {{ apply_dattrs(['data-foo', 'data-bar']) }}></div>
+    <div {{ apply_dattrs(['foo', 'bar']) }}></div>
     <div data-foo data-bar></div>
 
-    TODO: support dictionary with values
+    As a dictionary:
+    <div {{ apply_dattrs({'foo': 'bar, 'bar': 'foo'}) }}></div>
+    <div data-foo="bar" data-bar="foo"></div>
 #}
 {% if data_attrs is mapping %}
-    {% for attr, val in data_attrs.items() %}data-{{ attr }}='{{ val }}' {% endfor %}
+    {% for attr, val in data_attrs.items() %}data-{{ attr|camel2hyphen }}='{{ val }}' {% endfor %}
 {% else %}
     {% for attr in data_attrs %}data-{{ attr }} {% endfor %}
 {% endif %}

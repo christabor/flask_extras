@@ -127,15 +127,13 @@
     Makes a dict of `name`:`label` into bootstrap labels
     Usage:
     {{ dict2labels({'foo': 'danger'}) }}
-    <ul class="list-unstyled">
-        <li><span class="label label-danger">foo</span></li>
-    </ul>
+    <span class="label label-danger">foo</span>
 
     {{ dict2labels({'foo': 'danger'}, aslist=False) }}
     <span class="label label-danger">foo</span>
 
     Or wrap it in an html list by specifying `aslist`:
-    {{ dict_list_dl(dict2labels, aslist=True) }}
+    {{ dict2labels({'foo': 'danger'}, aslist=True) }}
 #}
 {% if aslist %}<ul class="list-unstyled">{% endif %}
     {% for k, label in data.items() %}

@@ -8,6 +8,30 @@ class MockClass:
     """Empty class for testing."""
 
 
+class TestCamel2Hyphen:
+    """All tests for camel2hyphen function."""
+
+    def test_empty_str(self):
+        """Test."""
+        assert filters.camel2hyphen('', ) == ''
+
+    def test_valid_single_upper_first(self):
+        """Test."""
+        assert filters.camel2hyphen('CamelCase', ) == 'camel-case'
+
+    def test_valid_three_hyphen(self):
+        """Test."""
+        assert filters.camel2hyphen('bCamelCase', ) == 'b-camel-case'
+
+    def test_valid_repeating_upper(self):
+        """Test."""
+        assert filters.camel2hyphen('bCamelCASE', ) == 'b-camel-case'
+
+    def test_valid_nubers(self):
+        """Test."""
+        assert filters.camel2hyphen('bCamelCASE123', ) == 'b-camel-case123'
+
+
 class TestToJson:
     """All tests for css_selector function."""
 

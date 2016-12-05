@@ -1,7 +1,25 @@
 """Standard filters."""
 
+import re
+
 import json
 from string import ascii_lowercase
+
+
+def camel2hyphen(string, **kwargs):
+    """Convert a camelCaseString into a hyphenated one.
+
+    Args:
+        string (str): The string to format.
+
+    Returns:
+        string (str): The formatted string.
+    """
+    # CREDIT: http://stackoverflow.com/questions/1175208/
+    # elegant-python-function-to-convert-camelcase-to-snake-case
+    # (modified to use hyphen instead of underscores.)
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', string)
+    return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
 
 
 def to_json(string, **kwargs):
