@@ -1,14 +1,28 @@
 """Filters for working with data structures, munging, etc..."""
 
 
+def filter_list(lst, vals):
+    """Filter a list by vals.
+
+    Args:
+        lst (dict): The dictionary to filter.
+
+    Returns:
+        string (dict): The filtered dict.
+    """
+    if any([not lst, not isinstance(lst, list), not isinstance(vals, list)]):
+        return lst
+    return list(set(lst).difference(set(vals)))
+
+
 def filter_vals(obj, vals):
     """Filter a dictionary by values.
 
     Args:
-        string (dict): The dictionary to filter.
+        obj (dict): The dictionary to filter.
 
     Returns:
-        string (dict): The filtered dict.
+        obj (dict): The filtered dict.
     """
     if obj is None or not isinstance(vals, list):
         return obj
@@ -24,10 +38,10 @@ def filter_keys(obj, keys):
     """Filter a dictionary by keys.
 
     Args:
-        string (dict): The dictionary to filter.
+        obj (dict): The dictionary to filter.
 
     Returns:
-        string (dict): The filtered dict.
+        obj (dict): The filtered dict.
     """
     if obj is None or not isinstance(keys, list):
         return obj

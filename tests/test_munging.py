@@ -69,3 +69,35 @@ class TestFilterKeys:
         """Test function."""
         d = dict(foo='bar', bar='foo')
         assert munging.filter_keys(d, ['baz']) == d
+
+
+class TestFilterList:
+    """All tests for filter_list function."""
+
+    def test_title_returns_invalid_first(self):
+        """Test function."""
+        assert munging.filter_list([], None) == []
+
+    def test_title_returns_invalid_second(self):
+        """Test function."""
+        assert munging.filter_list(None, []) is None
+
+    def test_title_returns_invalid_both(self):
+        """Test function."""
+        assert munging.filter_list(None, None) is None
+
+    def test_title_returns_invalid_dict(self):
+        """Test function."""
+        assert munging.filter_list(dict(), []) == dict()
+
+    def test_title_returns_valid_filtered_empty(self):
+        """Test function."""
+        assert munging.filter_list([], ['foo']) == []
+
+    def test_title_returns_valid_filtered(self):
+        """Test function."""
+        assert munging.filter_list(['foo', 'bar'], ['bar']) == ['foo']
+
+    def test_title_returns_valid_filtered_invalid_val(self):
+        """Test function."""
+        assert munging.filter_list(['foo', 'bar'], ['baz']) == ['foo', 'bar']
