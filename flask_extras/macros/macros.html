@@ -377,41 +377,44 @@
                 <legend>{{ legend }}</legend>
             {% endif %}
             {% for field in formobj %}
-                {% if field.name in field_macros.keys() %}
-                    {{ field_macros[field.name](field) }}
-                {% else %}
-                    {% set valid_field = field.type not in invalid_fields %}
-                    {% if horizontal %}<div class="row">{% endif %}
-                    {# Only show labels and descriptions if they are normal fields. #}
-                    {% if wrap_inputs %}<div class="input-wrapper-{{ field.name }}">{% endif %}
-                    {% if valid_field %}
-                        {% if horizontal %}<div class="col-md-4">{% endif %}
-                        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
-                        {% if field.description %}
-                            {% if horizontal and linebreaks %}<br>{% endif %}
-                            <small>{{ field.description }}</small>
-                        {% endif %}{# end `if field.description` #}
-                        {% if field.flags.required %}
-                            {% if horizontal and linebreaks %}<br>{% endif %}
-                            <small class="text-danger">* Required</small>
-                            {% if linebreaks %}<br>{% endif %}
-                        {% endif %}{# end `if field.flags.required` #}
-                        {% if horizontal %}</div>{% endif %}
-                    {% endif %}{# end `if valid_field` #}
-                        {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
-                        {% if horizontal %}
-                            <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
-                        {% endif %}{# end `if horizontal` #}
+                {% set use_field_macro = field.name in field_macros.keys() %}
+                {% set valid_field = field.type not in invalid_fields %}
+                {% if horizontal %}<div class="row">{% endif %}
+                {# Only show labels and descriptions if they are normal fields. #}
+                {% if wrap_inputs %}<div class="input-wrapper-{{ field.name }}">{% endif %}
+                {% if valid_field %}
+                    {% if horizontal %}<div class="col-md-4">{% endif %}
+                    {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
+                    {% if field.description %}
+                        {% if horizontal and linebreaks %}<br>{% endif %}
+                        <small>{{ field.description }}</small>
+                    {% endif %}{# end `if field.description` #}
+                    {% if field.flags.required %}
+                        {% if horizontal and linebreaks %}<br>{% endif %}
+                        <small class="text-danger">* Required</small>
+                        {% if linebreaks %}<br>{% endif %}
+                    {% endif %}{# end `if field.flags.required` #}
+                    {% if horizontal %}</div>{% endif %}
+                {% endif %}{# end `if valid_field` #}
+                    {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
+                    {% if horizontal %}
+                        <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+                    {% endif %}{# end `if horizontal` #}
+
+                        {% if use_field_macro %}
+                            {{ field_macros[field.name](field) }}
+                        {% else %}
                             {{ field(class_=input_classes|join(' ')) }}
-                            {% if valid_field and linebreaks %}<br>{% endif %}
-                            {% if field.errors %}
-                                {{ wtform_errors_field(field.label, field.errors, bg=False) }}
-                            {% endif %}
-                        {% if horizontal %}</div>{% endif %}
+                        {% endif %}
+
                         {% if valid_field and linebreaks %}<br>{% endif %}
-                        {% if horizontal and valid_field %}</div>{% endif %}
-                    {% if horizontal %}</div><hr>{% endif %}
-                {% endif %}{# end `if field.name in field_macros.keys()` #}
+                        {% if field.errors %}
+                            {{ wtform_errors_field(field.label, field.errors, bg=False) }}
+                        {% endif %}
+                    {% if horizontal %}</div>{% endif %}
+                    {% if valid_field and linebreaks %}<br>{% endif %}
+                    {% if horizontal and valid_field %}</div>{% endif %}
+                {% if horizontal %}</div><hr>{% endif %}
                 {% if wrap_inputs %}</div>{% endif %}
             {% endfor %}
         {% if use_fieldset %}</fieldset>{% endif %}
