@@ -26,7 +26,7 @@ class MyCoolForm(MultiStepWizard):
 """
 
 from flask import session
-from flask.ext.wtf import FlaskForm
+from flask_wtf import FlaskForm
 
 
 class MultiStepWizard(FlaskForm):
