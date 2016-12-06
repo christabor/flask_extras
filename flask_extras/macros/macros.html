@@ -381,9 +381,14 @@
                 {% set valid_field = field.type not in invalid_fields %}
                 {% if horizontal %}<div class="row">{% endif %}
                 {# Only show labels and descriptions if they are normal fields. #}
-                {% if wrap_inputs %}<div class="input-wrapper-{{ field.name }}">{% endif %}
+                {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
                 {% if valid_field %}
-                    {% if horizontal %}<div class="col-md-4">{% endif %}
+                    {% if horizontal %}
+                        <div class="col-md-4">
+                        {% if wrap_inputs %}
+                            <div class="input-wrapper-{{ field.name }}">
+                        {% endif %}
+                    {% endif %}
                     {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
                     {% if field.description %}
                         {% if horizontal and linebreaks %}<br>{% endif %}
@@ -394,9 +399,21 @@
                         <small class="text-danger">* Required</small>
                         {% if linebreaks %}<br>{% endif %}
                     {% endif %}{# end `if field.flags.required` #}
-                    {% if horizontal %}</div>{% endif %}
+
+                    {% if horizontal %}
+                        </div>
+                        {# If horizontal mode is enabled,
+                            we can't group the fields etc into a single wrapper,
+                            so we apply to each section in each respective column #}
+                        {% if wrap_inputs %}</div>{% endif %}
+                    {% endif %}
                 {% endif %}{# end `if valid_field` #}
-                    {% if horizontal and valid_field %}<div class="col-md-8">{% endif %}
+                    {% if horizontal and valid_field %}
+                        <div class="col-md-8">
+                        {% if wrap_inputs %}
+                            <div class="input-wrapper-{{ field.name }}">
+                        {% endif %}
+                    {% endif %}
                     {% if horizontal %}
                         <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
                     {% endif %}{# end `if horizontal` #}
@@ -413,9 +430,15 @@
                         {% endif %}
                     {% if horizontal %}</div>{% endif %}
                     {% if valid_field and linebreaks %}<br>{% endif %}
-                    {% if horizontal and valid_field %}</div>{% endif %}
+                    {% if horizontal and valid_field %}
+                        </div>
+                        {# If horizontal mode is enabled,
+                            we can't group the fields etc into a single wrapper,
+                            so we apply to each section in each respective column #}
+                        {% if wrap_inputs %}</div>{% endif %}
+                    {% endif %}
                 {% if horizontal %}</div><hr>{% endif %}
-                {% if wrap_inputs %}</div>{% endif %}
+                {% if wrap_inputs and not horizontal %}</div>{% endif %}
             {% endfor %}
         {% if use_fieldset %}</fieldset>{% endif %}
 
