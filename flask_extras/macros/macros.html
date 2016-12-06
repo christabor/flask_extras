@@ -383,18 +383,24 @@
                 {# Only show labels and descriptions if they are normal fields. #}
                 {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
                 {% if valid_field %}
+
                     {% if horizontal %}
                         <div class="col-md-4">
                         {% if wrap_inputs %}
                             <div class="input-wrapper-{{ field.name }}">
                         {% endif %}
                     {% endif %}
-                    {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
-                    {% if field.description %}
+
+                    {% if not use_field_macro %}
+                        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
+                    {% endif %}
+
+                    {% if field.description and not use_field_macro %}
                         {% if horizontal and linebreaks %}<br>{% endif %}
                         <small>{{ field.description }}</small>
                     {% endif %}{# end `if field.description` #}
-                    {% if field.flags.required %}
+
+                    {% if field.flags.required and not use_field_macro %}
                         {% if horizontal and linebreaks %}<br>{% endif %}
                         <small class="text-danger">* Required</small>
                         {% if linebreaks %}<br>{% endif %}
@@ -408,12 +414,14 @@
                         {% if wrap_inputs %}</div>{% endif %}
                     {% endif %}
                 {% endif %}{# end `if valid_field` #}
+
                     {% if horizontal and valid_field %}
                         <div class="col-md-8">
                         {% if wrap_inputs %}
                             <div class="input-wrapper-{{ field.name }}">
                         {% endif %}
                     {% endif %}
+
                     {% if horizontal %}
                         <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
                     {% endif %}{# end `if horizontal` #}
@@ -425,7 +433,7 @@
                         {% endif %}
 
                         {% if valid_field and linebreaks %}<br>{% endif %}
-                        {% if field.errors %}
+                        {% if field.errors and not use_field_macro %}
                             {{ wtform_errors_field(field.label, field.errors, bg=False) }}
                         {% endif %}
                     {% if horizontal %}</div>{% endif %}
