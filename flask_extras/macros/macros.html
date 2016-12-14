@@ -326,6 +326,7 @@
                      use_fieldset=True,
                      reset_btn_classes=[],
                      wrap_inputs=False,
+                     field_classes={},
                      field_macros={}
                      )
 -%}
@@ -428,7 +429,11 @@
                 {% if use_field_macro %}
                     {{ field_macros[field.name](field) }}
                 {% else %}
-                    {{ field(class_=input_classes|join(' ')) }}
+                    {% if field_classes.get(field.name) %}
+                        {{ field(class_=(input_classes + field_classes[field.name])|join(' ')) }}
+                    {% else %}
+                        {{ field(class_=input_classes|join(' ')) }}
+                    {% endif %}
                 {% endif %}
 
                 {% if valid_field and linebreaks and not use_field_macro %}<br>{% endif %}
