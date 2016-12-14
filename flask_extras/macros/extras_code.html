@@ -1,3 +1,5 @@
+{% from 'macros.html' import apply_dattrs, apply_classes %}
+
 {%- macro inline_code(code) %}
     <code>{{ code }}</code>
 {% endmacro -%}
@@ -7,4 +9,55 @@
     <pre class="{{ lang }}">
         <code>{{ code }}</code>
     </pre>
+{% endmacro -%}
+
+
+{%- macro tokenize_code(code, delimiter=' ',
+                        use_pre=True,
+                        use_code=True,
+                        token_classes={},
+                        token_dattrs={},
+                        replacers=[],
+                        wrap_all=True) %}
+{#
+    Convert a code string into a code block with span wrappers for all
+    matching tokens specified. All values in `token_classes` will be used as classes to apply to each token wrapper.
+
+    Tokens are determined by splitting on `delimiter`.
+
+    Unmatched tokens will still be wrapped in a span unless `wrap_all` is False.
+
+    Usage:
+    tokenize_code(
+        'FOO bar BAZ "quux"',
+        delimiter=' ',
+        token_dattrs={'BAZ': 'data-val'}
+        token_classes={'FOO': 'foocls'},
+        replacers=['"'],
+        wrap_all=True,
+    )
+
+    <pre>
+        <code>
+            <span class="foocls">FOO</span>
+            <span>bar</span>
+            <span data-someval>BAZ</span>
+            <span>quux</span>
+        </code>
+    </pre>
+#}
+{% if use_pre %}<pre>{% endif %}
+    {% if use_code %}<code>{% endif %}
+        {% for token in code.split(delimiter) %}
+            {% if wrap_all %}
+                {% set tok = token.strip()|cut(replacers) %}
+                {% set _dattrs = token_dattrs.get(tok, [])%}
+                {% set _classes = token_classes.get(tok, [])%}
+            <span class="{{ apply_classes(_classes) }}" {{ apply_dattrs(_dattrs) }}>
+                {{ tok }}
+            </span>
+            {% endif %}
+        {% endfor %}
+    {% if use_code %}</code>{% endif %}
+{% if use_pre %}</pre>{% endif %}
 {% endmacro -%}
