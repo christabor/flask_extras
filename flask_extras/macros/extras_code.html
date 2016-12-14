@@ -15,6 +15,7 @@
 {%- macro tokenize_code(code, delimiter=' ',
                         use_pre=True,
                         use_code=True,
+                        classes=[],
                         token_classes={},
                         token_dattrs={},
                         replacers=[],
@@ -53,7 +54,7 @@
                 {% set tok = token.strip()|cut(replacers) %}
                 {% set _dattrs = token_dattrs.get(tok, [])%}
                 {% set _classes = token_classes.get(tok, [])%}
-            <span class="{{ apply_classes(_classes) }}" {{ apply_dattrs(_dattrs) }}>
+            <span class="{{ apply_classes(_classes + classes) }}" {{ apply_dattrs(_dattrs) }}>
                 {{ tok }}
             </span>
             {% endif %}
