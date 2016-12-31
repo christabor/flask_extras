@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1f8f45e92a9b4ed1ab5029ee7a0e5534)](https://www.codacy.com/app/dxdstudio/flask_extras?utm_source=github.com&utm_medium=referral&utm_content=christabor/flask_extras&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/christabor/flask_extras.svg?branch=master)](https://travis-ci.org/christabor/flask_extras)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/christabor/flask_extras/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/christabor/flask_extras/?branch=master)
 [![Code Climate](https://codeclimate.com/github/christabor/flask_extras/badges/gpa.svg)](https://codeclimate.com/github/christabor/flask_extras)
