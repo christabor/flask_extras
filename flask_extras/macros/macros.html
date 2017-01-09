@@ -414,7 +414,7 @@
             {% if fieldset_groups %}
                 {% set groups = formobj|group_by(fieldset_groups, 'name') %}
                 {% for label, fields in groups.items() %}
-                    <fieldset>
+                    <fieldset class="fieldset-group-{{ label }}">
                         {% if label != '__unlabeled' %}
                             <legend>{{ label }}</legend>
                         {% endif %}
