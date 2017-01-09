@@ -23,7 +23,7 @@ def readme():
 
 setup(
     name='flask_extras',
-    version='4.0.0',
+    version='4.0.1',
     description=('Assorted useful flask views, blueprints, '
                  'Jinja2 template filters, and templates/macros'),
     long_description=readme(),
