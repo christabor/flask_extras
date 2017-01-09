@@ -327,7 +327,8 @@
                      reset_btn_classes=[],
                      wrap_inputs=False,
                      field_classes={},
-                     field_macros={}
+                     field_macros={},
+                     fieldset_groups={}
                      )
 -%}
 {#
@@ -372,90 +373,31 @@
         enctype="{{ enctype }}"
     {% endif %}
     {{ apply_dattrs(data_attrs) }} role="form" {% if formid %}id="{{ formid }}"{% endif %}>
-        {% set invalid_fields = ['CSRFTokenField', 'HiddenField'] %}
-        {% if use_fieldset %}<fieldset class="text-{{ align }}">{% endif %}
-            {% if legend %}
+        {% if use_fieldset and not fieldset_groups %}<fieldset class="text-{{ align }}">{% endif %}
+            {% if legend and not fieldset_groups %}
                 <legend>{{ legend }}</legend>
             {% endif %}
             {% for field in formobj %}
-                {% set use_field_macro = field.name in field_macros.keys() %}
-                {% set valid_field = field.type not in invalid_fields %}
-                {% if horizontal %}<div class="row">{% endif %}
-                {# Only show labels and descriptions if they are normal fields. #}
-                {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
+                {% set valid_field = field.type not in ['CSRFTokenField', 'HiddenField'] %}
                 {% if valid_field %}
-                    {% if horizontal %}
-                        <div class="col-md-4">
-                        {% if wrap_inputs %}
-                            <div class="input-wrapper-{{ field.name }}">
-                        {% endif %}
-                    {% endif %}
-
-                    {% if not use_field_macro %}
-                        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
-                    {% endif %}
-
-                    {% if field.description and not use_field_macro %}
-                        {% if horizontal and linebreaks %}<br>{% endif %}
-                        <small>{{ field.description }}</small>
-                    {% endif %}{# end `if field.description` #}
-
-                    {% if field.flags.required and not use_field_macro %}
-                        {% if horizontal and linebreaks %}<br>{% endif %}
-                        <small class="text-danger">* Required</small>
-                        {% if linebreaks %}<br>{% endif %}
-                    {% endif %}{# end `if field.flags.required` #}
-
-                    {% if horizontal %}
-                        </div>
-                        {# If horizontal mode is enabled,
-                            we can't group the fields etc into a single wrapper,
-                            so we apply to each section in each respective column #}
-                        {% if wrap_inputs %}</div>{% endif %}
-                    {% endif %}
-                {% endif %}{# end `if valid_field` #}
-
-                {% if horizontal and valid_field %}
-                    <div class="col-md-8">
-                    {% if wrap_inputs %}
-                        <div class="input-wrapper-{{ field.name }}">
-                    {% endif %}
-                {% endif %}
-
-                {% if horizontal %}
-                    <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
-                {% endif %}{# end `if horizontal` #}
-
-                {% if use_field_macro %}
-                    {{ field_macros[field.name](field) }}
+                {{ _wtform_field(
+                    field,
+                    input_classes=input_classes,
+                    horizontal=horizontal,
+                    align=align,
+                    questionize=questionize,
+                    linebreaks=linebreaks,
+                    wrap_inputs=wrap_inputs,
+                    field_classes=field_classes,
+                    field_macros=field_macros,
+                    fieldset_groups=fieldset_groups,
+                    )
+                }}
                 {% else %}
-                    {% if field_classes.get(field.name) %}
-                        {{ field(class_=(input_classes + field_classes[field.name])|join(' ')) }}
-                    {% else %}
-                        {{ field(class_=input_classes|join(' ')) }}
-                    {% endif %}
+                    {{ field }}
                 {% endif %}
-
-                {% if valid_field and linebreaks and not use_field_macro %}<br>{% endif %}
-                {% if field.errors and not use_field_macro %}
-                    {{ wtform_errors_field(field.label, field.errors, bg=False) }}
-                {% endif %}
-
-                {% if horizontal %}</div>{% endif %}
-                {% if valid_field and linebreaks and not use_field_macro %}<br>{% endif %}
-
-                {% if horizontal and valid_field %}
-                    </div>
-                    {# If horizontal mode is enabled,
-                        we can't group the fields etc into a single wrapper,
-                        so we apply to each section in each respective column #}
-                    {% if wrap_inputs %}</div>{% endif %}
-                {% endif %}
-
-                {% if horizontal %}</div><hr>{% endif %}
-                {% if wrap_inputs and not horizontal %}</div>{% endif %}
             {% endfor %}
-        {% if use_fieldset %}</fieldset>{% endif %}
+        {% if use_fieldset and not fieldset_groups %}</fieldset>{% endif %}
 
         {% if button_wrapper %}<div class="wtform-form button-wrapper">{% endif %}
             {# Add typical form submit button. #}
@@ -467,6 +409,93 @@
         {% if button_wrapper %}</div>{% endif %}
     </form>
 {%- endmacro %}
+
+
+{# Handle the complex logic inside of `wtform_form` in a separate macro. Not for public use. #}
+{%- macro _wtform_field(field,
+                        input_classes=[],
+                        horizontal=False,
+                        align='left',
+                        questionize=True,
+                        linebreaks=True,
+                        wrap_inputs=False,
+                        field_classes={},
+                        field_macros={},
+                        fieldset_groups={}
+) %}
+    {% set use_field_macro = field.name in field_macros.keys() %}
+
+    {% if horizontal %}<div class="row">{% endif %}
+    {# Only show labels and descriptions if they are normal fields. #}
+    {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
+
+    {% if horizontal %}
+        <div class="col-md-4">
+        {% if wrap_inputs %}
+            <div class="input-wrapper-{{ field.name }}">
+        {% endif %}
+    {% endif %}
+
+    {% if not use_field_macro %}
+        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
+    {% endif %}
+
+    {% if field.description and not use_field_macro %}
+        {% if horizontal and linebreaks %}<br>{% endif %}
+        <small>{{ field.description }}</small>
+    {% endif %}{# end `if field.description` #}
+
+    {% if field.flags.required and not use_field_macro %}
+        {% if horizontal and linebreaks %}<br>{% endif %}
+        <small class="text-danger">* Required</small>
+        {% if linebreaks %}<br>{% endif %}
+    {% endif %}{# end `if field.flags.required` #}
+
+    {% if horizontal %}
+        </div>
+        {# If horizontal mode is enabled,
+            we can't group the fields etc into a single wrapper,
+            so we apply to each section in each respective column #}
+        {% if wrap_inputs %}</div>{% endif %}
+        <div class="col-md-8">
+        {% if wrap_inputs %}
+            <div class="input-wrapper-{{ field.name }}">
+        {% endif %}
+    {% endif %}
+
+    {% if horizontal %}
+        <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+    {% endif %}{# end `if horizontal` #}
+
+    {% if use_field_macro %}
+        {{ field_macros[field.name](field) }}
+    {% else %}
+        {% if field_classes.get(field.name) %}
+            {{ field(class_=(input_classes + field_classes[field.name])|join(' ')) }}
+        {% else %}
+            {{ field(class_=input_classes|join(' ')) }}
+        {% endif %}
+    {% endif %}
+
+    {% if linebreaks and not use_field_macro %}<br>{% endif %}
+    {% if field.errors and not use_field_macro %}
+        {{ wtform_errors_field(field.label, field.errors, bg=False) }}
+    {% endif %}
+
+    {% if horizontal %}</div>{% endif %}
+    {% if linebreaks and not use_field_macro %}<br>{% endif %}
+
+    {% if horizontal %}
+        </div>
+        {# If horizontal mode is enabled,
+            we can't group the fields etc into a single wrapper,
+            so we apply to each section in each respective column #}
+        {% if wrap_inputs %}</div>{% endif %}
+    {% endif %}
+
+    {% if horizontal %}</div><hr>{% endif %}
+    {% if wrap_inputs and not horizontal %}</div>{% endif %}
+{% endmacro -%}
 
 
 {%- macro recurse_dictlist(val, type='ul', classes=[], data_attrs=[]) %}
