@@ -2,9 +2,12 @@
 
 from __future__ import absolute_import
 
-from inspect import getmembers, isfunction
+from inspect import getmembers
+from inspect import isfunction
 
-from . import filters, random
+from . import filters
+from . import munging
+from . import random
 
 
 def _get_funcs(module):
@@ -49,6 +52,7 @@ def config_flask_filters(app):
     # Manually register all module functions that were imported.
     app = _inject_filters(app, _get_funcs(filters))
     app = _inject_filters(app, _get_funcs(random))
+    app = _inject_filters(app, _get_funcs(munging))
     return app
 
 
@@ -69,6 +73,5 @@ def _inject_template_globals(app, funcs):
 
 def config_flask_globals(app):
     """Configure a Flask app to use all functions as template_globals."""
-    app = _inject_template_globals(app, _get_funcs(filters))
     app = _inject_template_globals(app, _get_funcs(filters))
     return app

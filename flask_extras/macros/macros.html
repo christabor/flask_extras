@@ -346,6 +346,7 @@
     - Upload support (enctype)
     - Other standard form options
     - All the other magic that comes from wtforms (descriptions, help text, defaults, error handling, etc...)
+    - Automatically group fields by a various fieldsets (see below)
     Usage:
     {{
         wtform_form(
@@ -361,7 +362,13 @@
             field_macros={
                 'field1': myfield1macro,
                 'field2': myfield2macro,
-            }
+            },
+            fieldset_groups={
+                'Field1': 'group1',
+                'Field2': 'group1',
+                'Field3': 'group1',
+                'Field4': 'group2',
+            },
         )
     }}
 
@@ -377,26 +384,51 @@
             {% if legend and not fieldset_groups %}
                 <legend>{{ legend }}</legend>
             {% endif %}
-            {% for field in formobj %}
+
+            {# This macro is only to DRY up the usage in the below loop. #}
+            {%- macro _load_field(field) %}
                 {% set valid_field = field.type not in ['CSRFTokenField', 'HiddenField'] %}
                 {% if valid_field %}
-                {{ _wtform_field(
-                    field,
-                    input_classes=input_classes,
-                    horizontal=horizontal,
-                    align=align,
-                    questionize=questionize,
-                    linebreaks=linebreaks,
-                    wrap_inputs=wrap_inputs,
-                    field_classes=field_classes,
-                    field_macros=field_macros,
-                    fieldset_groups=fieldset_groups,
-                    )
-                }}
+                    {{ _wtform_field(
+                        field,
+                        input_classes=input_classes,
+                        horizontal=horizontal,
+                        align=align,
+                        questionize=questionize,
+                        linebreaks=linebreaks,
+                        wrap_inputs=wrap_inputs,
+                        field_classes=field_classes,
+                        field_macros=field_macros,
+                        fieldset_groups=fieldset_groups,
+                        )
+                    }}
                 {% else %}
                     {{ field }}
                 {% endif %}
-            {% endfor %}
+            {% endmacro -%}
+
+            {#
+                Load all fields by groups if fieldset_groups is present,
+                otherwise load as normal iteration.
+            #}
+            {% if fieldset_groups %}
+                {% set groups = formobj|group_by(fieldset_groups, 'name') %}
+                {% for label, fields in groups.items() %}
+                    <fieldset>
+                        {% if label != '__unlabeled' %}
+                            <legend>{{ label }}</legend>
+                        {% endif %}
+                        {% for field in fields %}
+                            {{ _load_field(field) }}
+                        {% endfor %}
+                    </fieldset>
+                {% endfor %}
+            {% else %}
+                {% for field in formobj %}
+                    {{ _load_field(field) }}
+                {% endfor %}
+            {% endif %}
+
         {% if use_fieldset and not fieldset_groups %}</fieldset>{% endif %}
 
         {% if button_wrapper %}<div class="wtform-form button-wrapper">{% endif %}
