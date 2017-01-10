@@ -200,6 +200,7 @@
                        filter_headings=[],
                        pk_link=None,
                        handle_links=True,
+                       id=None,
                        field_macros={},
                        header_macros={},
                        asdict=False
@@ -224,7 +225,7 @@
     If your data is a named tuple, use asdict=True to convert it.
 #}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
-<table
+<table {% if id %}id="{{ id }}"{% endif %}
     class="{{ apply_classes(classes) }}"
     {{ apply_dattrs(data_attrs) }}>
     <thead>
@@ -309,28 +310,32 @@
 {%- endmacro %}
 
 
-{% macro wtform_form(formobj, action='.', method='GET', classes=[],
-                     data_attrs=[], btn_classes=[],
-                     input_classes=[],
-                     uploads=True,
-                     enctype=None,
-                     btn_text='Submit',
-                     formid=None,
-                     reset_btn=True,
-                     submit=True,
-                     legend=None,
-                     horizontal=False,
+{% macro wtform_form(formobj,
+                     action='.',
                      align='left',
-                     questionize=True,
-                     linebreaks=True,
+                     btn_classes=[],
+                     btn_text='Submit',
                      button_wrapper=True,
-                     use_fieldset=True,
-                     reset_btn_classes=[],
-                     wrap_inputs=False,
+                     classes=[],
+                     data_attrs=[],
+                     enctype=None,
                      field_classes={},
                      field_macros={},
-                     fieldset_groups={}
-                     )
+                     fieldset_groups={},
+                     formid=None,
+                     horizontal=False,
+                     input_classes=[],
+                     legend=None,
+                     linebreaks=True,
+                     method='GET',
+                     questionize=True,
+                     reset_btn=True,
+                     reset_btn_classes=[],
+                     submit=True,
+                     uploads=True,
+                     use_fieldset=True,
+                     wrap_inputs=False
+    )
 -%}
 {#
     Generate an entire wtform object with layout options and many customization options. Options include:
@@ -391,7 +396,7 @@
             {% endif %}
 
             {# This macro is only to DRY up the usage in the below loop. #}
-            {%- macro _load_field(field) %}
+            {%- macro _load_field(field, last=False) %}
                 {% set valid_field = field.type not in ['CSRFTokenField', 'HiddenField'] %}
                 {% if valid_field %}
                     {{ _wtform_field(
@@ -405,6 +410,7 @@
                         field_classes=field_classes,
                         field_macros=field_macros,
                         fieldset_groups=fieldset_groups,
+                        last=last,
                         )
                     }}
                 {% else %}
@@ -424,13 +430,13 @@
                             <legend>{{ label }}</legend>
                         {% endif %}
                         {% for field in fields %}
-                            {{ _load_field(field) }}
+                            {{ _load_field(field, last=loop.last) }}
                         {% endfor %}
                     </fieldset>
                 {% endfor %}
             {% else %}
                 {% for field in formobj %}
-                    {{ _load_field(field) }}
+                    {{ _load_field(field, last=loop.last) }}
                 {% endfor %}
             {% endif %}
 
@@ -460,7 +466,8 @@
                         wrap_inputs=False,
                         field_classes={},
                         field_macros={},
-                        fieldset_groups={}
+                        fieldset_groups={},
+                        last=False
 ) %}
     {% set use_field_macro = field.name in field_macros.keys() %}
 
@@ -532,7 +539,10 @@
         {% if wrap_inputs %}</div>{% endif %}
     {% endif %}
 
-    {% if horizontal %}</div><hr>{% endif %}
+    {% if horizontal %}
+        </div>
+        {% if not last %}<hr>{% endif %}
+    {% endif %}
     {% if wrap_inputs and not horizontal %}</div>{% endif %}
 {% endmacro -%}
 
