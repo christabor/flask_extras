@@ -1,6 +1,7 @@
 """Test jinja filters."""
 
 import json
+
 from flask_extras.filters import filters
 
 
@@ -33,7 +34,7 @@ class TestCamel2Hyphen:
 
 
 class TestToJson:
-    """All tests for css_selector function."""
+    """All tests for to_json function."""
 
     def test_empty_str(self):
         """Test."""
@@ -67,11 +68,11 @@ class TestCssSelector:
 
     def test_basic(self):
         """Test the argument."""
-        assert filters.css_selector('Hello World') == 'hello_world'
+        assert filters.css_selector('Hello World') == 'hello-world'
 
     def test_no_lowercase(self):
         """Test the argument."""
-        expected = 'Hello_World'
+        expected = 'Hello-World'
         assert filters.css_selector('Hello World', lowercase=False) == expected
 
 

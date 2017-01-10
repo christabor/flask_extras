@@ -3,6 +3,7 @@
 import re
 
 import json
+
 from string import ascii_lowercase
 
 
@@ -45,7 +46,8 @@ def css_selector(string, lowercase=True):
     """
     if not isinstance(string, str):
         return string
-    string = string.replace(' ', '_')
+    string = re.sub(r'[^a-zA-Z0-9]', '-', string)
+    string = re.sub(r'\-{2,}', '-', string)
     if not lowercase:
         return string
     return string.lower()
