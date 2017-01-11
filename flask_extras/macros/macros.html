@@ -329,6 +329,7 @@
                      linebreaks=True,
                      method='GET',
                      questionize=True,
+                     preserve_formfield=True,
                      reset_btn=True,
                      reset_btn_classes=[],
                      submit=True,
@@ -418,6 +419,19 @@
                 {% endif %}
             {% endmacro -%}
 
+            {%- macro _fields(fields) %}
+                {% for field in fields %}
+                    {# Deal with fields utilizing the `FormField` class for grouping subfields. #}
+                    {% if field.type == 'FormField' and not preserve_formfield %}
+                        {% for subfield in field %}
+                            {{ _load_field(subfield, last=loop.last) }}
+                        {% endfor %}
+                    {% else %}
+                        {{ _load_field(field, last=loop.last) }}
+                    {% endif %}
+                {% endfor %}
+            {% endmacro -%}
+
             {#
                 Load all fields by groups if fieldset_groups is present,
                 otherwise load as normal iteration.
@@ -425,19 +439,17 @@
             {% if fieldset_groups %}
                 {% set groups = formobj|group_by(fieldset_groups, 'name') %}
                 {% for label, fields in groups.items() %}
-                    <fieldset class="fieldset-group-{{ label|css_selector }}">
-                        {% if label != '__unlabeled' %}
+                    {% if label != '__unlabeled' %}
+                        <fieldset class="fieldset-group-{{ label|css_selector }}">
                             <legend>{{ label }}</legend>
-                        {% endif %}
-                        {% for field in fields %}
-                            {{ _load_field(field, last=loop.last) }}
-                        {% endfor %}
-                    </fieldset>
+                    {% endif %}
+                    {{ _fields(fields) }}
+                    {% if label != '__unlabeled' %}
+                        </fieldset>
+                    {% endif %}
                 {% endfor %}
             {% else %}
-                {% for field in formobj %}
-                    {{ _load_field(field, last=loop.last) }}
-                {% endfor %}
+                {{ _fields(formobj) }}
             {% endif %}
 
         {% if use_fieldset and not fieldset_groups %}</fieldset>{% endif %}
@@ -483,7 +495,8 @@
     {% endif %}
 
     {% if not use_field_macro and field.type != 'SubmitField' %}
-        {{ field.label }}{% if field.type == 'BooleanField' and questionize %}?{% endif %}
+        {{ field.label }}
+        {% if field.type == 'BooleanField' and questionize %}?{% endif %}
     {% endif %}
 
     {% if field.description and not use_field_macro %}
