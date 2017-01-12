@@ -321,7 +321,7 @@
                      enctype=None,
                      field_classes={},
                      field_macros={},
-                     fieldset_groups={},
+                     fieldset_groups=[],
                      formid=None,
                      horizontal=False,
                      input_classes=[],
@@ -374,12 +374,10 @@
             field_classes={
                 'myfield': ['class1', 'class2'],
             },
-            fieldset_groups={
-                'Field1': 'group1',
-                'Field2': 'group1',
-                'Field3': 'group1',
-                'Field4': 'group2',
-            },
+            fieldset_groups=[
+                ('group1', ('foo1', 'bar1', 'foo2')),
+                ('group2', ('foo3', 'bar2', 'foo3')),
+            ],
         )
     }}
 
@@ -478,7 +476,7 @@
                         wrap_inputs=False,
                         field_classes={},
                         field_macros={},
-                        fieldset_groups={},
+                        fieldset_groups=[],
                         last=False
 ) %}
     {% set use_field_macro = field.name in field_macros.keys() %}

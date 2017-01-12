@@ -1,6 +1,6 @@
 """Filters for working with data structures, munging, etc..."""
 
-from collections import defaultdict
+from collections import OrderedDict
 
 
 def filter_list(lst, vals):
@@ -55,42 +55,40 @@ def filter_keys(obj, keys):
     return newdict
 
 
-def group_by(objs, groups={}, attr='name'):
+def group_by(objs, groups=[], attr='name'):
     """Group a list of objects into a dict grouped by specified keys.
 
     Args:
         objs: A list of objects
-        keys: A dict of keys and their corresponding names to match on.
-        attr: The attr to use to get fields for matching (default: {'name'})
+        keys: A list of 2-tuples where the first index is the group name,
+            and the second key is a tuple of all matches.
+        attr: The attr to use to get fields for matching (default: 'name')
 
     Returns:
-        A grouped dictionary and objects.
-        dict
+        An OrderedDict of grouped items.
 
-    >>> group_by(
-        [obj1, obj2], groups={'name1': 'g1', 'name2': 'g1'}, attr='name')
+    >>> group_by([obj1, obj2],
+                 groups=[('g1', ('name1', 'name2'))], attr='name')
     """
-    grouped = defaultdict(list)
+    grouped = OrderedDict()
+    if not groups or attr is None:
+        return {'__unlabeled': objs}
+    # Initial population since it's not a defaultdict.
+    for ordered_group in groups:
+        label, _ = ordered_group
+        grouped[label] = []
     seen = []
-    group_matches = groups.keys()
-
-    for obj in objs:
-        # Get the attribute by a specified attr (e.g. `foo.name`)
-        obj_label = None
-        if attr is not None and hasattr(obj, attr):
-            obj_label = getattr(obj, attr)
-        # Don't add more than once...
-        if obj_label is not None and obj_label in seen:
-            continue
-        seen.append(obj_label)
-        # If it matches the current attr,
-        # put it in the corresponding group.
-        if obj_label in group_matches:
-            for label, group in groups.items():
-                if obj_label == label:
-                    grouped[group].append(obj)
-        else:
-            # Ensure all fields are present even if they weren't grouped
-            # by the user. Using a special key to group all others by.
-            grouped['__unlabeled'].append(obj)
+    for ordered_group in groups:
+        label, matches = ordered_group
+        for curr in objs:
+            attr_label = getattr(curr, attr) if hasattr(curr, attr) else ''
+            if attr_label in seen:
+                continue
+            if attr_label in matches:
+                grouped[label].append(curr)
+                seen.append(attr_label)
+    # Add unlabeled extras last so order is preserved.
+    grouped['__unlabeled'] = [
+        curr for curr in objs if getattr(curr, attr) not in seen
+    ]
     return grouped
