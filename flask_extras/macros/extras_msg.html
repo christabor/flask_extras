@@ -12,7 +12,9 @@
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert {{ alert_type(category) }}">
-                    <p class="flash">{{ 'Error: ' if category == 'error' else '' }}{{ message }}</p>
+                    <p class="flash">
+                        <strong>{{ 'Error: ' if category == 'error' else '' }}</strong> {{ message }}
+                    </p>
                 </div>
             {% endfor %}
         {% endif %}
