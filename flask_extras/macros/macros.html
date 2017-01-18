@@ -486,7 +486,7 @@
     {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
 
     {% if horizontal %}
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         {% if wrap_inputs %}
             <div class="input-wrapper-{{ field.name }}">
         {% endif %}
@@ -514,7 +514,7 @@
             we can't group the fields etc into a single wrapper,
             so we apply to each section in each respective column #}
         {% if wrap_inputs %}</div>{% endif %}
-        <div class="col-md-8">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
         {% if wrap_inputs %}
             <div class="input-wrapper-{{ field.name }}">
         {% endif %}

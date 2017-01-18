@@ -45,7 +45,7 @@
 {% endmacro -%}
 
 
-{%- macro bs3_label(value, label_map) -%}
+{%- macro bs3_label(value, label_map, text=None) -%}
 {#
     Convert a dict of values with corresponding label types given a value, to
     the appropriate label.
@@ -56,7 +56,7 @@
     Output:
     <span class="label label-danger">PROD</span>
  #}
-<span class="label label-{{ label_map[value] }}">{{ value }}</span>
+<span class="label label-{{ label_map[value] }}">{{ text if text else value }}</span>
 {% endmacro -%}
 
 
