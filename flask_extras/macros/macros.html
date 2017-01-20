@@ -527,11 +527,19 @@
     {% if use_field_macro %}
         {{ field_macros[field.name](field) }}
     {% else %}
+
+        {# Add custom classes if set #}
         {% if field_classes.get(field.name) %}
-            {{ field(class_=(input_classes + field_classes[field.name])|join(' ')) }}
+            {% set _classes = input_classes + field_classes[field.name] %}
         {% else %}
-            {{ field(class_=input_classes|join(' ')) }}
+            {% set _classes = input_classes %}
         {% endif %}
+
+        {# Wrap error around individual field if not using horizontal wrapper #}
+        {% if field.errors %}<div class="has-error">{% endif %}
+        {{ field(class_=_classes|join(' ')) }}
+        {% if field.errors %}</div>{% endif %}
+
     {% endif %}
 
     {% if linebreaks and not use_field_macro %}<br>{% endif %}
