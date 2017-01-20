@@ -483,12 +483,14 @@
 
     {% if horizontal %}<div class="row">{% endif %}
     {# Only show labels and descriptions if they are normal fields. #}
-    {% if wrap_inputs and not horizontal %}<div class="input-wrapper-{{ field.name }}">{% endif %}
+    {% if wrap_inputs and not horizontal %}
+        <span class="input-wrapper-{{ field.name }}">
+    {% endif %}
 
     {% if horizontal %}
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         {% if wrap_inputs %}
-            <div class="input-wrapper-{{ field.name }}">
+            <span class="input-wrapper-{{ field.name }}">
         {% endif %}
     {% endif %}
 
@@ -513,10 +515,10 @@
         {# If horizontal mode is enabled,
             we can't group the fields etc into a single wrapper,
             so we apply to each section in each respective column #}
-        {% if wrap_inputs %}</div>{% endif %}
+        {% if wrap_inputs %}</span>{% endif %}
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
         {% if wrap_inputs %}
-            <div class="input-wrapper-{{ field.name }}">
+            <span class="input-wrapper-{{ field.name }}">
         {% endif %}
     {% endif %}
 
@@ -555,14 +557,14 @@
         {# If horizontal mode is enabled,
             we can't group the fields etc into a single wrapper,
             so we apply to each section in each respective column #}
-        {% if wrap_inputs %}</div>{% endif %}
+        {% if wrap_inputs %}</span>{% endif %}
     {% endif %}
 
     {% if horizontal %}
         </div>
         {% if not last %}<hr>{% endif %}
     {% endif %}
-    {% if wrap_inputs and not horizontal %}</div>{% endif %}
+    {% if wrap_inputs and not horizontal %}</span>{% endif %}
 {% endmacro -%}
 
 
