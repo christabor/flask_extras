@@ -7,13 +7,19 @@
 {%- if val not in types -%}alert-info{% endif %}
 {% endmacro -%}
 
-{%- macro flash_messages() %}
+{%- macro flash_messages(close_btn=True) %}
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert {{ alert_type(category) }}">
+                    {% if close_btn %}
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            &times;
+                        </button>
+                    {% endif %}
                     <p class="flash">
-                        <strong>{{ 'Error: ' if category == 'error' else '' }}</strong> {{ message }}
+                        <strong>{{ category|capitalize }}:</strong>
+                        {{ message }}
                     </p>
                 </div>
             {% endfor %}
