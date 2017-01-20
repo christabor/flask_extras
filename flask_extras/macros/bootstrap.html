@@ -1,5 +1,107 @@
 {% from 'macros.html' import apply_dattrs, apply_classes %}
 
+{% macro modal(id, content,
+               classes=[],
+               close_btns=True,
+               fade=True,
+               footer=None,
+               include_btn=False,
+               include_btn_text='Trigger Modal',
+               title=None
+               )
+%}
+{#
+    Makes a bootstrap modal
+    Usage:
+    {{ modal('someId', 'Some html or text...', title='My Modal') }}
+#}
+{% if include_btn %}
+    <a class="btn btn-primary" data-toggle="modal" href='#{{ id }}'>
+        {{ include_btn_text }}
+    </a>
+{% endif %}
+<div class="modal {{ 'fade' if fade else '' }}" id="{{ id }}">
+    <div class="modal-dialog">
+        <div class="{{ apply_classes(classes + ['modal-content']) }}">
+            <div class="modal-header">
+                {% if close_btns %}
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                {% endif %}
+                {% if title %}
+                    <h4 class="modal-title">{{ title|safe }}</h4>
+                {% endif %}
+            </div>
+            <div class="modal-body">{{ content|safe }}</div>
+            <div class="modal-footer">
+                {% if footer %}
+                    {{ footer|safe }}
+                {% else %}
+                    {% if close_btns %}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary">Submit</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro dict2carousel(id, items,
+                       active=0,
+                       classes=[],
+                       data_attrs=[],
+                       show_arrows=True
+                       )
+%}
+{#
+    Makes a bootstrap carousel
+    Usage:
+    {{ dict2carousel(
+        'someId',
+        [
+            {'content': 'foo1', 'caption': 'foo'},
+            {'content': 'foo2', 'caption': 'bar'},
+            {'content': 'foo3', 'caption': 'baz'},
+        ],
+        active=2)
+    }}
+#}
+<div id="{{ id }}"
+    class="{{ apply_classes(classes + ['carousel', 'slide']) }}"
+    data-ride="carousel" {{ apply_dattrs(data_attrs) }}>
+
+    <ol class="carousel-indicators">
+        {% for i in range(items|length) %}
+            <li data-target="#{{ id }}" data-slide-to="{{ i }}" class="{{ 'active' if i == active else '' }}"></li>
+        {% endfor %}
+    </ol>
+
+    <div class="carousel-inner">
+        {% for item in items %}
+            <div class="item {{ 'active' if loop.index - 1 == active else '' }}">
+                {{ item.content|safe }}
+                <div class="container">
+                    <div class="carousel-caption">
+                        {{ item.caption|safe }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if show_arrows %}
+        <a class="left carousel-control" href="#{{ id }}" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#{{ id }}" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    {% endif %}
+</div>
+{% endmacro %}
+
+
 {%- macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
 {#
     Makes a bootstrap list group from a set of dictionaries
