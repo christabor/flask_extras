@@ -601,6 +601,20 @@
                 {% endif %}
             {% endfor %}
         </{{ type }}>
+    {% elif val|islist %}
+        {# Handle presumed to be jinja2 dictsort formatted items #}
+        <{{ type }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+            {% for tupleval in val recursive %}
+                {% if tupleval|length == 2 %}
+                    {% set k = tupleval[0] %}
+                    {% set v = tupleval[1] %}
+                    <li>
+                        <strong>{{ k }}:</strong>
+                        {{ recurse_dictlist(v, type=type) }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </{{ type }}>
     {% else %}
         {{ val }}
     {% endif %}
