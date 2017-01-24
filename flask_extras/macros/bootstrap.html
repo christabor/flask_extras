@@ -1,5 +1,33 @@
 {% from 'macros.html' import apply_dattrs, apply_classes %}
 
+{% macro progress(percent,
+                  animated=False,
+                  classes=[],
+                  context=None,
+                  min=0,
+                  max=100,
+                  striped=False,
+                  show_percent=True
+    )
+%}
+{#
+    Create a bootstrap progress bar with lots of options.
+
+    Usage:
+    {{ progress(30) }}
+    {{ progress(100, animated=True, striped=True) }}
+    {{ progress(89, context='success') }}
+    {{ progress(89, context='danger') }}
+    {{ progress(89, context='warning') }}
+    {{ progress(89, context='info') }}
+#}
+<div class="{{ apply_classes(classes + ['progress']) }}">
+    <div class="progress-bar {{ 'active' if animated else '' }} {{ 'progress-bar-striped' if striped else '' }} {{ 'progress-bar-' + context if context else '' }}" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="{{ min }}" aria-valuemax="{{ max }}" style="min-width:2em; width: {{ percent }}%">
+        <span class="{{ 'sr-only' if not show_percent else '' }}">{{ percent }}%</span>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro modal(id, content,
                classes=[],
                close_btns=True,
