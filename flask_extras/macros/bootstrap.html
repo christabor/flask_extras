@@ -102,7 +102,14 @@
 {% endmacro %}
 
 
-{%- macro bs3_dictlist_group(data, filterkeys=[], filtervals=[], data_attrs=[], asdict=False) %}
+{%- macro bs3_dictlist_group(data,
+                             classes=[],
+                             filterkeys=[],
+                             filtervals=[],
+                             data_attrs=[],
+                             asdict=False
+                             )
+%}
 {#
     Makes a bootstrap list group from a set of dictionaries
     Usage:
@@ -115,7 +122,7 @@
     </div>
 #}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
-<div class="list-group" {{ apply_dattrs(data_attrs) }}>
+<div class="{{ apply_classes(classes + ['list-group']) }}" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.items() %}
         {% if k not in filterkeys and v not in filtervals %}
             <h4 class="list-group-item-heading">{{ k }}</h4>
@@ -126,7 +133,7 @@
 {% endmacro -%}
 
 
-{%- macro bs3_list_group(data, type='ul') %}
+{%- macro bs3_list_group(data, classes=[], type='ul') %}
 {#
     OL/UL based bootstrap list group
 
@@ -139,9 +146,42 @@
         <li class="list-group-item">bar</li>
     </ul>
 #}
-<{{ type }} class="list-group">
+<{{ type }} class="{{ apply_classes(classes + ['list-group']) }}">
     {% for val in data %}
         <li class="list-group-item">{{ val }}</li>
+    {% endfor %}
+</{{ type }}>
+{% endmacro -%}
+
+
+{%- macro dictlist_group_badged(data, classes=[], type='ul', align='right') %}
+{#
+    OL/UL based bootstrap list group
+    with badge labels on the right (default).
+    From: http://getbootstrap.com/components/#list-group-badges
+
+    Usage:
+    {{ dictlist_group_badged({'Messages': 20, 'Unread': 10, 'Read': 100, 'Starred': 34}) }}
+
+    Output:
+    <ul>
+        <li class="list-group-item">Messages <span class="label label-default">20</span></li>
+        <li class="list-group-item">Unread <span class="label label-default">10</span></li>
+        <li class="list-group-item">Read <span class="label label-default">100</span></li>
+        <li class="list-group-item">Starred <span class="label label-default">34</span></li>
+    </ul>
+#}
+<{{ type }} class="{{ apply_classes(classes + ['list-group']) }}">
+    {% for val, label in data.items() %}
+        <li class="list-group-item">
+            {% if align == 'left' %}
+                <span class="label label-default }}">{{ label }}</span>
+            {% endif %}
+            {{ val }}
+            {% if align == 'right' %}
+                <span class="label label-default pull-right">{{ label }}</span>
+            {% endif %}
+        </li>
     {% endfor %}
 </{{ type }}>
 {% endmacro -%}
