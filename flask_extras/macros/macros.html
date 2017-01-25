@@ -488,7 +488,7 @@
     {% endif %}
 
     {% if horizontal %}
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 {{ 'text-' + align }}">
         {% if wrap_inputs %}
             <span class="input-wrapper-{{ field.name }}">
         {% endif %}
@@ -523,7 +523,7 @@
     {% endif %}
 
     {% if horizontal %}
-        <div class="{{ 'has-error' if field.errors else '' }} text-{{ 'right' if align == 'left' else 'left' }}">
+        <div class="{{ 'has-error' if field.errors else '' }} text-left">
     {% endif %}{# end `if horizontal` #}
 
     {% if use_field_macro %}
