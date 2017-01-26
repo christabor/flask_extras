@@ -500,7 +500,10 @@
     {% endif %}
 
     {% if not use_field_macro and field.type != 'SubmitField' %}
-        {{ field.label }}{{ '?' if field.type == 'BooleanField' and questionize }}
+        {% set qmark = '?'
+            if field.type == 'BooleanField' and questionize else ''
+        %}
+        {{ field.label(text=field.label.text + qmark) }}
     {% endif %}
 
     {% if field.description and not use_field_macro %}
