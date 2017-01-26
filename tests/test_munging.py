@@ -173,6 +173,24 @@ class TestGroupBy:
             assert key in ['group1', 'group2', 'group3', '__unlabeled']
         assert len(res.keys()) == 4
         assert len(res['group1']) == 3
-        # assert len(res['group2']) == 3
-        # assert len(res['group3']) == 3
+        assert len(res['group2']) == 3
+        assert len(res['group3']) == 3
         assert len(res['__unlabeled']) == 1
+
+    def test_returns_objs_group_custom_group_with_order_preserved(self):
+        """Test function."""
+        names = ['foo{}'.format(i) for i in range(1, 10)]
+        objs = [self._get_obj(name) for name in names]
+        groups = [
+            ('group1', ('foo2', 'foo1', 'foo3')),
+            ('group2', ('foo5', 'foo4', 'foo6')),
+            ('group3', ('foo7', 'foo9', 'foo8')),
+        ]
+        res = munging.group_by(objs, groups=groups, attr='name')
+        for key in res.keys():
+            assert key in ['group1', 'group2', 'group3', '__unlabeled']
+        for group in groups:
+            label, items = group
+            for i, item in enumerate(items):
+                obj_label = getattr(res[label][i], 'name')
+                assert item == obj_label

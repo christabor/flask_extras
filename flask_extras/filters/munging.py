@@ -56,7 +56,7 @@ def filter_keys(obj, keys):
 
 
 def group_by(objs, groups=[], attr='name'):
-    """Group a list of objects into a dict grouped by specified keys.
+    """Group a list of objects into an ordered dict grouped by specified keys.
 
     Args:
         objs: A list of objects
@@ -85,7 +85,8 @@ def group_by(objs, groups=[], attr='name'):
             if attr_label in seen:
                 continue
             if attr_label in matches:
-                grouped[label].append(curr)
+                idx = matches.index(attr_label)
+                grouped[label].insert(idx, curr)
                 seen.append(attr_label)
     # Add unlabeled extras last so order is preserved.
     grouped['__unlabeled'] = [
