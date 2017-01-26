@@ -316,6 +316,7 @@
                      btn_classes=[],
                      btn_text='Submit',
                      button_wrapper=True,
+                     colsizes=[4, 8],
                      classes=[],
                      data_attrs=[],
                      enctype=None,
@@ -354,6 +355,8 @@
     - Other standard form options
     - All the other magic that comes from wtforms (descriptions, help text, defaults, error handling, etc...)
     - Automatically group fields by a various fieldsets (see below)
+    - Determine column sizes
+
     Usage:
     {{
         wtform_form(
@@ -400,6 +403,7 @@
                 {% if valid_field %}
                     {{ _wtform_field(
                         field,
+                        colsizes=colsizes,
                         input_classes=input_classes,
                         horizontal=horizontal,
                         align=align,
@@ -469,6 +473,7 @@
 {# Handle the complex logic inside of `wtform_form` in a separate macro. Not for public use. #}
 {%- macro _wtform_field(field,
                         input_classes=[],
+                        colsizes=[4, 8],
                         horizontal=False,
                         align='left',
                         questionize=True,
@@ -488,7 +493,7 @@
     {% endif %}
 
     {% if horizontal %}
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 {{ 'text-' + align }}">
+        <div class="col-lg-{{ colsizes[0] }} col-md-{{ colsizes[1] }} col-sm-12 col-xs-12 {{ 'text-' + align }}">
         {% if wrap_inputs %}
             <span class="input-wrapper-{{ field.name }}">
         {% endif %}
@@ -516,7 +521,7 @@
             we can't group the fields etc into a single wrapper,
             so we apply to each section in each respective column #}
         {% if wrap_inputs %}</span>{% endif %}
-        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <div class="col-lg-{{ colsizes[1] }} col-md-{{ colsizes[1] }} col-sm-12 col-xs-12">
         {% if wrap_inputs %}
             <span class="input-wrapper-{{ field.name }}">
         {% endif %}
