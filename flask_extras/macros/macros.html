@@ -323,6 +323,7 @@
                      field_classes={},
                      field_macros={},
                      fieldset_groups=[],
+                     fieldset_fallback='__unlabeled',
                      formid=None,
                      horizontal=False,
                      input_classes=[],
@@ -412,7 +413,6 @@
                         wrap_inputs=wrap_inputs,
                         field_classes=field_classes,
                         field_macros=field_macros,
-                        fieldset_groups=fieldset_groups,
                         last=last,
                         )
                     }}
@@ -439,7 +439,8 @@
                 otherwise load as normal iteration.
             #}
             {% if fieldset_groups %}
-                {% set groups = formobj|group_by(fieldset_groups, 'name') %}
+                {% set groups = formobj|group_by(
+                    fieldset_groups, 'name', fallback=fieldset_fallback) %}
                 {% for label, fields in groups.items() %}
                     {% if label != '__unlabeled' and fields %}
                         <fieldset class="fieldset-group-{{ label|css_selector }}">
@@ -481,7 +482,6 @@
                         wrap_inputs=False,
                         field_classes={},
                         field_macros={},
-                        fieldset_groups=[],
                         last=False
 ) %}
     {% set use_field_macro = field.name in field_macros.keys() %}
@@ -518,7 +518,7 @@
     {% endif %}{# end `if field.flags.required` #}
 
     {% if horizontal %}
-        </div>
+        </div><!--end horizontal-col-->
         {# If horizontal mode is enabled,
             we can't group the fields etc into a single wrapper,
             so we apply to each section in each respective column #}
@@ -527,7 +527,7 @@
         {% if wrap_inputs %}
             <span class="input-wrapper-{{ field.name }}">
         {% endif %}
-    {% endif %}
+    {% endif %}{# end `if horizontal` #}
 
     {% if horizontal %}
         <div class="{{ 'has-error' if field.errors else '' }} text-left">

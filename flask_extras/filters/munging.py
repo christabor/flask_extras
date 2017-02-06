@@ -55,7 +55,7 @@ def filter_keys(obj, keys):
     return newdict
 
 
-def group_by(objs, groups=[], attr='name'):
+def group_by(objs, groups=[], attr='name', fallback='__unlabeled'):
     """Group a list of objects into an ordered dict grouped by specified keys.
 
     Args:
@@ -63,6 +63,7 @@ def group_by(objs, groups=[], attr='name'):
         keys: A list of 2-tuples where the first index is the group name,
             and the second key is a tuple of all matches.
         attr: The attr to use to get fields for matching (default: 'name')
+        fallback: A fallback label to use for unspecified groups.
 
     Returns:
         An OrderedDict of grouped items.
@@ -72,7 +73,7 @@ def group_by(objs, groups=[], attr='name'):
     """
     grouped = OrderedDict()
     if not groups or attr is None:
-        return {'__unlabeled': objs}
+        return {fallback: objs}
     # Initial population since it's not a defaultdict.
     for ordered_group in groups:
         label, _ = ordered_group
@@ -89,7 +90,7 @@ def group_by(objs, groups=[], attr='name'):
                 grouped[label].insert(idx, curr)
                 seen.append(attr_label)
     # Add unlabeled extras last so order is preserved.
-    grouped['__unlabeled'] = [
+    grouped[fallback] = [
         curr for curr in objs if getattr(curr, attr) not in seen
     ]
     return grouped

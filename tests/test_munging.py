@@ -135,6 +135,13 @@ class TestGroupBy:
         assert res.keys() == ['__unlabeled']
         assert len(res['__unlabeled']) == 1
 
+    def test_returns_objs_nogroup_fallback(self):
+        """Test function."""
+        objs = [self._get_obj(name) for name in ['foo1']]
+        res = munging.group_by(objs, attr=None, fallback='somegroup')
+        assert res.keys() == ['somegroup']
+        assert len(res['somegroup']) == 1
+
     def test_returns_objs_nogroup(self):
         """Test function."""
         objs = [self._get_obj(None)]
