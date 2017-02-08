@@ -386,6 +386,7 @@
                     id='',
                     headings=False,
                     heading_tag='h4',
+                    heading_macros={},
                     data_attrs=[],
                     tab_links={},
                     active='',
@@ -427,7 +428,13 @@
                 class="{{ apply_classes(tab_classes) }} {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}"
                 {{ apply_dattrs(tab_data_attrs) }}>
                 {% set link = '#' + label|css_selector if label not in tab_links else tab_links[label] %}
-                <a href="{{ link }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">{{ label }}</a>
+                <a href="{{ link }}" aria-controls="{{ label|css_selector }}" role="tab" data-toggle="tab">
+                    {% if label in heading_macros %}
+                        {{ heading_macros[label](label, item) }}
+                    {% else %}
+                        {{ label }}
+                    {% endif %}
+                </a>
             </li>
         {% endfor %}
     </ul>
