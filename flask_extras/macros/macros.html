@@ -503,19 +503,21 @@
         {% set qmark = '?'
             if field.type == 'BooleanField' and questionize else ''
         %}
+
         {{ field.label(text=field.label.text + qmark) }}
+
+        {% if field.flags.required %}
+            {% if horizontal and linebreaks %}<br>{% endif %}
+            <small class="text-danger required-label">* Required</small>
+            {% if linebreaks %}<br>{% endif %}
+        {% endif %}{# end `if field.flags.required` #}
+
     {% endif %}
 
     {% if field.description and not use_field_macro %}
         {% if horizontal and linebreaks %}<br>{% endif %}
-        <small>{{ field.description }}</small>
+        <small class="field-description">{{ field.description }}</small>
     {% endif %}{# end `if field.description` #}
-
-    {% if field.flags.required and not use_field_macro %}
-        {% if horizontal and linebreaks %}<br>{% endif %}
-        <small class="text-danger">* Required</small>
-        {% if linebreaks %}<br>{% endif %}
-    {% endif %}{# end `if field.flags.required` #}
 
     {% if horizontal %}
         </div><!--end horizontal-col-->
