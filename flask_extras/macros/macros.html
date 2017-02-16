@@ -326,6 +326,7 @@
                      fieldset_fallback='__unlabeled',
                      formid=None,
                      horizontal=False,
+                     hrule=True,
                      input_classes=[],
                      legend=None,
                      linebreaks=True,
@@ -380,7 +381,7 @@
             },
             fieldset_groups=[
                 ('group1', ('foo1', 'bar1', 'foo2')),
-                ('group2', ('foo3', 'bar2', 'foo3')),
+                (('group2', 'Some intro description for this group.'), ('foo3', 'bar2', 'foo3')),
             ],
         )
     }}
@@ -407,6 +408,7 @@
                         colsizes=colsizes,
                         input_classes=input_classes,
                         horizontal=horizontal,
+                        hrule=hrule,
                         align=align,
                         questionize=questionize,
                         linebreaks=linebreaks,
@@ -442,12 +444,27 @@
                 {% set groups = formobj|group_by(
                     fieldset_groups, 'name', fallback=fieldset_fallback) %}
                 {% for label, fields in groups.items() %}
+                    {% if label|length == 2 %}
+                        {# If the user specifies a 2-tuple inside here,
+                        we take the first index as the fieldset legend and second one as an optional legend
+                        introductory description #}
+                        {% set legend = label[0] %}
+                        {% set legend_desc = label[1] %}
+                    {% else %}
+                        {% set legend = label %}
+                        {% set legend_desc = '' %}
+                    {% endif %}
                     {% if label != '__unlabeled' and fields %}
-                        <fieldset class="fieldset-group-{{ label|css_selector }}">
-                            <legend>{{ label }}</legend>
+                        <fieldset class="fieldset-group-{{ legend|css_selector }}">
+                            <legend>
+                                {{ legend }}
+                                {% if legend_desc %}
+                                    <span class="fieldset-legend-description">{{ legend_desc }}</span>
+                                {% endif %}
+                            </legend>
                     {% endif %}
                     {{ _fields(fields) }}
-                    {% if label != '__unlabeled' and fields %}
+                    {% if legend != '__unlabeled' and fields %}
                         </fieldset>
                     {% endif %}
                 {% endfor %}
@@ -476,6 +493,7 @@
                         input_classes=[],
                         colsizes=[4, 8],
                         horizontal=False,
+                        hrule=True,
                         align='left',
                         questionize=True,
                         linebreaks=True,
@@ -571,7 +589,7 @@
 
     {% if horizontal %}
         </div>
-        {% if not last %}<hr>{% endif %}
+        {% if not last and hrule %}<hr>{% endif %}
     {% endif %}
     {% if wrap_inputs and not horizontal %}</span>{% endif %}
 {% endmacro -%}

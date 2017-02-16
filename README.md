@@ -38,13 +38,15 @@ from flask_extras.views import (
 
 ### Macros
 
-Many more macros are available. You can use them like so:
+**Many more macros** are available. You can use them like so:
 
 ```html
 {% from 'macros.html' import list_group, objects2table %}
 ```
 
 For the most comprehensive docs, check out each [macro](flask_extras/macros/). Comment "docstrings" are inline using jinja2 comments (these are not rendered in your html).
+
+Also, check the source and/or output to see what classes are available for style overrides.
 
 ### Statuses
 
