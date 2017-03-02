@@ -2,6 +2,8 @@
 
 from flask_extras.filters import munging
 
+import pytest
+
 
 class TestFilterVals:
     """All tests for filter_vals function."""
@@ -201,3 +203,71 @@ class TestGroupBy:
             for i, item in enumerate(items):
                 obj_label = getattr(res[label][i], 'name')
                 assert item == obj_label
+
+
+class TestSortDictKeysFromReflist:
+    """All tests for sort_dict_keys_from_reflist function."""
+
+    def test_sort_dict_keys_from_reflist(self):
+        """Test function."""
+        data = dict(foo=1, bar=2, baz=3, quux=4)
+        ref = ['quux', 'baz', 'foo', 'bar']
+        expected = [('quux', 4), ('baz', 3), ('foo', 1), ('bar', 2)]
+        assert munging.sort_dict_keys_from_reflist(data, ref) == expected
+
+    def test_sort_dict_keys_from_reflist_nested(self):
+        """Test function."""
+        data = dict(foo=dict(inner1=1, inner2=2), bar=2, baz=3, quux=4)
+        ref = ['quux', 'baz', 'foo', 'bar']
+        expected = [
+            ('quux', 4), ('baz', 3),
+            ('foo', {'inner1': 1, 'inner2': 2}), ('bar', 2)]
+        assert munging.sort_dict_keys_from_reflist(data, ref) == expected
+
+    def test_sort_dict_keys_from_reflist_none(self):
+        """Test function."""
+        data = dict(foo=None, bar=2, baz=3, quux=4)
+        ref = ['quux', 'baz', 'foo', 'bar']
+        expected = [('quux', 4), ('baz', 3), ('foo', None), ('bar', 2)]
+        assert munging.sort_dict_keys_from_reflist(data, ref) == expected
+
+    def test_sort_dict_keys_from_reflist_missing_val(self):
+        """Test function."""
+        data = dict(foo=1, bar=2, baz=3, quux=4)
+        ref = ['quux', 'baz', 'foo']
+        with pytest.raises(ValueError):
+            munging.sort_dict_keys_from_reflist(data, ref)
+
+
+class TestSortDictValsFromReflist:
+    """All tests for sort_dict_vals_from_reflist function."""
+
+    def test_sort_dict_vals_from_reflist(self):
+        """Test function."""
+        data = dict(foo=1, bar=2, baz=3, quux=4)
+        ref = [4, 3, 1, 2]
+        expected = [('quux', 4), ('baz', 3), ('foo', 1), ('bar', 2)]
+        assert munging.sort_dict_vals_from_reflist(data, ref) == expected
+
+    def test_sort_dict_vals_from_reflist_nested(self):
+        """Test function."""
+        data = dict(foo=dict(inner1=1, inner2=2), bar=2, baz=3, quux=4)
+        ref = [4, 3, {'inner1': 1, 'inner2': 2}, 2]
+        expected = [
+            ('quux', 4), ('baz', 3),
+            ('foo', {'inner1': 1, 'inner2': 2}), ('bar', 2)]
+        assert munging.sort_dict_vals_from_reflist(data, ref) == expected
+
+    def test_sort_dict_vals_from_reflist_none(self):
+        """Test function."""
+        data = dict(foo=None, bar=2, baz=3, quux=4)
+        ref = [4, 3, None, 2]
+        expected = [('quux', 4), ('baz', 3), ('foo', None), ('bar', 2)]
+        assert munging.sort_dict_vals_from_reflist(data, ref) == expected
+
+    def test_sort_dict_vals_from_reflist_missing_val(self):
+        """Test function."""
+        data = dict(foo=1, bar=2, baz=3, quux=4)
+        ref = [4, 3, 1]
+        with pytest.raises(ValueError):
+            munging.sort_dict_vals_from_reflist(data, ref)

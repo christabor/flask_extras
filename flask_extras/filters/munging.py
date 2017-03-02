@@ -3,6 +3,34 @@
 from collections import OrderedDict
 
 
+def sort_dict_vals_from_reflist(dct, reflist):
+    """Return sorted dict vals from reference list for reference (of vals).
+
+    Args:
+        dct (dict): The original dictionary
+        reflist (list): The reference list of keys to use for sorting.
+    Returns:
+        list: A sorted list of 2-tuples representing
+            the dictionary (as found in `dict.items()`)
+    """
+    items = dct.items()
+    return sorted(items, key=lambda x: reflist.index(x[1]))
+
+
+def sort_dict_keys_from_reflist(dct, reflist):
+    """Return sorted dict vals from reference list for reference (of keys).
+
+    Args:
+        dct (dict): The original dictionary
+        reflist (list): The reference list of keys to use for sorting.
+    Returns:
+        list: A sorted list of 2-tuples representing
+            the dictionary (as found in `dict.items()`)
+    """
+    items = dct.items()
+    return sorted(items, key=lambda x: reflist.index(x[0]))
+
+
 def filter_list(lst, vals):
     """Filter a list by vals.
 

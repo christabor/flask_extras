@@ -203,7 +203,8 @@
                        id=None,
                        field_macros={},
                        header_macros={},
-                       asdict=False
+                       asdict=False,
+                       order=None
                        )
 -%}
 {#
@@ -230,9 +231,15 @@
     {{ apply_dattrs(data_attrs) }}>
     <thead>
         {% for obj in objs %}
+            {% if order %}
+                {% set obj = obj|sort_dict_keys_from_reflist(order) %}
+            {% else %}
+                {% set obj = obj.items() %}
+            {% endif %}
             {% if loop.first %}
                 {% set header_keys = header_macros.keys() %}
-                {% for heading, _ in obj.items() %}
+                {% for item in obj %}
+                    {% set heading = item[0] %}
                     {# Allow filtering of headings. #}
                     {% if heading not in filterkeys and heading not in filter_headings %}
                         {% if heading in header_keys %}
@@ -247,8 +254,15 @@
     </thead>
     <tbody>
         {% for obj in objs %}
+            {% if order %}
+                {% set obj = obj|sort_dict_keys_from_reflist(order) %}
+            {% else %}
+                {% set obj = obj.items() %}
+            {% endif %}
             <tr>
-                {% for k, v in obj.items() %}
+                {% for item in obj %}
+                    {% set k = item[0] %}
+                    {% set v = item[1] %}
                     {# Allowing filtering of keys and values. #}
                     {% if k not in filterkeys %}
                         {% if v not in filtervals %}
