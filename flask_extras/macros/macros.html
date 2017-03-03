@@ -1,32 +1,4 @@
-{% macro apply_classes(classes) -%}
-{#
-    Apply css classes inside an element.
-    Usage:
-    <table {{ apply_classes(['table', 'table-striped']) }}></table>
-    <table class="table table-striped"></table>
-#}
-{% for css in classes %}{{ css }} {% endfor %}
-{%- endmacro %}
-
-
-{% macro apply_dattrs(data_attrs) -%}
-{#
-    Apply data-attributes inside an element.
-    Usage:
-    <div {{ apply_dattrs(['foo', 'bar']) }}></div>
-    <div data-foo data-bar></div>
-
-    As a dictionary:
-    <div {{ apply_dattrs({'foo': 'bar, 'bar': 'foo'}) }}></div>
-    <div data-foo="bar" data-bar="foo"></div>
-#}
-{% if data_attrs is mapping %}
-    {% for attr, val in data_attrs.items() %}data-{{ attr|camel2hyphen }}='{{ val }}' {% endfor %}
-{% else %}
-    {% for attr in data_attrs %}data-{{ attr }} {% endfor %}
-{% endif %}
-{%- endmacro %}
-
+{% from 'utils.html' import apply_dattrs, apply_classes %}
 
 {% macro dictlist_dl(data, filterkeys=[], filtervals=[], classes=[], data_attrs=[], asdict=False) %}
 {#

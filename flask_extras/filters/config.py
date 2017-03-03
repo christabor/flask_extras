@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from inspect import getmembers
 from inspect import isfunction
 
+from . import datetimes
 from . import filters
 from . import munging
 from . import random
@@ -53,6 +54,7 @@ def config_flask_filters(app):
     app = _inject_filters(app, _get_funcs(filters))
     app = _inject_filters(app, _get_funcs(random))
     app = _inject_filters(app, _get_funcs(munging))
+    app = _inject_filters(app, _get_funcs(datetimes))
     return app
 
 

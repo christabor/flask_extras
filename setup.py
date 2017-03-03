@@ -5,6 +5,7 @@ from setuptools import setup
 requirements = [
     'Flask-WTF==0.13',
     'Flask==0.10.1',
+    'python-dateutil',
 ]
 
 
@@ -23,7 +24,7 @@ def readme():
 
 setup(
     name='flask_extras',
-    version='4.0.2',
+    version='4.0.3',
     description=('Assorted useful flask views, blueprints, '
                  'Jinja2 template filters, and templates/macros'),
     long_description=readme(),
