@@ -1,10 +1,10 @@
 {%- macro simpledatetime(timestr) %}
 {% set t = timestr|str2dt %}
-{{ t.strftime('%Y-%m-%d %H:%M:%S') }}
+{% if t %}{{ t.strftime('%Y-%m-%d %H:%M:%S') }}{% else %}{{ t }}
 {% endmacro -%}
 
 
 {%- macro simpledate(timestr) %}
 {% set t = timestr|str2dt %}
-{{ t.strftime('%Y-%m-%d') }}
+{% if t %}{{ t.strftime('%Y-%m-%d') }}{% else %}{{ t }}
 {% endmacro -%}
