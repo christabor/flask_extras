@@ -17,3 +17,11 @@ class TestStr2Dt:
     def test_title_returns_invalid(self):
         """Test function."""
         assert datetimes.str2dt(None) is None
+
+    def test_title_returns_invalid_nonetype_str(self):
+        """Test function."""
+        assert datetimes.str2dt('None') is None
+
+    def test_title_returns_invalid_nonetype_str2(self):
+        """Test function."""
+        assert datetimes.str2dt('null') is None

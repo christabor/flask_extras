@@ -14,4 +14,6 @@ def str2dt(timestr):
     try:
         return dtparse(timestr)
     except (TypeError, ValueError):
+        if timestr in ['None', 'null']:
+            return None
         return timestr
