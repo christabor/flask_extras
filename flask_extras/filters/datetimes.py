@@ -11,4 +11,7 @@ def str2dt(timestr):
     Returns:
         dateutil.parser.parse - the parsed datetime object.
     """
-    return dtparse(timestr)
+    try:
+        return dtparse(timestr)
+    except (TypeError, ValueError):
+        return timestr

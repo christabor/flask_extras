@@ -4,8 +4,6 @@ from dateutil.parser import parse as dtparse
 
 from flask_extras.filters import datetimes
 
-import pytest
-
 
 class TestStr2Dt:
     """All tests for str2dt function."""
@@ -18,5 +16,4 @@ class TestStr2Dt:
 
     def test_title_returns_invalid(self):
         """Test function."""
-        with pytest.raises(TypeError):
-            datetimes.str2dt(None)
+        assert datetimes.str2dt(None) is None
