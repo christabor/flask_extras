@@ -14,10 +14,11 @@ def sort_dict_vals_from_reflist(dct, reflist):
             the dictionary (as found in `dict.items()`)
     """
     items = dct.items()
+    items = [d for d in items if d[1] in reflist]
     return sorted(items, key=lambda x: reflist.index(x[1]))
 
 
-def sort_dict_keys_from_reflist(dct, reflist):
+def sort_dict_keys_from_reflist(dct, reflist, omit=False):
     """Return sorted dict vals from reference list for reference (of keys).
 
     Args:
@@ -28,6 +29,7 @@ def sort_dict_keys_from_reflist(dct, reflist):
             the dictionary (as found in `dict.items()`)
     """
     items = dct.items()
+    items = [d for d in items if d[0] in reflist]
     return sorted(items, key=lambda x: reflist.index(x[0]))
 
 

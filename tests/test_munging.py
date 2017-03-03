@@ -235,8 +235,8 @@ class TestSortDictKeysFromReflist:
         """Test function."""
         data = dict(foo=1, bar=2, baz=3, quux=4)
         ref = ['quux', 'baz', 'foo']
-        with pytest.raises(ValueError):
-            munging.sort_dict_keys_from_reflist(data, ref)
+        expected = [('quux', 4), ('baz', 3), ('foo', 1)]
+        assert munging.sort_dict_keys_from_reflist(data, ref) == expected
 
 
 class TestSortDictValsFromReflist:
@@ -269,5 +269,5 @@ class TestSortDictValsFromReflist:
         """Test function."""
         data = dict(foo=1, bar=2, baz=3, quux=4)
         ref = [4, 3, 1]
-        with pytest.raises(ValueError):
-            munging.sort_dict_vals_from_reflist(data, ref)
+        expected = [('quux', 4), ('baz', 3), ('foo', 1)]
+        assert munging.sort_dict_vals_from_reflist(data, ref) == expected
