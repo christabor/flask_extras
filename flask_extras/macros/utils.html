@@ -56,7 +56,7 @@
 
 
 {%- macro titleize(val) %}
-{{ underscore2space(val)|capitalize }}
+{{ underscore2space(hyphen2space(val)).strip()|capitalize }}
 {% endmacro -%}
 
 

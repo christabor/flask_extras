@@ -32,8 +32,8 @@
     tokenize_code(
         'FOO bar BAZ "quux"',
         delimiter=' ',
-        token_dattrs={'BAZ': 'data-val'}
-        token_classes={'FOO': 'foocls'},
+        token_dattrs={'BAZ': {'val': 'foo'}},
+        token_classes={'FOO': ['foocls']},
         replacers=['"'],
         wrap_all=True,
     )
@@ -42,7 +42,7 @@
         <code>
             <span class="foocls">FOO</span>
             <span>bar</span>
-            <span data-someval>BAZ</span>
+            <span data-val="foo">BAZ</span>
             <span>quux</span>
         </code>
     </pre>
@@ -52,11 +52,12 @@
         {% for token in code.split(delimiter) %}
             {% if wrap_all %}
                 {% set tok = token.strip()|cut(replacers) %}
-                {% set _dattrs = token_dattrs.get(tok, [])%}
-                {% set _classes = token_classes.get(tok, [])%}
-            <span class="{{ apply_classes(_classes + classes) }}" {{ apply_dattrs(_dattrs) }}>
-                {{ tok }}
-            </span>
+                {% set _dattrs = token_dattrs.get(tok, {})%}
+                {% set _classes = token_classes.get(tok, []) + classes%}
+                <span{% if _classes %}
+                        class="{{ apply_classes(_classes) }}"
+                    {% endif %}
+                    {{ apply_dattrs(_dattrs) }}>{{ tok }}</span>
             {% endif %}
         {% endfor %}
     {% if use_code %}</code>{% endif %}

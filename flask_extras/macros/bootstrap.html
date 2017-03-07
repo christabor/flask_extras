@@ -88,9 +88,9 @@
     {{ dict2carousel(
         'someId',
         [
-            {'content': 'foo1', 'caption': 'foo'},
-            {'content': 'foo2', 'caption': 'bar'},
-            {'content': 'foo3', 'caption': 'baz'},
+            {'content': '<img src="https://placekitten.com/200/300">', 'caption': 'foo'},
+            {'content': '<img src="http://placehold.it/350x150">', 'caption': 'bar'},
+            {'content': '<img src="http://placehold.it/350x150">', 'caption': 'baz'},
         ],
         active=2)
     }}
@@ -153,8 +153,10 @@
 <div class="{{ apply_classes(classes + ['list-group']) }}" {{ apply_dattrs(data_attrs) }}>
     {% for k, v in data.items() %}
         {% if k not in filterkeys and v not in filtervals %}
-            <h4 class="list-group-item-heading">{{ k }}</h4>
-            <p class="list-group-item-text">{{ v }}</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">{{ k }}</h4>
+                <p class="list-group-item-text">{{ v }}</p>
+            </div>
         {% endif %}
     {% endfor %}
 </div>
@@ -221,10 +223,10 @@
     the appropriate label.
 
     Usage:
-    {{ bs3_label('PROD', {'dev': 'info', 'stage': 'warning', 'prod': 'danger'}) }}
+    {{ bs3_label('prod', {'dev': 'info', 'stage': 'warning', 'prod': 'danger'}) }}
 
     Output:
-    <span class="label label-danger">PROD</span>
+    <span class="label label-danger">prod</span>
  #}
 <span class="label label-{{ label_map[value] }}">{{ text if text else value }}</span>
 {% endmacro -%}
@@ -348,7 +350,7 @@
         dict2tabs({
             "tab1": wtform_form(form1, action=url_for('app.page1')),
             "tab2": wtform_form(form2, action=url_for('app.page2')),
-            id="MyCoolTabContainer",
+            id="MyCoolTabContainer"
         })
     }}
 
@@ -373,7 +375,7 @@
             <div role="tabpanel"
                 class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
-                {{ data[label] }}
+                {{ data[label]|safe }}
             </div>
         {% endfor %}
     </div>
@@ -446,7 +448,7 @@
             <div role="tabpanel"
                 class="{{ apply_classes(content_classes) }} tab-pane {% if label == active %}active{% elif loop.first and not active %}active{% endif %} {{ 'disabled' if label in disabled }}" id="{{ label|css_selector }}" {{ apply_dattrs(content_data_attrs) }}>
                 {% if headings %}<{{ heading_tag }}>{{ label }}</{{ heading_tag }}>{% endif %}
-                {{ item[label] }}
+                {{ item[label]|safe }}
             </div>
         {% endfor %}
     </div>
