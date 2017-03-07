@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'content_blocks.html' import dict_heading_blocks %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('dict_heading_blocks', 'Make headings and paragraphs from a dict()') }}
+            {{ dict_heading_blocks(
+                {'foo bar': 'bar and baz and quux', 'baz': 'baz and quux and bar foo'}, hsize='h4')
+            }}
+        </div>
+    </div>
+</div>
+{% endblock %}

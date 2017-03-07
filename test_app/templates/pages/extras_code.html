@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'extras_code.html' import inline_code, code, tokenize_code %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('inline_code', 'Show code styling, inline') }}
+            <p>
+                Here is some text with {{ inline_code('some_function(2, 4)') }} in it.
+            </p>
+
+            {{ example('code', 'Show code styling as a block and specified language options. (Syntax highlighting not provided, but classes are added for styling.)') }}
+
+            {{ code('{"I": "am": "some": "json", "weee": 42}', lang='json') }}
+
+            {{ example('tokenize_code', 'Show code styling as a block but wrap various tokens of code with specified data-attrs and/or classes for styling. Useful for showing log or other data output with specific delimited tokens editable/styled.') }}
+
+            {{ tokenize_code(
+                    'This is a log output stream ... FOO bar BAZ "quux" 01-01-0000 00:00:00 | GET | foobar',
+                    delimiter=' ',
+                    token_dattrs={'BAZ': {'val': 'foo'}},
+                    token_classes={
+                        'FOO': ['label', 'label-info'],
+                        'BAZ': ['label', 'label-danger'],
+                        'GET': ['label', 'label-success']
+                    },
+                    replacers=['"'],
+                    use_pre=False,
+                    wrap_all=True,
+                )
+            }}
+        </div>
+    </div>
+</div>
+{% endblock %}

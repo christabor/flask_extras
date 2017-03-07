@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'dates.html' import simpledatetime, simpledate %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('simpledatetime', 'Convert a string or timestamp into a proper time object and then format using Y-m-d H:M:S format.') }}
+            {{ simpledatetime(somedate) }}
+
+            {{ example('simpledate', 'Convert a string or timestamp into a proper time object and then format using Y-m-d format.') }}
+
+            {{ simpledate(somedate) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

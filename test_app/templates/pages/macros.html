@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% import 'macros.html' as mac %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('dictlist_dl', 'Make a definition list from a dictionary (or tuple). Optionally filter keys/values and stylized with classes and data-attrs') }}
+
+            {{ mac.dictlist_dl(dicttest) }}
+
+            {{ example('dict2list', 'Make a list from a dictionary. Optionally filter keys/values and stylized with classes and data-attrs') }}
+
+            {{ mac.dict2list(dicttest) }}
+
+            {{ example('list2list', 'Convert a (python) list to html OL or UL list. ') }}
+
+            {{ mac.list2list(['Toyota', 'V2', '747', 'John Deere']) }}
+
+            <p>Supports appending icons and left/right order:</p>
+
+            {{ mac.list2list(['Toyota', 'V2', '747', 'John Deere'], icons={'Toyota': ['fa', 'fa-car'], 'V2': ['fa', 'fa-rocket']}, icondir='left') }}
+            {{ mac.list2list(['Toyota', 'V2', '747', 'John Deere'], icons={'Toyota': ['fa', 'fa-car'], 'V2': ['fa', 'fa-rocket']}, icondir='right') }}
+
+            {{ example('dictlist2nav', 'Make a list of links with nav element. Format must be a list of dicts/tuples. Supports *one* level of nesting.') }}
+
+            {{ mac.dictlist2nav(dictlist) }}
+
+            {{ example('dictlist2dropdown', 'Make a select > option element. Format must be a list of dicts/tuples. Supports *one* level of nesting.') }}
+
+            {{ mac.dictlist2dropdown(dictlist) }}
+
+            {{ example('dictlist2checkboxes', 'Make a checkbox group, where keys are input names, and values are labels. Format must be a list of dicts/tuples.') }}
+
+            {{ mac.dictlist2checkboxes(dictlist) }}
+
+
+            {{ example('objects2table', 'Convert a list of dicts/tuples to a table.') }}
+
+            {{ mac.objects2table(dictlist2) }}
+
+            <p>Custom styling</p>
+
+            {{ mac.objects2table(dictlist2, classes=['table', 'table-striped']) }}
+
+            <p>Filtering</p>
+
+            {{ mac.objects2table(dictlist2, filterkeys='name', classes=['table', 'table']) }}
+
+            <p class="text-success">Also supports many other things, like custom macros *PER* header or field, giving you much more fine-grained controlled, IF you need it.</p>
+
+            {{ example('wtform_form', 'Render a wtform object, with error handling, customizable options, layouts, text and much more.') }}
+
+            <p>Options include:</p>
+            <ul>
+                <li>Error handling/styling</li>
+                <li>Horizontal or vertical layout</li>
+                <li>Per-field macro customization</li>
+                <li>Per-field styling</li>
+                <li>Data-attributes, classes, ids</li>
+                <li>Automatically add "?" to BooleanFields if `questionize` is set.</li>
+                <li>Add a button wrapper for styling</li>
+                <li>Add a input/label wrapper for styling</li>
+                <li>Add reset button</li>
+                <li>Wrap in fieldset/legend option</li>
+                <li>Upload support (enctype)</li>
+                <li>Other standard form options</li>
+                <li>All the other magic that comes from wtforms (descriptions, help text, defaults, error handling, etc...)</li>
+                <li>Automatically group fields by a various fieldsets (see below)</li>
+                <li>Determine column sizes</li>
+            </ul>
+            <p>And more. See actual macro for more.</p>
+
+            <p>Examples (wrapped in boxes for clarity using custom class).</p>
+
+            {{ mac.wtform_form(form, classes=['form', 'well']) }}
+
+            <p>Horizontal mode</p>
+
+            {{ mac.wtform_form(form, horizontal=True, classes=['form', 'well']) }}
+
+            <p>Horizontal/right-align mode</p>
+
+            {{ mac.wtform_form(form, align='right', horizontal=True, classes=['form', 'well']) }}
+
+            <p>Custom grouping</p>
+
+            {{ mac.wtform_form(form,
+                classes=['form', 'well'],
+                fieldset_groups=[
+                ('Important info!', ('name', 'age')),
+                ('Not so important...', ('nickname', 'favorite_food')),
+            ]) }}
+
+            {{ example('recurse_dictlist', 'Recursively traverse a list of dictionaries and all sub-datastructures, to build out a nested UL or OL.') }}
+
+            {{ mac.recurse_dictlist(recursedict) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

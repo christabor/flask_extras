@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flask_extras demo page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+</head>
+<body>
+    {% macro example(macroname, desc) %}
+        <hr>
+        <h3 class="lead">
+            {{ path }} > <code>"{{ macroname }}"</code>
+            <br>
+            <small>{{ desc }}</small>
+        </h3>
+    {% endmacro %}
+    {% if not home %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <a href="{{ url_for('index') }}">&larr; Go back</a>
+                    <h1>
+                        <a href="{{ ghub_url }}{{ name }}" target="_blank">{{ name }}</a>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block body %}{% endblock %}
+    <script src="{{ url_for('static', filename='jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</body>
+</html>

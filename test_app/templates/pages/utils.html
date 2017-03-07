@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% import 'utils.html' as utils %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('ip_link', 'Convert an ip string into a real link.') }}
+            {{ utils.ip_link('127.0.0.1:5001') }}
+
+            {{ example('simpleurl', 'Convert a url string into a real link, and handle missing protocol etc') }}
+            {{ utils.simpleurl('google.com') }}
+
+            {{ example('boolean_icon_display', 'Convert a boolean into a fontAwesome icon') }}
+            <br>
+            "False": {{ utils.boolean_icon_display(False) }}
+            "True": {{ utils.boolean_icon_display(True) }}
+
+            <br>
+
+            {{ example('Titleize', 'Remove underscores, hyphens and capitalize.')}}
+
+            {% set test_title = 'Some-title__that-needs__adjusting' %}
+
+            "{{ test_title }}" vs. "{{ utils.titleize(test_title) }}"
+
+            {{ example('underscore2space', 'Self explanatory.') }}
+
+            "{{ test_title }}" vs. "{{ utils.underscore2space(test_title) }}"
+
+            {{ example('hyphen2space', 'Self explanatory.') }}
+
+            "{{ test_title }}" vs. "{{ utils.hyphen2space(test_title) }}"
+
+            {{ example('dot2space', 'Self explanatory.') }}
+
+            "I.have.lots.of.dots..." vs. "{{ utils.hyphen2space('I.have.lots.of.dots...') }}"
+
+            {{ example('remove_parens', 'Self explanatory.') }}
+
+            "((lol)()()" vs. "{{ utils.remove_parens('((lol)()()') }}"
+
+
+            {{ example('remove_brackets', 'Self explanatory.') }}
+
+            "[[hello wor[ld]]]" vs. "{{ utils.remove_brackets('[[hello wor[ld]]]') }}"
+
+            {{ example('remove_braces', 'Self explanatory.') }}
+
+            {% set test_braces = '{{hello wor{ld}}}' %}
+
+            "{{ test_braces }} " vs. "{{ utils.remove_braces(test_braces) }}"
+        </div>
+    </div>
+</div>
+{% endblock %}

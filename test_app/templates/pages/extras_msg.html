@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'extras_msg.html' import flash_messages, alert_type %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {{ example('flash_messages', 'Makes flash messages using standard bootstrap alerts.') }}
+            {{ flash_messages() }}
+        </div>
+    </div>
+</div>
+{% endblock %}

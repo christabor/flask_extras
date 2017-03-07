@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'extras_msg.html' import flash_messages, alert_type %}
+{% from 'content_blocks.html' import dict_heading_blocks %}
+
+{% macro linklist(links) %}
+<ul>
+    {% for link in links %}
+        <li>
+            <a href="{{ url_for(link) }}">{{ link }}.html</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Macros</h1>
+            {{ linklist(links) }}
+
+            <h1>Filters</h1>
+            <p>See docs</p>
+
+            <h1>WTForms</h1>
+            <p>See docs</p>
+
+            <h1>Decorators</h1>
+            <p>See docs</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

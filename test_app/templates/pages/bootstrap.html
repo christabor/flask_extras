@@ -1,0 +1,120 @@
+{% extends 'layouts/base.html' %}
+
+{% from 'layouts/base.html' import example %}
+
+{% from 'macros.html' import wtform_form %}
+{% import 'bootstrap.html' as bs %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>All macros here are specific to the bootstrap css/js framework</h3>
+            {{ example('progress', 'Generate a progressbar')}}
+
+            {{ bs.progress(30) }}
+            {{ bs.progress(100, animated=True, striped=True) }}
+            {{ bs.progress(89, context='success') }}
+            {{ bs.progress(89, context='danger') }}
+            {{ bs.progress(89, context='warning') }}
+            {{ bs.progress(89, context='info') }}
+
+            {{ example('modal', 'Generate a modal with some sections toggleable')}}
+
+            {{ bs.modal('someId', 'Some html or text...', title='My Modal', include_btn=True) }}
+
+            <p>Add footer and remove close buttons</p>
+
+            {{ bs.modal('someId2', 'Some html or text...', footer='Some footer text/html.', close_btns=False, title='My Modal 2', include_btn=True) }}
+
+            {{ example('dict2carousel', 'Generate a carousel from a dictionary') }}
+
+            {{ bs.dict2carousel(
+                'someId',
+                [
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'foo'},
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'bar'},
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'baz'},
+                ],
+                classes=['well'],
+                active=2)
+            }}
+
+            {{ example('bs3_dictlist_group', 'Generate a list-group from a dict.') }}
+
+            {{ bs.bs3_dictlist_group(dicttest) }}
+
+            {{ example('bs3_list_group', 'Generate a list-group from a list.') }}
+
+            {{ bs.bs3_list_group(['foo', 'bar', 'baz']) }}
+
+            {{ example('dictlist_group_badged', 'Generate a list-group with badges from a dict of form {"title": "badge content"}') }}
+
+            {{ bs.dictlist_group_badged({'Messages': 20, 'Unread': 10, 'Read': 100, 'Starred': 34}) }}
+
+            <p>Or left aligned</p>
+
+            {{ bs.dictlist_group_badged({'Messages': 20, 'Unread': 10, 'Read': 100, 'Starred': 34}, align='left') }}
+
+            {{ example('bs3_label', 'Generate a label from a string and a label mapping') }}
+
+            {% set label_map = {'dev': 'info', 'stage': 'warning', 'prod': 'danger'} %}
+
+            {{ bs.bs3_label('prod', label_map) }}
+            {{ bs.bs3_label('stage', label_map) }}
+            {{ bs.bs3_label('dev', label_map) }}
+
+            {{ example('bs3_panel', 'Generate bs3 panels for a dict of titles/body content.') }}
+
+            {{ bs.bs3_panel({'Heading 1': 'Some body text... etc...', 'Heading 2': 'Some body text...'}, paneltype='info') }}
+
+            {{ example('bs3_breadcrumb', 'Generate breadcrumbs from a breadcrumb object (likely flask-breadcrumbs, but anything that supports the same attributes would work.') }}
+
+            {{ bs.bs3_breadcrumb([{'text': 'Home'}, {'text': 'SomePage'}]) }}
+
+
+            {{ example('dict2labels', 'Makes a dict of `name`:`label` into bootstrap labels') }}
+
+            {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}) }}
+            <span class="label label-danger">foo</span>
+
+            {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}, aslist=False) }}
+            <span class="label label-danger">foo</span>
+
+            <p>Or wrap it in an html list by specifying `aslist`:</p>
+
+            {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}, aslist=True) }}
+
+            {{ example('dict2tabs', 'Make a dict into a bs3 tab group with tab content. Keys are tab labels, and values are tab content.') }}
+
+            {{ bs.dict2tabs({"foo": "<p class='well lead'>Some content rendered from html or macro</p>"}) }}
+
+            <hr>
+
+            <p>You can also customize styles, data-attrs, etc... see function signature for more info.</p>
+
+            <p>You can even pass in content generated from other macros, such as the wtform_form macro:</p>
+
+            {{
+                bs.dict2tabs({
+                        "tab1": wtform_form(form, classes=['well']),
+                        "tab2": wtform_form(form2, classes=['well'])
+                    },
+                    id="MyCoolTabContainer"
+                )
+            }}
+
+            {{ example('dictlist2tabs', 'Same idea as above, but with a list of dicts instead. This ensures ordering of tabs is correct.') }}
+
+            {{
+                bs.dictlist2tabs([
+                        {"tab1": wtform_form(form, classes=['well'])},
+                        {"tab2": wtform_form(form2, classes=['well'])}
+                    ],
+                    id="MyCoolTabContainer"
+                )
+            }}
+        </div>
+    </div>
+</div>
+{% endblock %}
