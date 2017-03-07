@@ -454,3 +454,26 @@
     </div>
 </div>
 {% endmacro -%}
+
+
+{%- macro inline_list(lst, divider='|', classes=[], data_attrs=[]) %}
+<ul class="{{ apply_classes(classes + ['list-inline']) }}" {{ apply_dattrs(data_attrs) }}>
+    {%- for item in lst %}
+    <li>
+        {{ item }}
+        {%- if not loop.last %}&nbsp;&nbsp;{{ divider }} {% endif -%}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro -%}
+
+
+{%- macro inline_dictlist(dlist, divider='|', seperator=': ', classes=[], data_attrs=[]) %}
+<ul class="{{ apply_classes(classes + ['list-inline']) }}" {{ apply_dattrs(data_attrs) }}>
+    {%- for item in dlist %}
+    <li>{{ item.keys()[0] }}{{ seperator }}{{ item.values()[0] }}
+        {%- if not loop.last %}&nbsp;&nbsp;{{ divider }} {% endif -%}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro -%}

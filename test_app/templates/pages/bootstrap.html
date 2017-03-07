@@ -111,9 +111,17 @@
                         {"tab1": wtform_form(form, classes=['well'])},
                         {"tab2": wtform_form(form2, classes=['well'])}
                     ],
-                    id="MyCoolTabContainer"
+                    id="MyCoolTabContainer2"
                 )
             }}
+
+            {{ example('inline_list', 'Generate from a list, an inline list with a custom divider.') }}
+
+            {{ bs.inline_list(['foo', 'bar', 'baz']) }}
+
+            {{ example('inline_dictlist', 'Generate from a list of dicts, an inline list with a custom divider and key/value.') }}
+
+            {{ bs.inline_dictlist(dictlist2, seperator='::') }}
         </div>
     </div>
 </div>
