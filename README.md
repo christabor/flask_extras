@@ -51,6 +51,12 @@ python app.py
 open http://localhost:5014
 ```
 
+#### Philosophy
+
+Many macros leverage the structure of data to find a common mapping. For example, a dictionary looks a lot like a definition list (dl), and a list looks really like a ...list, in html terms. But stepping even further into things, more complex data structures can have fairly elegant mappings when using macros to hide away a lot of html cruft.
+
+This makes rendering complex server side data easy, without having to do lots of transformation. This won't work for cases where every last DOM element need to be stylized, but many users will find incredibly powerful tools available to make UI development much easier.
+
 **Many more macros** are available. You can use them like so:
 
 ```html
