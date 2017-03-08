@@ -121,7 +121,7 @@
 
             {{ example('inline_dictlist', 'Generate from a list of dicts, an inline list with a custom divider and key/value.') }}
 
-            {{ bs.inline_dictlist(dictlist2, seperator='::') }}
+            {{ bs.inline_dictlist(dictlist, seperator='::') }}
 
             {{ example('dict2btn_group', 'Generated a button group from a dictionary of {"btn-type": "name"} dict list.') }}
 
@@ -139,6 +139,30 @@
             {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='sm') }} <br>
             {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='md') }} <br>
             {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='lg') }}
+
+            {{ example('dict2_pagination', 'Generate pagination with a dict.') }}
+
+            {{ bs.dict2_pagination(pagination, size='sm') }}
+            {{ bs.dict2_pagination(pagination, size='md') }}
+            {{ bs.dict2_pagination(pagination, size='lg') }}
+
+            <p>Disabled links + prev/next + custom prev/next text.</p>
+
+            {{ bs.dict2_pagination(pagination, prev={'somelink': '&laquo;'}, next={'somelink': 'next'}, size='sm', disabled=[1, 2, 'prev', 'next']) }}
+
+            {{ example('modal_carousel', 'Generate a carousel inside a modal with a dictionary for carousel items.') }}
+
+            {{ bs.modal_carousel(
+                [
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'foo'},
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'bar'},
+                    {'content': '<img src="http://placehold.it/350x150">', 'caption': 'baz'},
+                ],
+                id='someKindOfCarouselId',
+                title='Some wonderful modal gallery.',
+                show_footer=False,
+                include_btn=True)
+            }}
         </div>
     </div>
 </div>

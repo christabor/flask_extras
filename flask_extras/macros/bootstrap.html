@@ -1,4 +1,4 @@
-{% from 'utils.html' import apply_dattrs, apply_classes %}
+{% from 'utils.html' import apply_dattrs, apply_classes, apply_prop %}
 
 {% macro progress(percent,
                   animated=False,
@@ -33,6 +33,7 @@
                close_btns=True,
                fade=True,
                footer=None,
+               show_footer=True,
                include_btn=False,
                include_btn_text='Trigger Modal',
                title=None
@@ -48,7 +49,7 @@
         {{ include_btn_text }}
     </a>
 {% endif %}
-<div class="modal {{ 'fade' if fade else '' }}" id="{{ id }}">
+<div class="modal {{ 'fade' if fade else '' }}" {{ apply_prop('id', id) }}>
     <div class="modal-dialog">
         <div class="{{ apply_classes(classes + ['modal-content']) }}">
             <div class="modal-header">
@@ -63,7 +64,7 @@
             <div class="modal-footer">
                 {% if footer %}
                     {{ footer|safe }}
-                {% else %}
+                {% elif show_footer %}
                     {% if close_btns %}
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     {% endif %}
@@ -95,7 +96,7 @@
         active=2)
     }}
 #}
-<div id="{{ id }}"
+<div {{ apply_prop('id', id) }}
     class="{{ apply_classes(classes + ['carousel', 'slide']) }}"
     data-ride="carousel" {{ apply_dattrs(data_attrs) }}>
 
@@ -356,7 +357,7 @@
 
     Note: unless active is specified, order will be determined by sorting the keys. If you need ordering to be specific to the dictionary key order, use `dictlist2tabs` instead.
 #}
-<div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+<div role="tabpanel" {{ apply_prop('id', id) }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs {{ apply_classes(nav_tab_classes) }}" role="tablist">
         {% for label in data.keys()|sort %}
@@ -421,7 +422,7 @@
 
     Note: unless active is specified, order will be determined by sorting the keys.
 #}
-<div role="tabpanel" {% if id %}id="{{ id }}"{% endif %} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
+<div role="tabpanel" {{ apply_prop('id', id) }} class="{{ apply_classes(classes) }}" {{ apply_dattrs(data_attrs) }}>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs {{ apply_classes(nav_tab_classes) }}" role="tablist">
         {% for item in data %}
@@ -480,7 +481,7 @@
 
 
 {%- macro dict2btn_group(dlist, size='md', classes=[], data_attrs=[], id=None) %}
-<div {% if id %}id="{{ id }}" {% endif %} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
+<div {{ apply_prop('id', id) }} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
     {% for type, text in dlist.items() %}
         <button type="button" class="btn btn-{{ size }} btn-{{ type }}">{{ text }}</button>
     {% endfor %}
@@ -489,9 +490,68 @@
 
 
 {%- macro list2btn_group(list, btn_types='default', size='md', classes=[], data_attrs=[], id=None) %}
-<div {% if id %}id="{{ id }}" {% endif %} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
+<div {{ apply_prop('id', id) }} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
     {% for item in list %}
         <button type="button" class="btn btn-{{ size }} btn-{{ btn_types }}">{{ item }}</button>
     {% endfor %}
 </div>
+{% endmacro -%}
+
+
+{%- macro dict2_pagination(dct, prev=None, next=None, size='md', classes=[], data_attrs=[], id=None, disabled=[]) %}
+<nav aria-label="Page navigation" {{ apply_prop('id', id) }}>
+  <ul class="pagination-{{ size }} pagination" class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }}>
+    {% if prev %}
+    <li {% if 'prev' in disabled %}class="disabled"{% endif %}>
+      <a href="{{ prev.keys()[0] }}" aria-label="Previous">
+        <span aria-hidden="true">{{ prev.values()[0]|safe }}</span>
+      </a>
+    </li>
+    {% endif %}
+    {% for link, text in dct.items() %}
+        <li {% if text in disabled %}class="disabled"{% endif %}>
+            <a href="{{ link }}">{{ text }}</a>
+        </li>
+    {% endfor %}
+    {% if next %}
+    <li {% if 'next' in disabled %}class="disabled"{% endif %}>
+      <a href="{{ next.keys()[0] }}" aria-label="Next">
+        <span aria-hidden="true">{{ next.values()[0]|safe }}</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endmacro -%}
+
+
+{%- macro modal_carousel(
+    items,
+    active=0,
+    show_arrows=True,
+    show_footer=True,
+    footer=None,
+    id=None,
+    fade=True,
+    include_btn=False,
+    close_btns=True,
+    include_btn_text='Trigger Modal',
+    title=None
+)
+%}
+{{ modal(id,
+    dict2carousel(id,
+        items,
+        active=active,
+        show_arrows=show_arrows,
+    ),
+    close_btns=close_btns,
+    fade=fade,
+    show_footer=show_footer,
+    footer=footer,
+    include_btn=include_btn,
+    include_btn_text=include_btn_text,
+    title=title
+    )
+}}
 {% endmacro -%}
