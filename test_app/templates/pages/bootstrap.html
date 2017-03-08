@@ -122,6 +122,23 @@
             {{ example('inline_dictlist', 'Generate from a list of dicts, an inline list with a custom divider and key/value.') }}
 
             {{ bs.inline_dictlist(dictlist2, seperator='::') }}
+
+            {{ example('dict2btn_group', 'Generated a button group from a dictionary of {"btn-type": "name"} dict list.') }}
+
+            {{ bs.dict2btn_group({'info': 'bar', 'success': 'baz', 'default': 'foo'}, size='xs') }} <br>
+
+            {{ bs.dict2btn_group({'info': 'bar', 'success': 'baz', 'default': 'foo'}, size='sm') }} <br>
+
+            {{ bs.dict2btn_group({'info': 'bar', 'success': 'baz', 'default': 'foo'}, size='md') }} <br>
+
+            {{ bs.dict2btn_group({'info': 'bar', 'success': 'baz', 'default': 'foo'}, size='lg') }}
+
+            {{ example('list2btn_group', 'Generated a button group from a list.') }}
+
+            {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='xs') }} <br>
+            {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='sm') }} <br>
+            {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='md') }} <br>
+            {{ bs.list2btn_group(['foo', 'bar', 'baz'], size='lg') }}
         </div>
     </div>
 </div>

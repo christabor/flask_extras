@@ -38,6 +38,19 @@ from flask_extras.views import (
 
 ### Macros
 
+All macro DEMOS are available by cloning this repo and firing up the flask test server, e.g:
+
+```shell
+git clone https://github.com/christabor/flask_extras
+cd flask_extras
+virtualenv env
+source env/bin/active
+python setup.py install
+cd test_app
+python app.py
+open http://localhost:5014
+```
+
 **Many more macros** are available. You can use them like so:
 
 ```html

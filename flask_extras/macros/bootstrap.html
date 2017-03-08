@@ -477,3 +477,21 @@
     {% endfor %}
 </ul>
 {% endmacro -%}
+
+
+{%- macro dict2btn_group(dlist, size='md', classes=[], data_attrs=[], id=None) %}
+<div {% if id %}id="{{ id }}" {% endif %} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
+    {% for type, text in dlist.items() %}
+        <button type="button" class="btn btn-{{ size }} btn-{{ type }}">{{ text }}</button>
+    {% endfor %}
+</div>
+{% endmacro -%}
+
+
+{%- macro list2btn_group(list, btn_types='default', size='md', classes=[], data_attrs=[], id=None) %}
+<div {% if id %}id="{{ id }}" {% endif %} class="{{ apply_classes(classes + ['btn-group']) }}" {{ apply_dattrs(data_attrs) }} role="group">
+    {% for item in list %}
+        <button type="button" class="btn btn-{{ size }} btn-{{ btn_types }}">{{ item }}</button>
+    {% endfor %}
+</div>
+{% endmacro -%}
