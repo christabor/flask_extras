@@ -166,7 +166,9 @@
 {%- endmacro %}
 
 
-{% macro objects2table(objs, classes=[], data_attrs=[],
+{% macro objects2table(objs,
+                       classes=[],
+                       data_attrs=[],
                        filterkeys=[],
                        filtervals=[],
                        filter_headings=[],
@@ -180,7 +182,7 @@
                        )
 -%}
 {#
-    Create table from a list of objects (class instantiations). Also add links for primary keys if specified.
+    Create table from a list of objects, classes, etc... Also add links for primary keys if specified.
 
     {{
         objects2table(

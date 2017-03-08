@@ -163,6 +163,16 @@
                 show_footer=False,
                 include_btn=True)
             }}
+
+            {{ example('table_panels', 'Generate panels with a table inside each, using a list of dicts with headings/table data as keys/values.') }}
+
+            {{ bs.table_panels([
+                    {'Title 1': dictlist},
+                    {'Title 2': dictlist},
+                ],
+                table_classes=['table', 'table-striped']
+                )
+            }}
         </div>
     </div>
 </div>

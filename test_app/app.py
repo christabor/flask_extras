@@ -151,6 +151,7 @@ def bootstrap():
         bar='Some foo',
     )
     dictlist = [
+        dict(name='zomb', age=999, dob='03/01/2030', gender='Z102'),
         dict(name='foo', age=10, dob='01/01/1900', gender='M'),
         dict(name='bar', age=22, dob='01/01/1901', gender='F'),
         dict(name='quux', age=120, dob='01/01/1830', gender='X'),

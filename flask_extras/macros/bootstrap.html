@@ -1,4 +1,5 @@
 {% from 'utils.html' import apply_dattrs, apply_classes, apply_prop %}
+{% from 'macros.html' import objects2table %}
 
 {% macro progress(percent,
                   animated=False,
@@ -554,4 +555,21 @@
     title=title
     )
 }}
+{% endmacro -%}
+
+
+{%- macro table_panels(items,
+    paneltype='default',
+    table_classes=[],
+    table_data_attrs=[]
+    )
+-%}
+    {% for item in items %}
+        {% for title, data in item.items() %}
+            {# Xform data into magical data-table html #}
+            {% set html = objects2table(data, classes=table_classes, data_attrs=table_data_attrs)
+            %}
+            {{ bs3_panel({title: html}, paneltype=paneltype) }}
+        {% endfor %}
+    {% endfor %}
 {% endmacro -%}
