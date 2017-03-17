@@ -47,7 +47,7 @@ class SomeForm(FlaskForm):
         description='enter your name',
         validators=[validators.DataRequired()],
     )
-    nickname = StringField('What do people all you?')
+    nickname = StringField('What do people call you?')
 
 
 class SomeForm2(FlaskForm):

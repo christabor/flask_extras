@@ -76,11 +76,7 @@
             {{ example('dict2labels', 'Makes a dict of `name`:`label` into bootstrap labels') }}
 
             {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}) }}
-            <span class="label label-danger">foo</span>
-
             {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}, aslist=False) }}
-            <span class="label label-danger">foo</span>
-
             <p>Or wrap it in an html list by specifying `aslist`:</p>
 
             {{ bs.dict2labels({'foo': 'danger', 'bar': 'success'}, aslist=True) }}

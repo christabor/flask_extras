@@ -19,7 +19,7 @@
                     {% endif %}
                     <p class="flash">
                         <strong>{{ category|capitalize }}:</strong>
-                        {{ message }}
+                        {{ message|safe }}
                     </p>
                 </div>
             {% endfor %}
