@@ -6,6 +6,7 @@ requirements = [
     'Flask-WTF==0.13',
     'Flask==0.10.1',
     'python-dateutil',
+    'netaddr',
 ]
 
 
