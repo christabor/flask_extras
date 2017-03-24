@@ -87,3 +87,26 @@ def test_valid_hosts_valid_list():
 def test_valid_hosts_valid_range():
     # Just ensuring it doesn't raise a ValueError
     network.valid_hosts(FakeCls(), Field(data='192.168.0.1-192.168.10.0'))
+
+
+def test_valid_hosts_valid_hyphen_no_ip():
+    # Just ensuring it doesn't raise a ValueError
+    network.valid_hosts(FakeCls(), Field(data='http://www.foo-bar.x.com'))
+
+
+def test_valid_hosts_valid_range_mixed():
+    # Just ensuring it doesn't raise a ValueError
+    network.valid_hosts(FakeCls(), Field(
+        data='192.168.0.1,http://www.foo.com'))
+
+
+def test_valid_hosts_valid_hyphenated_hostname_ip_mixed():
+    # Just ensuring it doesn't raise a ValueError
+    network.valid_hosts(FakeCls(), Field(
+        data='http://www.foo-bar.x.com,192.168.0.1'))
+
+
+def test_valid_hosts_valid_hyphenated_hostname_ip_mixed_range():
+    # Just ensuring it doesn't raise a ValueError
+    network.valid_hosts(FakeCls(), Field(
+        data='http://www.foo-bar.x.com,192.168.0.1-192.168.10.4'))
