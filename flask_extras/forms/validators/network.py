@@ -65,13 +65,13 @@ def valid_hosts(formcls, field):
     :param formcls (object): The form class.
     :param field (str): The list of ips.
     """
-    ip_range_re = re.compile(r'[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}')
+    ip_re = re.compile(r'[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}')
     data = field.data
     if ',' in data:
         ips = [ip for ip in data.split(',') if ip]
     elif ' ' in data:
         ips = [ip for ip in data.split(' ') if ip]
-    elif '-' in data and re.match(ip_range_re, data):
+    elif '-' in data and re.match(ip_re, data):
         try:
             start, end = data.split('-')
             ips = iter_iprange(start, end)
