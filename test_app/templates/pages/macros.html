@@ -16,6 +16,13 @@
 
             {{ mac.dict2list(dicttest) }}
 
+            {{ example('dict2linklist', 'Make a list of links from a dictionary. Optionally filter keys/values and stylized with classes and data-attrs') }}
+
+            {{ mac.dict2linklist({
+                'http://google.com': 'Google',
+                'http://yahoo.com': 'Yahoo',
+            }) }}
+
             {{ example('list2list', 'Convert a (python) list to html OL or UL list. ') }}
 
             {{ mac.list2list(['Toyota', 'V2', '747', 'John Deere']) }}

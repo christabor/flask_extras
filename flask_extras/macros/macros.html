@@ -25,7 +25,7 @@
 {%- endmacro %}
 
 
-{% macro dict2list(data, type='ul', filterkeys=[], filtervals=[], asdict=False) %}
+{% macro dict2list(data, type='ul', filterkeys=[], filtervals=[], classes=[], asdict=False) %}
 {#
     Makes a list from a dictionary.
     Usage:
@@ -38,10 +38,37 @@
     {{ dict_list_dl(namedtuple, asdict=True) }}
 #}
 {% if asdict %}{% set data = data._asdict() %}{% endif %}
-<{{ type }}>
+<{{ type }} class="{{ apply_classes(classes) }}">
     {% for k, v in data.items() %}
         {% if k not in filterkeys and v not in filtervals %}
             <li><strong>{{ k }}</strong>: {{ v }}</li>
+        {% endif %}
+    {% endfor %}
+</{{ type }}>
+{%- endmacro %}
+
+
+{% macro dict2linklist(data, type='ul', target='_blank', filterkeys=[], filtervals=[], classes=[], asdict=False) %}
+{#
+    Makes a list from a dictionary.
+    Usage:
+    {{ dict2list({'foo': 'bar'}) }}
+    <ul>
+        <li>
+            <a href="{{ foo }}">{{ bar }}</a>
+        </li>
+    </ul>
+
+    Or use a namedtuple by specifying `asdict`:
+    {{ dict_list_dl(namedtuple, asdict=True) }}
+#}
+{% if asdict %}{% set data = data._asdict() %}{% endif %}
+<{{ type }} class="{{ apply_classes(classes) }}">
+    {% for k, v in data.items() %}
+        {% if k not in filterkeys and v not in filtervals %}
+            <li>
+                <a href="{{ k }}" target="{{ target }}">{{ v }}</a>
+            </li>
         {% endif %}
     {% endfor %}
 </{{ type }}>
@@ -522,7 +549,7 @@
 
     {% if field.description and not use_field_macro %}
         {% if horizontal and linebreaks %}<br>{% endif %}
-        <small class="field-description">{{ field.description }}</small>
+        <small class="field-description">{{ field.description|safe }}</small>
     {% endif %}{# end `if field.description` #}
 
     {% if horizontal %}
