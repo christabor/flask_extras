@@ -28,6 +28,8 @@ def test_is_ip_invalid():
 def test_is_hostname_valid():
     assert network.is_hostname('foo.x.y-baz.com')
     assert network.is_hostname('https://www.rad.com')
+    assert network.is_hostname('https://localhost:8080')
+    assert network.is_hostname('somehost/')
 
 
 def test_is_hostname_invalid_ips():
@@ -36,21 +38,12 @@ def test_is_hostname_invalid_ips():
     assert not network.is_hostname('255.255.255.255')
 
 
-def test_is_hostname_invalid_noperiod():
-    assert not network.is_hostname('foo')
-
-
 def test_is_hostname_invalid_ends_hyphen():
     assert not network.is_hostname('www.foo.com-')
 
 
 def test_is_hostname_invalid_underscore():
     assert not network.is_hostname('www.bar.foo_.com')
-
-
-def test_valid_hosts_invalid():
-    with pytest.raises(ValueError):
-        network.valid_hosts(FakeCls(), Field(data='foo'))
 
 
 def test_valid_hosts_invalid_octet():

@@ -40,7 +40,6 @@ def is_hostname(addr):
     """
     if any([
         '_' in addr,
-        '.' not in addr,
         addr.endswith('-'),
         is_ip(addr),
     ]):
