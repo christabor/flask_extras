@@ -4,7 +4,7 @@ from setuptools import setup
 
 requirements = [
     'Flask-WTF==0.13',
-    'Flask==0.10.1',
+    'Flask==1.0',
     'python-dateutil',
     'netaddr',
 ]
